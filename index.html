@@ -36,7 +36,7 @@
         .search-wrapper {
             position: relative;
             max-width: 500px;
-            margin: 0 auto;
+            margin: 0 auto 25px auto;
         }
 
         .search-input {
@@ -62,6 +62,100 @@
             transform: translateY(-50%);
             color: #083785;
             font-size: 18px;
+        }
+
+        .filters-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: #083785;
+            margin-right: 5px;
+        }
+
+        .filter-button {
+            padding: 10px 20px;
+            border: 2px solid #083785;
+            background: white;
+            color: #083785;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-button:hover {
+            background: #083785;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(8, 55, 133, 0.3);
+        }
+
+        .filter-button.active {
+            background: #083785;
+            color: white;
+            box-shadow: 0 5px 15px rgba(8, 55, 133, 0.3);
+        }
+
+        .filter-button.all {
+            background: linear-gradient(135deg, #083785 0%, #0a4a9c 100%);
+            color: white;
+        }
+
+        .filter-button.all:hover {
+            background: linear-gradient(135deg, #0a4a9c 0%, #083785 100%);
+        }
+
+        .filter-button.kavach {
+            border-color: #083785;
+            color: #083785;
+        }
+
+        .filter-button.kavach.active,
+        .filter-button.kavach:hover {
+            background: #083785;
+            color: white;
+        }
+
+        .filter-button.advisories {
+            border-color: #f57c00;
+            color: #f57c00;
+        }
+
+        .filter-button.advisories.active,
+        .filter-button.advisories:hover {
+            background: #f57c00;
+            color: white;
+        }
+
+        .filter-button.normal {
+            border-color: #2e7d32;
+            color: #2e7d32;
+        }
+
+        .filter-button.normal.active,
+        .filter-button.normal:hover {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .filter-count {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
         }
 
         .table-container {
@@ -192,6 +286,16 @@
             .description-cell {
                 max-width: 200px;
             }
+
+            .filters-container {
+                justify-content: flex-start;
+                gap: 8px;
+            }
+
+            .filter-button {
+                padding: 8px 15px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -201,6 +305,22 @@
             <div class="search-wrapper">
                 <div class="search-icon">🔍</div>
                 <input type="text" id="searchInput" class="search-input" placeholder="Search documents by title, category, or description...">
+            </div>
+            
+            <div class="filters-container">
+                <span class="filter-label">Filter by Category:</span>
+                <button class="filter-button all active" data-filter="all">
+                    All Documents <span class="filter-count" id="countAll">5</span>
+                </button>
+                <button class="filter-button kavach" data-filter="kavach">
+                    🛡️ Kavach <span class="filter-count" id="countKavach">2</span>
+                </button>
+                <button class="filter-button advisories" data-filter="advisories">
+                    ⚠️ Advisories <span class="filter-count" id="countAdvisories">2</span>
+                </button>
+                <button class="filter-button normal" data-filter="normal">
+                    📄 Normal <span class="filter-count" id="countNormal">1</span>
+                </button>
             </div>
         </div>
 
@@ -218,7 +338,7 @@
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    <tr>
+                    <tr data-category="kavach">
                         <td><strong>Kavach Troubleshooting Guide</strong></td>
                         <td><span class="category-badge category-kavach">Kavach</span></td>
                         <td><span class="priority-badge priority-normal">Normal</span></td>
@@ -227,7 +347,7 @@
                         <td class="description-cell">Kavach: Troubleshooting Directory for the 3 Phase locomotives equipped with Kavach.</td>
                         <td><a href="https://coekms.in/public/uploads/1748520716_Indian%20Railway%20Medical%20Manual%20Volume-I.pdf" class="document-link" target="_blank">View Document</a></td>
                     </tr>
-                    <tr>
+                    <tr data-category="advisories">
                         <td><strong>Safety Advisory Manual</strong></td>
                         <td><span class="category-badge category-advisories">Advisories</span></td>
                         <td><span class="priority-badge priority-normal">Normal</span></td>
@@ -236,7 +356,7 @@
                         <td class="description-cell">Comprehensive safety guidelines and advisory protocols for railway operations.</td>
                         <td><a href="#" class="document-link" target="_blank">View Document</a></td>
                     </tr>
-                    <tr>
+                    <tr data-category="normal">
                         <td><strong>Maintenance Procedures</strong></td>
                         <td><span class="category-badge category-normal">Normal</span></td>
                         <td><span class="priority-badge priority-normal">Normal</span></td>
@@ -245,7 +365,7 @@
                         <td class="description-cell">Standard operating procedures for locomotive maintenance and inspection protocols.</td>
                         <td><a href="#" class="document-link" target="_blank">View Document</a></td>
                     </tr>
-                    <tr>
+                    <tr data-category="kavach">
                         <td><strong>Kavach Installation Guide</strong></td>
                         <td><span class="category-badge category-kavach">Kavach</span></td>
                         <td><span class="priority-badge priority-normal">Normal</span></td>
@@ -254,7 +374,7 @@
                         <td class="description-cell">Step-by-step installation procedures for Kavach system implementation.</td>
                         <td><a href="#" class="document-link" target="_blank">View Document</a></td>
                     </tr>
-                    <tr>
+                    <tr data-category="advisories">
                         <td><strong>Emergency Response Protocol</strong></td>
                         <td><span class="category-badge category-advisories">Advisories</span></td>
                         <td><span class="priority-badge priority-normal">Normal</span></td>
@@ -269,7 +389,7 @@
 
         <div class="no-results" id="noResults">
             <h3>No documents found</h3>
-            <p>Try adjusting your search terms or browse all documents.</p>
+            <p>Try adjusting your search terms or selecting a different category filter.</p>
         </div>
 
         <div class="stats" id="statsSection">
@@ -278,10 +398,15 @@
     </div>
 
     <script>
+        let currentFilter = 'all';
+        let currentSearchTerm = '';
+
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
             updateStats();
             setupSearch();
+            setupFilters();
+            updateFilterCounts();
         });
 
         function updateStats() {
@@ -298,45 +423,99 @@
 
         function setupSearch() {
             const searchInput = document.getElementById('searchInput');
-            const tableBody = document.getElementById('tableBody');
-            const noResults = document.getElementById('noResults');
-            const documentCount = document.getElementById('documentCount');
-            const allRows = Array.from(tableBody.getElementsByTagName('tr'));
-
+            
             searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase().trim();
-                let visibleCount = 0;
-
-                allRows.forEach(row => {
-                    const rowText = row.textContent.toLowerCase();
-                    const isVisible = rowText.includes(searchTerm);
-                    
-                    row.style.display = isVisible ? '' : 'none';
-                    if (isVisible) visibleCount++;
-                });
-
-                // Update results display
-                if (visibleCount === 0 && searchTerm !== '') {
-                    noResults.style.display = 'block';
-                    document.querySelector('.table-container').style.display = 'none';
-                } else {
-                    noResults.style.display = 'none';
-                    document.querySelector('.table-container').style.display = 'block';
-                }
-
-                // Update document count
-                const countText = visibleCount === allRows.length ? 
-                    `${visibleCount} documents` : 
-                    `${visibleCount} of ${allRows.length} documents`;
-                documentCount.textContent = countText;
+                currentSearchTerm = this.value.toLowerCase().trim();
+                applyFilters();
             });
 
-            // Add search enhancement with Enter key
             searchInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     this.blur();
                 }
             });
+        }
+
+        function setupFilters() {
+            const filterButtons = document.querySelectorAll('.filter-button');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Update current filter
+                    currentFilter = this.getAttribute('data-filter');
+                    
+                    // Apply filters
+                    applyFilters();
+                });
+            });
+        }
+
+        function applyFilters() {
+            const tableBody = document.getElementById('tableBody');
+            const noResults = document.getElementById('noResults');
+            const documentCount = document.getElementById('documentCount');
+            const allRows = Array.from(tableBody.getElementsByTagName('tr'));
+            let visibleCount = 0;
+
+            allRows.forEach(row => {
+                const rowText = row.textContent.toLowerCase();
+                const rowCategory = row.getAttribute('data-category');
+                
+                // Check if row matches search term
+                const matchesSearch = currentSearchTerm === '' || rowText.includes(currentSearchTerm);
+                
+                // Check if row matches category filter
+                const matchesFilter = currentFilter === 'all' || rowCategory === currentFilter;
+                
+                const isVisible = matchesSearch && matchesFilter;
+                
+                row.style.display = isVisible ? '' : 'none';
+                if (isVisible) visibleCount++;
+            });
+
+            // Update results display
+            if (visibleCount === 0) {
+                noResults.style.display = 'block';
+                document.querySelector('.table-container').style.display = 'none';
+            } else {
+                noResults.style.display = 'none';
+                document.querySelector('.table-container').style.display = 'block';
+            }
+
+            // Update document count
+            const totalCount = allRows.length;
+            let countText;
+            
+            if (currentFilter === 'all' && currentSearchTerm === '') {
+                countText = `${totalCount} documents`;
+            } else if (visibleCount === totalCount) {
+                countText = `${visibleCount} documents`;
+            } else {
+                countText = `${visibleCount} of ${totalCount} documents`;
+            }
+            
+            documentCount.textContent = countText;
+        }
+
+        function updateFilterCounts() {
+            const allRows = Array.from(document.querySelectorAll('#tableBody tr'));
+            const counts = {
+                all: allRows.length,
+                kavach: allRows.filter(row => row.getAttribute('data-category') === 'kavach').length,
+                advisories: allRows.filter(row => row.getAttribute('data-category') === 'advisories').length,
+                normal: allRows.filter(row => row.getAttribute('data-category') === 'normal').length
+            };
+
+            document.getElementById('countAll').textContent = counts.all;
+            document.getElementById('countKavach').textContent = counts.kavach;
+            document.getElementById('countAdvisories').textContent = counts.advisories;
+            document.getElementById('countNormal').textContent = counts.normal;
         }
 
         // Add some interactive enhancements
