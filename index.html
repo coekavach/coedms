@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Management System</title>
+    <title>Upload Data Table</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -21,161 +21,131 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(8, 55, 133, 0.1);
-            overflow: hidden;
-        }
-
-        .search-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             padding: 30px;
-            background: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
-        .search-wrapper {
-            position: relative;
-            max-width: 500px;
-            margin: 0 auto 25px auto;
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
         }
 
-        .search-input {
-            width: 100%;
-            padding: 15px 20px 15px 50px;
-            border: 2px solid #083785;
-            border-radius: 50px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            outline: none;
-            background: white;
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .search-input:focus {
-            box-shadow: 0 0 20px rgba(8, 55, 133, 0.2);
-            transform: translateY(-2px);
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1em;
         }
 
-        .search-icon {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #083785;
-            font-size: 18px;
-        }
-
-        .filters-container {
+        .controls {
             display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
-        .filter-label {
-            font-weight: 600;
-            color: #083785;
-            margin-right: 5px;
-        }
-
-        .filter-button {
-            padding: 10px 20px;
-            border: 2px solid #083785;
-            background: white;
-            color: #083785;
+        .refresh-btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
             border-radius: 25px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .filter-button:hover {
-            background: #083785;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(8, 55, 133, 0.3);
-        }
-
-        .filter-button.active {
-            background: #083785;
-            color: white;
-            box-shadow: 0 5px 15px rgba(8, 55, 133, 0.3);
-        }
-
-        .filter-button.all {
-            background: linear-gradient(135deg, #083785 0%, #0a4a9c 100%);
-            color: white;
-        }
-
-        .filter-button.all:hover {
-            background: linear-gradient(135deg, #0a4a9c 0%, #083785 100%);
-        }
-
-        .filter-button.kavach {
-            border-color: #083785;
-            color: #083785;
-        }
-
-        .filter-button.kavach.active,
-        .filter-button.kavach:hover {
-            background: #083785;
-            color: white;
-        }
-
-        .filter-button.advisories {
-            border-color: #f57c00;
-            color: #f57c00;
-        }
-
-        .filter-button.advisories.active,
-        .filter-button.advisories:hover {
-            background: #f57c00;
-            color: white;
-        }
-
-        .filter-button.normal {
-            border-color: #2e7d32;
-            color: #2e7d32;
-        }
-
-        .filter-button.normal.active,
-        .filter-button.normal:hover {
-            background: #2e7d32;
-            color: white;
-        }
-
-        .filter-count {
-            background: rgba(255, 255, 255, 0.3);
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 12px;
+            font-size: 16px;
             font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .refresh-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .search-box {
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 16px;
+            width: 300px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .status.loading {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .status.success {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+        }
+
+        .status.error {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
 
         .table-container {
             overflow-x: auto;
-            margin: 0;
-        }
-
-        .document-table {
-            width: 100%;
-            border-collapse: collapse;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             background: white;
         }
 
-        .document-table th {
-            background: linear-gradient(135deg, #083785 0%, #0a4a9c 100%);
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
             color: white;
-            padding: 20px 15px;
+        }
+
+        th {
+            padding: 18px 15px;
             text-align: left;
             font-weight: 600;
-            font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             position: sticky;
@@ -183,361 +153,452 @@
             z-index: 10;
         }
 
-        .document-table td {
-            padding: 20px 15px;
-            border-bottom: 1px solid #e9ecef;
-            vertical-align: top;
-            transition: background-color 0.3s ease;
-        }
-
-        .document-table tr:hover {
-            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
-            transform: scale(1.01);
+        tbody tr {
             transition: all 0.3s ease;
         }
 
-        .category-badge {
-            display: inline-block;
-            padding: 6px 12px;
+        tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tbody tr:hover {
+            background: linear-gradient(45deg, #ecf0f1, #bdc3c7);
+            transform: scale(1.01);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+
+        .priority-normal {
+            background: #3498db;
+            color: white;
+            padding: 5px 12px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .category-kavach { background: #e3f2fd; color: #083785; }
-        .category-advisories { background: #fff3e0; color: #f57c00; }
-        .category-normal { background: #e8f5e8; color: #2e7d32; }
-
-        .priority-badge {
             display: inline-block;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 500;
-            text-transform: uppercase;
         }
 
-        .priority-normal { background: #e8f5e8; color: #2e7d32; }
-
-        .document-link {
-            color: #083785;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .document-link:hover {
-            color: #0a4a9c;
-            text-decoration: underline;
-            transform: translateX(5px);
-        }
-
-        .document-link::after {
-            content: '↗';
+        .priority-high {
+            background: #e74c3c;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
             font-size: 12px;
-            opacity: 0.7;
+            font-weight: 600;
+            display: inline-block;
         }
 
-        .date-cell {
-            color: #666;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
+        .priority-low {
+            background: #27ae60;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
         }
 
-        .description-cell {
+        .category-tag {
+            background: #9b59b6;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .subcategory-tag {
+            background: #f39c12;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .subject-cell {
             max-width: 300px;
+            word-wrap: break-word;
             line-height: 1.4;
-            color: #555;
         }
 
-        .no-results {
+        .file-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .file-link:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        .no-data {
             text-align: center;
-            padding: 50px;
-            color: #666;
-            font-style: italic;
-            display: none;
+            padding: 40px;
+            color: #7f8c8d;
+            font-size: 18px;
         }
 
-        .stats {
-            padding: 20px 30px;
-            background: #f8f9fa;
-            border-top: 1px solid #e9ecef;
-            color: #666;
+        .record-count {
+            color: #7f8c8d;
             font-size: 14px;
-            text-align: center;
+            margin-left: 10px;
         }
 
         @media (max-width: 768px) {
-            .document-table th,
-            .document-table td {
-                padding: 12px 8px;
-                font-size: 13px;
-            }
-
-            .search-container {
+            .container {
                 padding: 20px;
+                margin: 10px;
             }
 
-            .description-cell {
-                max-width: 200px;
+            .header h1 {
+                font-size: 2em;
             }
 
-            .filters-container {
-                justify-content: flex-start;
-                gap: 8px;
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
             }
 
-            .filter-button {
-                padding: 8px 15px;
+            .search-box {
+                width: 100%;
+            }
+
+            table {
                 font-size: 12px;
+            }
+
+            th, td {
+                padding: 10px 8px;
+            }
+
+            .subject-cell {
+                max-width: 200px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="search-container">
-            <div class="search-wrapper">
-                <div class="search-icon">🔍</div>
-                <input type="text" id="searchInput" class="search-input" placeholder="Search documents by title, category, or description...">
-            </div>
-            
-            <div class="filters-container">
-                <span class="filter-label">Filter by Category:</span>
-                <button class="filter-button all active" data-filter="all">
-                    All Documents <span class="filter-count" id="countAll">5</span>
-                </button>
-                <button class="filter-button kavach" data-filter="kavach">
-                    🛡️ Kavach <span class="filter-count" id="countKavach">2</span>
-                </button>
-                <button class="filter-button advisories" data-filter="advisories">
-                    ⚠️ Advisories <span class="filter-count" id="countAdvisories">2</span>
-                </button>
-                <button class="filter-button normal" data-filter="normal">
-                    📄 Normal <span class="filter-count" id="countNormal">1</span>
-                </button>
+        <div class="header">
+            <h1>📊 Upload Data Management</h1>
+            <p>Dynamic data table with real-time API integration</p>
+        </div>
+
+        <div class="controls">
+            <button class="refresh-btn" onclick="fetchData()" id="refreshBtn">
+                🔄 Refresh Data
+            </button>
+            <div>
+                <input type="text" class="search-box" placeholder="🔍 Search records..." onkeyup="filterTable()" id="searchBox">
+                <span class="record-count" id="recordCount"></span>
             </div>
         </div>
 
+        <div class="status" id="status"></div>
+
         <div class="table-container">
-            <table class="document-table" id="documentTable">
+            <table id="dataTable">
                 <thead>
                     <tr>
-                        <th>Title</th>
+                        <th>ID</th>
                         <th>Category</th>
                         <th>Priority</th>
                         <th>Date</th>
-                        <th>Reference</th>
-                        <th>Description</th>
-                        <th>Document Link</th>
+                        <th>Letter Number</th>
+                        <th>Subject</th>
+                        <th>File</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    <tr data-category="kavach">
-                        <td><strong>Kavach Troubleshooting Guide</strong></td>
-                        <td><span class="category-badge category-kavach">Kavach</span></td>
-                        <td><span class="priority-badge priority-normal">Normal</span></td>
-                        <td class="date-cell">2025-04-22</td>
-                        <td>IRISET/CoE/Kavach/Misc</td>
-                        <td class="description-cell">Kavach: Troubleshooting Directory for the 3 Phase locomotives equipped with Kavach.</td>
-                        <td><a href="https://coekms.in/public/uploads/1748520716_Indian%20Railway%20Medical%20Manual%20Volume-I.pdf" class="document-link" target="_blank">View Document</a></td>
-                    </tr>
-                    <tr data-category="advisories">
-                        <td><strong>Safety Advisory Manual</strong></td>
-                        <td><span class="category-badge category-advisories">Advisories</span></td>
-                        <td><span class="priority-badge priority-normal">Normal</span></td>
-                        <td class="date-cell">2025-04-20</td>
-                        <td>IRISET/Safety/Advisory/001</td>
-                        <td class="description-cell">Comprehensive safety guidelines and advisory protocols for railway operations.</td>
-                        <td><a href="#" class="document-link" target="_blank">View Document</a></td>
-                    </tr>
-                    <tr data-category="normal">
-                        <td><strong>Maintenance Procedures</strong></td>
-                        <td><span class="category-badge category-normal">Normal</span></td>
-                        <td><span class="priority-badge priority-normal">Normal</span></td>
-                        <td class="date-cell">2025-04-18</td>
-                        <td>IRISET/Maintenance/Proc/002</td>
-                        <td class="description-cell">Standard operating procedures for locomotive maintenance and inspection protocols.</td>
-                        <td><a href="#" class="document-link" target="_blank">View Document</a></td>
-                    </tr>
-                    <tr data-category="kavach">
-                        <td><strong>Kavach Installation Guide</strong></td>
-                        <td><span class="category-badge category-kavach">Kavach</span></td>
-                        <td><span class="priority-badge priority-normal">Normal</span></td>
-                        <td class="date-cell">2025-04-15</td>
-                        <td>IRISET/CoE/Kavach/Install</td>
-                        <td class="description-cell">Step-by-step installation procedures for Kavach system implementation.</td>
-                        <td><a href="#" class="document-link" target="_blank">View Document</a></td>
-                    </tr>
-                    <tr data-category="advisories">
-                        <td><strong>Emergency Response Protocol</strong></td>
-                        <td><span class="category-badge category-advisories">Advisories</span></td>
-                        <td><span class="priority-badge priority-normal">Normal</span></td>
-                        <td class="date-cell">2025-04-12</td>
-                        <td>IRISET/Emergency/Protocol/003</td>
-                        <td class="description-cell">Emergency response procedures and communication protocols for critical situations.</td>
-                        <td><a href="#" class="document-link" target="_blank">View Document</a></td>
-                    </tr>
                 </tbody>
             </table>
-        </div>
-
-        <div class="no-results" id="noResults">
-            <h3>No documents found</h3>
-            <p>Try adjusting your search terms or selecting a different category filter.</p>
-        </div>
-
-        <div class="stats" id="statsSection">
-            <span id="documentCount">5 documents</span> • Last updated: <span id="lastUpdated"></span>
         </div>
     </div>
 
     <script>
-        let currentFilter = 'all';
-        let currentSearchTerm = '';
+        let allData = [];
+        const API_URL = 'https://coekms.in/Api/UploadData';
 
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', function() {
-            updateStats();
-            setupSearch();
-            setupFilters();
-            updateFilterCounts();
-        });
-
-        function updateStats() {
-            const now = new Date();
-            const lastUpdated = now.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
+        // Format date function
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
             });
-            document.getElementById('lastUpdated').textContent = lastUpdated;
         }
 
-        function setupSearch() {
-            const searchInput = document.getElementById('searchInput');
+        // Get priority class
+        function getPriorityClass(priority) {
+            return `priority-${priority.toLowerCase()}`;
+        }
+
+        // Extract filename from path
+        function getFileName(filePath) {
+            return filePath.split('/').pop().split('_').slice(1).join('_');
+        }
+
+        // Create table row
+        function createTableRow(item) {
+            return `
+                <tr>
+                    <td><strong>${item.id}</strong></td>
+                    <td>
+                        <span class="category-tag">${item.category}</span>
+                        <span class="subcategory-tag">${item.subcategory}</span>
+                    </td>
+                    <td><span class="${getPriorityClass(item.priority)}">${item.priority}</span></td>
+                    <td>${formatDate(item.letter_date)}</td>
+                    <td><strong>${item.letter_number}</strong></td>
+                    <td class="subject-cell">${item.subject_of_letter}</td>
+                    <td>
+                        <a href="https://coekms.in/${item.upload_file}" 
+                           target="_blank" 
+                           class="file-link"
+                           title="${getFileName(item.upload_file)}">
+                            📄 View File
+                        </a>
+                    </td>
+                </tr>
+            `;
+        }
+
+        // Update status
+        function updateStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
             
-            searchInput.addEventListener('input', function() {
-                currentSearchTerm = this.value.toLowerCase().trim();
-                applyFilters();
-            });
-
-            searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    this.blur();
-                }
-            });
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 3000);
+            } else {
+                statusDiv.style.display = 'block';
+            }
         }
 
-        function setupFilters() {
-            const filterButtons = document.querySelectorAll('.filter-button');
-            
-            filterButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // Remove active class from all buttons
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    
-                    // Add active class to clicked button
-                    this.classList.add('active');
-                    
-                    // Update current filter
-                    currentFilter = this.getAttribute('data-filter');
-                    
-                    // Apply filters
-                    applyFilters();
-                });
-            });
+        // Update record count
+        function updateRecordCount(count) {
+            document.getElementById('recordCount').textContent = `(${count} records)`;
         }
 
-        function applyFilters() {
+        // Fetch data from API
+        async function fetchData() {
+            const refreshBtn = document.getElementById('refreshBtn');
             const tableBody = document.getElementById('tableBody');
-            const noResults = document.getElementById('noResults');
-            const documentCount = document.getElementById('documentCount');
-            const allRows = Array.from(tableBody.getElementsByTagName('tr'));
-            let visibleCount = 0;
-
-            allRows.forEach(row => {
-                const rowText = row.textContent.toLowerCase();
-                const rowCategory = row.getAttribute('data-category');
-                
-                // Check if row matches search term
-                const matchesSearch = currentSearchTerm === '' || rowText.includes(currentSearchTerm);
-                
-                // Check if row matches category filter
-                const matchesFilter = currentFilter === 'all' || rowCategory === currentFilter;
-                
-                const isVisible = matchesSearch && matchesFilter;
-                
-                row.style.display = isVisible ? '' : 'none';
-                if (isVisible) visibleCount++;
-            });
-
-            // Update results display
-            if (visibleCount === 0) {
-                noResults.style.display = 'block';
-                document.querySelector('.table-container').style.display = 'none';
-            } else {
-                noResults.style.display = 'none';
-                document.querySelector('.table-container').style.display = 'block';
-            }
-
-            // Update document count
-            const totalCount = allRows.length;
-            let countText;
             
-            if (currentFilter === 'all' && currentSearchTerm === '') {
-                countText = `${totalCount} documents`;
-            } else if (visibleCount === totalCount) {
-                countText = `${visibleCount} documents`;
-            } else {
-                countText = `${visibleCount} of ${totalCount} documents`;
-            }
-            
-            documentCount.textContent = countText;
-        }
+            try {
+                refreshBtn.disabled = true;
+                refreshBtn.textContent = '⏳ Loading...';
+                updateStatus('Loading data from API...', 'loading');
 
-        function updateFilterCounts() {
-            const allRows = Array.from(document.querySelectorAll('#tableBody tr'));
-            const counts = {
-                all: allRows.length,
-                kavach: allRows.filter(row => row.getAttribute('data-category') === 'kavach').length,
-                advisories: allRows.filter(row => row.getAttribute('data-category') === 'advisories').length,
-                normal: allRows.filter(row => row.getAttribute('data-category') === 'normal').length
-            };
-
-            document.getElementById('countAll').textContent = counts.all;
-            document.getElementById('countKavach').textContent = counts.kavach;
-            document.getElementById('countAdvisories').textContent = counts.advisories;
-            document.getElementById('countNormal').textContent = counts.normal;
-        }
-
-        // Add some interactive enhancements
-        document.querySelectorAll('.document-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                if (this.href === '#' || this.href.endsWith('#')) {
-                    e.preventDefault();
-                    alert('Document link not available. This is a demo entry.');
+                // Try multiple methods to fetch data
+                let response;
+                let result;
+                
+                try {
+                    // Method 1: Direct fetch
+                    response = await fetch(API_URL);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    result = await response.json();
+                } catch (corsError) {
+                    // Method 2: Try with CORS proxy
+                    console.log('Direct fetch failed, trying CORS proxy...');
+                    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(API_URL)}`;
+                    
+                    try {
+                        response = await fetch(proxyUrl);
+                        if (!response.ok) {
+                            throw new Error(`Proxy error! status: ${response.status}`);
+                        }
+                        result = await response.json();
+                    } catch (proxyError) {
+                        // Method 3: Try alternative CORS proxy
+                        console.log('First proxy failed, trying alternative...');
+                        const altProxyUrl = `https://corsproxy.io/?${encodeURIComponent(API_URL)}`;
+                        response = await fetch(altProxyUrl);
+                        if (!response.ok) {
+                            throw new Error(`Alternative proxy error! status: ${response.status}`);
+                        }
+                        result = await response.json();
+                    }
                 }
+                
+                if (result.success && result.data) {
+                    allData = result.data;
+                    
+                    if (allData.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="7" class="no-data">No data available</td></tr>';
+                        updateRecordCount(0);
+                    } else {
+                        renderTable(allData);
+                        updateRecordCount(allData.length);
+                        updateStatus(`Successfully loaded ${allData.length} records`, 'success');
+                    }
+                } else {
+                    throw new Error('Invalid API response format');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                
+                // Show more detailed error information and solutions
+                let errorMessage = 'Failed to load data';
+                let solutions = '';
+                
+                if (error.message.includes('NetworkError') || error.message.includes('CORS')) {
+                    errorMessage = 'CORS Error - Cannot access API from local file';
+                    solutions = `
+                        <div style="margin-top: 15px; padding: 20px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 10px; text-align: left;">
+                            <h4 style="color: #856404; margin-bottom: 10px;">🔧 Solutions:</h4>
+                            <ol style="color: #856404; line-height: 1.6;">
+                                <li><strong>Upload to a web server:</strong> Host this HTML file on any web server (Apache, Nginx, etc.)</li>
+                                <li><strong>Use a local server:</strong> Run <code>python -m http.server 8000</code> or <code>php -S localhost:8000</code></li>
+                                <li><strong>Browser extension:</strong> Install a CORS extension for testing</li>
+                                <li><strong>API server:</strong> Ask the API provider to add CORS headers</li>
+                            </ol>
+                            <p style="margin-top: 10px; font-size: 14px;"><strong>Current API:</strong> ${API_URL}</p>
+                        </div>
+                    `;
+                } else {
+                    errorMessage = error.message;
+                }
+                
+                updateStatus(errorMessage, 'error');
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="no-data">
+                            <div style="text-align: center;">
+                                <h3>❌ ${errorMessage}</h3>
+                                ${solutions}
+                                <div style="margin-top: 20px;">
+                                    <button onclick="loadSampleData()" style="background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                                        📝 Load Sample Data
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                updateRecordCount(0);
+            } finally {
+                refreshBtn.disabled = false;
+                refreshBtn.textContent = '🔄 Refresh Data';
+            }
+        }
+
+        // Render table with data
+        function renderTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            
+            if (data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" class="no-data">No matching records found</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = data.map(createTableRow).join('');
+        }
+
+        // Filter table based on search input
+        function filterTable() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            
+            if (!searchTerm) {
+                renderTable(allData);
+                updateRecordCount(allData.length);
+                return;
+            }
+
+            const filteredData = allData.filter(item => {
+                return Object.values(item).some(value => 
+                    value.toString().toLowerCase().includes(searchTerm)
+                );
             });
+
+            renderTable(filteredData);
+            updateRecordCount(filteredData.length);
+        }
+
+        // Load sample data for demonstration
+        function loadSampleData() {
+            const sampleData = [
+                {
+                    "id": 143,
+                    "category": "Kavach",
+                    "subcategory": "Advisories",
+                    "priority": "Normal",
+                    "letter_date": "2025-05-07",
+                    "letter_number": "MEDHA1",
+                    "subject_of_letter": "MEDHA TEST LETTER TO COE",
+                    "upload_file": "uploads/1748610721_Declaration by CalAmp US reg Opening of Guardian Radio Protocols for Multi-Vendor Interoperability.pdf"
+                },
+                {
+                    "id": 136,
+                    "category": "LTE",
+                    "subcategory": "Advisories",
+                    "priority": "High",
+                    "letter_date": "2025-05-17",
+                    "letter_number": "TO COE",
+                    "subject_of_letter": "TO COE IRISET",
+                    "upload_file": "uploads/1748602408_Kavach Troubleshooting Directory for 3-Phase Locomotives equipped with Kavach (E-70 & CCB) dtd 20250422.pdf"
+                },
+                {
+                    "id": 124,
+                    "category": "kavach",
+                    "subcategory": "Advisories",
+                    "priority": "Low",
+                    "letter_date": "2025-04-25",
+                    "letter_number": "IRISET/CoE/Kavach/Misc",
+                    "subject_of_letter": "Kavach Equipment Installation Layout drawings for conventional WAG-7/ARNO/Crew/Non Crew friendly Locomotives",
+                    "upload_file": "uploads/1748515953_Signed CoE letter regarding WAG7 with Arno Kavach Equipment Layout Non-Crew Friendly-Model_20250425.pdf"
+                }
+            ];
+            
+            allData = sampleData;
+            renderTable(allData);
+            updateRecordCount(allData.length);
+            updateStatus('Sample data loaded successfully', 'success');
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchData();
+            
+            // Auto-refresh every 5 minutes (only if not using sample data)
+            setInterval(() => {
+                if (allData.length === 0 || confirm('Auto-refresh: Do you want to reload data from API?')) {
+                    fetchData();
+                }
+            }, 300000);
         });
 
-        // Add row click functionality for better UX
-        document.querySelectorAll('.document-table tbody tr').forEach(row => {
-            row.addEventListener('click', function() {
-                const link = this.querySelector('.document-link');
-                if (link && link.href !== '#' && !link.href.endsWith('#')) {
-                    window.open(link.href, '_blank');
-                }
-            });
+        // Handle keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + R to refresh
+            if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+                e.preventDefault();
+                fetchData();
+            }
             
-            row.style.cursor = 'pointer';
+            // Escape to clear search
+            if (e.key === 'Escape') {
+                document.getElementById('searchBox').value = '';
+                filterTable();
+            }
         });
     </script>
 </body>
