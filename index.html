@@ -3,291 +3,962 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kavach Documents</title>
+    <title>Upload Data Table</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: white; 
+            color: #212529;
+            line-height: 1.5;
         }
 
-        .tab-container {
-            overflow: hidden;
-            border: 1px solid #ccc;
-            background-color: #f1f1f1;
-            margin-bottom: 10px;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        .tab-container button {
-            background-color: inherit;
-            float: left;
-            border: none;
-            outline: none;
+        /* Tab Styles */
+        .tabs-navigation {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #dee2e6;
+            background-color: #fff; 
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            padding-top: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+        }
+
+        .tab-button {
+            padding: 12px 25px;
             cursor: pointer;
-            padding: 14px 16px;
-            transition: 0.3s;
-            font-size: 17px;
+            border: none;
+            background-color: transparent;
+            font-size: 16px;
+            font-weight: 500;
+            color: #495057;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -1px; 
+            transition: color 0.2s, border-bottom-color 0.2s;
         }
 
-        .tab-container button:hover {
-            background-color: #ddd;
+        .tab-button:hover {
+            color: #007bff;
         }
 
-        .tab-container button.active {
-            background-color: #ccc;
-            font-weight: bold;
+        .tab-button.active {
+            color: #007bff;
+            border-bottom-color: #007bff;
         }
 
-        .tab-content {
-            display: none;
-            padding: 15px 12px;
-            border: 1px solid #ccc;
-            border-top: none;
-            background-color: white;
+        .tab-pane {
+            display: none; 
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .tab-pane.active {
+            display: block; 
+        }
+        
+         #kmpTab .header, #kmpTab .filters {
+            padding: 0; 
+            box-shadow: none; 
+            margin-bottom: 20px;
+            border-radius: 0;
+         }
+         #kmpTab .header { 
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+         }
+         #kmpTab .filters { 
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+         }
+
+
+        .header { 
+            background: white;
+            padding: 0 0 20px 0; 
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .filters { /* Specific to KMP tab */
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr auto;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .filter-input {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            transition: border-color 0.2s;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        }
+
+        .refresh-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+            align-self: end; 
+            margin-bottom: 1px; 
+        }
+
+        .refresh-btn:hover:not(:disabled) {
+            background: #0056b3;
+        }
+
+        .refresh-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .status {
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .status.loading {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .status.success {
+            background: #d1edff;
+            color: #0c5460;
+            border: 1px solid #b8daff;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+       
+        #kmpTab .table-container, #rdsoTab .table-container, #rbTab .table-container {
+             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+
+        .table-header {
+            padding: 16px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .record-count {
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+        }
+
+        thead th {
+            background: #f8f9fa;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+            white-space: nowrap;
+        }
+
+        tbody td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: top;
+            font-size: 13px; 
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .priority-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .priority-normal {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .priority-high {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+
+        .priority-low {
+            background: #e8f5e8;
+            color: #388e3c;
+        }
+
+        .category-cell {
+            font-size: 13px;
+        }
+
+        .category-main {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .category-sub {
+            color: #6c757d;
+            font-size: 12px;
+        }
+
+        .subject-cell { 
+            max-width: 300px;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+        
+        .simple-table-subject-cell {
+            max-width: 450px; 
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+
+
+        .file-link {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .file-link:hover {
+            text-decoration: underline;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .error-solutions {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+        }
+
+        .error-solutions h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .error-solutions ol {
+            color: #856404;
+            margin-left: 20px;
+        }
+
+        .sample-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
             margin-top: 15px;
         }
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-            font-size: 14px;
-            word-wrap: break-word; /* Helps prevent long strings from breaking layout */
+        .sample-btn:hover {
+            background: #218838;
         }
+        
+        @media (max-width: 768px) {
+            .filter-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
 
-        th {
-            background-color: #e9e9e9;
-        }
+            .filter-row .refresh-btn {
+                justify-self: start;
+            }
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
+            #kmpTab .table-header { 
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
 
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .loader {
-            border: 5px solid #f3f3f3; /* Light grey */
-            border-top: 5px solid #3498db; /* Blue */
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
+            .subject-cell {
+                max-width: 200px;
+            }
+             .simple-table-subject-cell {
+                max-width: 250px;
+            }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            thead th,
+            tbody td {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            .tabs-navigation {
+                flex-direction: column; 
+                 border-bottom: none;
+            }
+            .tab-button {
+                border-bottom: 1px solid #dee2e6; 
+                margin-bottom: 0;
+            }
+            .tab-button.active {
+                border-bottom-color: #007bff; 
+                border-bottom-width:3px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <!-- Tab Navigation -->
+        <div class="tabs-navigation">
+            <button class="tab-button active" onclick="openTab(event, 'kmpTab')">KMP Advanced Search</button>
+            <button class="tab-button" onclick="openTab(event, 'rdsoTab')">RDSO</button>
+            <button class="tab-button" onclick="openTab(event, 'rbTab')">Railway Board</button>
+        </div>
 
-    <h1>Kavach Related Documents</h1>
+        <!-- Tab Content Panes -->
+        <div id="kmpTab" class="tab-pane active">
+            <div class="header">
+                <h1>KMP Advanced Search</h1>
+                <p>View and filter Documents from KMP</p>
+            </div>
 
-    <div class="tab-container">
-        <button class="tab-button" id="defaultOpen" onclick="openTab(event, 'RDSO')">RDSO</button>
-        <button class="tab-button" onclick="openTab(event, 'RailwayBoard')">Railway Board</button>
-    </div>
+            <div class="filters">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label>Search All</label>
+                        <input type="text" class="filter-input" placeholder="Search records..." id="searchAll">
+                    </div>
+                    <div class="filter-group">
+                        <label>Category</label>
+                        <select class="filter-input" id="categoryFilter">
+                            <option value="">All Categories</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Priority</label>
+                        <select class="filter-input" id="priorityFilter">
+                            <option value="">All Priorities</option>
+                            <option value="High">High</option>
+                            <option value="Normal">Normal</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Date From</label>
+                        <input type="date" class="filter-input" id="dateFilter">
+                    </div>
+                    <button class="refresh-btn" onclick="fetchKMPData()" id="refreshBtn">
+                        Refresh
+                    </button>
+                </div>
+            </div>
 
-    <div id="RDSO" class="tab-content">
-        <h2>RDSO Specifications & Test Formats</h2>
-        <div class="loader" id="loaderRDSO"></div>
-        <table id="rdsoTable">
-            <thead></thead>
-            <tbody></tbody>
-        </table>
-    </div>
+            <div class="status" id="statusKMP" style="display: none;"></div>
 
-    <div id="RailwayBoard" class="tab-content">
-        <h2>Railway Board Policy Letters & Circulars</h2>
-        <div class="loader" id="loaderRailwayBoard"></div>
-        <table id="railwayBoardTable">
-            <thead></thead>
-            <tbody></tbody>
-        </table>
+            <div class="table-container">
+                <div class="table-header">
+                    <div class="table-title">Records</div>
+                    <div class="record-count" id="recordCountKMP">0 records</div>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Category</th>
+                                <th>Priority</th>
+                                <th>Date</th>
+                                <th>Letter Number</th>
+                                <th>Subject</th>
+                                <th>File</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBodyKMP">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="rdsoTab" class="tab-pane">
+            <div class="header">
+                <h1>RDSO Documents</h1>
+                <p>Displaying letters and specifications from RDSO.</p>
+            </div>
+            <div class="table-container">
+                <div class="table-header">
+                    <div class="table-title">RDSO Letters</div>
+                    <div class="record-count" id="recordCountRDSO">0 records</div>
+                </div>
+                <div class="table-wrapper">
+                    <table id="rdsoDataTable">
+                        <thead>
+                            <tr>
+                                <th>Letter</th>
+                                <th>Date</th>
+                                <th>Subject</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rdsoTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="rbTab" class="tab-pane">
+            <div class="header">
+                <h1>Railway Board Documents</h1>
+                <p>Displaying letters and specifications from Railway Board.</p>
+            </div>
+            <div class="table-container">
+                 <div class="table-header">
+                    <div class="table-title">Railway Board Letters</div>
+                    <div class="record-count" id="recordCountRB">0 records</div>
+                </div>
+                <div class="table-wrapper">
+                    <table id="rbDataTable">
+                        <thead>
+                            <tr>
+                                <th>Letter</th>
+                                <th>Date</th>
+                                <th>Subject</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rbTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        function openTab(evt, tabId) {
-            var i, tabcontent, tabbuttons;
-            tabcontent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tabbuttons = document.getElementsByClassName("tab-button");
-            for (i = 0; i < tabbuttons.length; i++) {
-                tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
-            }
-            document.getElementById(tabId).style.display = "block";
-            if (evt) { // Check if evt is passed (not for initial default open)
-                evt.currentTarget.className += " active";
-            } else { // For initial default open
-                 document.getElementById('defaultOpen').className += " active";
+        // --- START KMP SCRIPT ---
+        let allKMPData = [];
+        const API_URL = 'https://coekms.in/Api/UploadData';
+
+        function formatDateKMP(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-GB');
+        }
+
+        function getPriorityClassKMP(priority) {
+            return `priority-${priority.toLowerCase()}`;
+        }
+
+        function getFileNameKMP(filePath) {
+            return filePath.split('/').pop().split('_').slice(1).join('_') || 'View File';
+        }
+
+        function createKMPTableRow(item) {
+            return `
+                <tr>
+                    <td>${item.id}</td>
+                    <td class="category-cell">
+                        <div class="category-main">${item.category}</div>
+                        <div class="category-sub">${item.subcategory}</div>
+                    </td>
+                    <td><span class="priority-badge ${getPriorityClassKMP(item.priority)}">${item.priority}</span></td>
+                    <td>${formatDateKMP(item.letter_date)}</td>
+                    <td>${item.letter_number}</td>
+                    <td class="subject-cell">${item.subject_of_letter}</td>
+                    <td>
+                        <a href="https://coekms.in/${item.upload_file}" 
+                           target="_blank" 
+                           class="file-link">
+                            ${getFileNameKMP(item.upload_file)}
+                        </a>
+                    </td>
+                </tr>
+            `;
+        }
+        
+        function updateKMPStatus(message, type) {
+            const statusDiv = document.getElementById('statusKMP');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 3000);
             }
         }
 
-        // More robust CSV parser to handle quoted fields with commas
-        function parseCSV(csvText) {
-            const lines = csvText.trim().split('\n');
-            if (lines.length === 0) return { headers: [], rows: [] };
-
-            const parseLine = (line) => {
-                const values = [];
-                let inQuotes = false;
-                let currentValue = '';
-                for (let i = 0; i < line.length; i++) {
-                    const char = line[i];
-                    if (char === '"') {
-                        if (inQuotes && i + 1 < line.length && line[i+1] === '"') { // Handle "" escape for a quote inside a quote
-                            currentValue += '"';
-                            i++; // Skip the next quote
-                        } else {
-                            inQuotes = !inQuotes;
-                        }
-                    } else if (char === ',' && !inQuotes) {
-                        values.push(currentValue.trim());
-                        currentValue = '';
-                    } else {
-                        currentValue += char;
-                    }
-                }
-                values.push(currentValue.trim()); // Add the last value
-                return values.map(val => val.replace(/^"|"$/g, '').replace(/""/g, '"')); // Remove surrounding quotes and unescape ""
-            };
-
-            const headers = parseLine(lines[0]);
-            const rows = [];
-
-            for (let i = 1; i < lines.length; i++) {
-                if (lines[i].trim() === "") continue; // Skip empty lines
-                const values = parseLine(lines[i]);
-                if (values.length === headers.length) {
-                    const row = {};
-                    headers.forEach((header, index) => {
-                        row[header] = values[index];
-                    });
-                    rows.push(row);
-                } else {
-                    console.warn("Skipping malformed CSV line:", lines[i], "Expected", headers.length, "values, got", values.length, values);
-                }
-            }
-            return { headers, rows };
+        function updateKMPRecordCount(count) {
+            document.getElementById('recordCountKMP').textContent = `${count} record${count !== 1 ? 's' : ''}`;
         }
 
+        function populateKMPCategoryFilter() {
+            const categoryFilter = document.getElementById('categoryFilter'); 
+            const categories = [...new Set(allKMPData.map(item => item.category))].sort();
+            
+            categoryFilter.innerHTML = '<option value="">All Categories</option>';
+            categories.forEach(category => {
+                categoryFilter.innerHTML += `<option value="${category}">${category}</option>`;
+            });
+        }
 
-        async function fetchAndDisplayCSV(gid, tableElementId, loaderElementId, tabName) {
-            const sheetUrl = `https://docs.google.com/spreadsheets/d/e/2PACX-1vSlXoH4ekrswe0-BRLB4ZSx8cGjn-3OK-BGcvStNnuOKALm9IfakG4NTOLcYVM6dE7GgQx2f4qNEMDp/pub?gid=${gid}&single=true&output=csv&_=${new Date().getTime()}`;
-            const table = document.getElementById(tableElementId);
-            const loader = document.getElementById(loaderElementId);
-            const thead = table.querySelector('thead');
-            const tbody = table.querySelector('tbody');
-
-            thead.innerHTML = '';
-            tbody.innerHTML = '';
-            loader.style.display = 'block';
-
-            console.log(`Fetching data for ${tabName} from: ${sheetUrl}`);
-
+        async function fetchKMPData() {
+            const refreshBtn = document.getElementById('refreshBtn'); 
+            const tableBodyKMP = document.getElementById('tableBodyKMP');
+            
             try {
-                const response = await fetch(sheetUrl, { cache: "no-store" }); // Added no-store to try and bypass cache
-                console.log(`Response status for ${tabName}: ${response.status}, ok: ${response.ok}`);
+                refreshBtn.disabled = true;
+                refreshBtn.textContent = 'Loading...';
+                updateKMPStatus('Loading data from API...', 'loading');
 
-                if (!response.ok) {
-                    let errorText = `Status: ${response.status} ${response.statusText}.`;
+                let response;
+                let result;
+                
+                try {
+                    response = await fetch(API_URL);
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    result = await response.json();
+                } catch (corsError) {
+                    console.log('Direct fetch failed, trying CORS proxy...');
+                    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(API_URL)}`;
                     try {
-                        const bodyText = await response.text();
-                        console.error(`Error response body for ${tabName}:`, bodyText);
-                        // Avoid showing full HTML error pages in the table cell
-                        if (bodyText.toLowerCase().includes("<html")) {
-                             errorText += ` Received HTML error page from server.`;
-                        } else {
-                            errorText += ` Server response: ${bodyText.substring(0, 200)}...`;
-                        }
-                    } catch (e) {
-                        console.warn("Could not read error response body:", e);
-                        errorText += ` Could not read error response body.`;
+                        response = await fetch(proxyUrl);
+                        if (!response.ok) throw new Error(`Proxy error! status: ${response.status}`);
+                        result = await response.json();
+                    } catch (proxyError) {
+                        console.log('First proxy failed, trying alternative...');
+                        const altProxyUrl = `https://corsproxy.io/?${encodeURIComponent(API_URL)}`;
+                        response = await fetch(altProxyUrl);
+                        if (!response.ok) throw new Error(`Alternative proxy error! status: ${response.status}`);
+                        result = await response.json();
                     }
-                    throw new Error(`Network request failed for ${tabName}. ${errorText}`);
                 }
-
-                const csvText = await response.text();
-                if (!csvText || csvText.trim() === "") {
-                    console.warn(`CSV data for ${tabName} is empty or whitespace.`);
-                    tbody.innerHTML = `<tr><td colspan="1" style="text-align:center;">No data received for ${tabName}. The sheet might be empty or not published correctly.</td></tr>`;
-                    loader.style.display = 'none';
-                    return;
-                }
-
-                console.log(`Raw CSV for ${tabName}:\n`, csvText.substring(0, 500) + "..."); // Log first 500 chars
-
-                const { headers, rows } = parseCSV(csvText);
-
-                if (!headers || headers.length === 0) {
-                     console.error(`No headers found in CSV for ${tabName}. CSV content:`, csvText);
-                     throw new Error(`No headers found in CSV for ${tabName}. Check CSV format or if the sheet is empty/published correctly.`);
-                }
-                console.log(`Parsed Headers for ${tabName}:`, headers);
-                console.log(`Number of Parsed Rows for ${tabName}:`, rows.length);
-
-
-                const headerRow = document.createElement('tr');
-                headers.forEach(headerText => {
-                    const th = document.createElement('th');
-                    th.textContent = headerText;
-                    headerRow.appendChild(th);
-                });
-                thead.appendChild(headerRow);
-
-                if (rows.length === 0) {
-                     tbody.innerHTML = `<tr><td colspan="${headers.length}" style="text-align:center;">No data rows found for ${tabName} (headers are present).</td></tr>`;
+                
+                if (result.success && result.data) {
+                    allKMPData = result.data;
+                    populateKMPCategoryFilter();
+                    
+                    if (allKMPData.length === 0) {
+                        tableBodyKMP.innerHTML = '<tr><td colspan="7" class="no-data">No data available</td></tr>';
+                        updateKMPRecordCount(0);
+                    } else {
+                        applyKMPFilters();
+                        updateKMPStatus(`Successfully loaded ${allKMPData.length} records`, 'success');
+                    }
                 } else {
-                    rows.forEach((rowData, rowIndex) => {
-                        // console.log(`Processing row ${rowIndex} for ${tabName}:`, rowData); // Log each row
-                        const tr = document.createElement('tr');
-                        headers.forEach(header => {
-                            const td = document.createElement('td');
-                            const cellData = rowData[header] !== undefined ? String(rowData[header]) : ''; // Ensure it's a string
-
-                            // Columns that might contain HTML for links
-                            const htmlColumns = ['title', 'letter no.', 'reference'];
-                            if (htmlColumns.includes(header.toLowerCase().trim())) {
-                               td.innerHTML = cellData;
-                            } else {
-                               td.textContent = cellData;
-                            }
-                            tr.appendChild(td);
-                        });
-                        tbody.appendChild(tr);
-                    });
+                    throw new Error('Invalid API response format');
                 }
-
             } catch (error) {
-                console.error(`Full error for ${tabName}:`, error);
-                const colspanValue = (thead.firstChild && thead.firstChild.children.length > 0) ? thead.firstChild.children.length : 1;
-                tbody.innerHTML = `<tr><td colspan="${colspanValue}" style="color:red; text-align:center;">Failed to load data for ${tabName}. ${error.message}. Check console for details.</td></tr>`;
+                console.error('Error fetching KMP data:', error);
+                let errorMessage = 'Failed to load KMP data';
+                let solutions = '';
+                
+                if (error.message.includes('NetworkError') || error.message.includes('CORS') || error.message.includes('Failed to fetch')) {
+                    errorMessage = 'CORS Error - Cannot access KMP API';
+                    solutions = `
+                        <div class="error-solutions">
+                            <h4>Solutions:</h4>
+                            <ol>
+                                <li>Ensure you are connected to the internet.</li>
+                                <li>Try opening this page on a web server.</li>
+                                <li>Use a browser extension for CORS if testing locally.</li>
+                            </ol>
+                            <button onclick="loadKMPSampleData()" class="sample-btn">Load KMP Sample Data</button>
+                        </div>
+                    `;
+                } else {
+                    errorMessage = error.message;
+                }
+                
+                updateKMPStatus(errorMessage, 'error');
+                tableBodyKMP.innerHTML = `<tr><td colspan="7" class="no-data">${errorMessage}${solutions}</td></tr>`;
+                updateKMPRecordCount(0);
             } finally {
-                loader.style.display = 'none';
+                refreshBtn.disabled = false;
+                refreshBtn.textContent = 'Refresh';
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchAndDisplayCSV(0, 'rdsoTable', 'loaderRDSO', 'RDSO');
-            fetchAndDisplayCSV(737400844, 'railwayBoardTable', 'loaderRailwayBoard', 'Railway Board');
-            openTab(null, 'RDSO');
+        function loadKMPSampleData() {
+            const sampleData = [
+                {"id": 143, "category": "Kavach", "subcategory": "Advisories", "priority": "Normal", "letter_date": "2025-05-07", "letter_number": "MEDHA1", "subject_of_letter": "MEDHA TEST LETTER TO COE", "upload_file": "uploads/1748610721_Declaration by CalAmp US reg Opening of Guardian Radio Protocols.pdf"},
+                {"id": 136, "category": "LTE", "subcategory": "Advisories", "priority": "High", "letter_date": "2025-05-17", "letter_number": "TO COE", "subject_of_letter": "TO COE IRISET", "upload_file": "uploads/1748602408_Kavach Troubleshooting Directory for 3-Phase Locomotives.pdf"},
+                {"id": 124, "category": "Kavach", "subcategory": "Advisories", "priority": "Low", "letter_date": "2025-04-25", "letter_number": "IRISET/CoE/Kavach/Misc", "subject_of_letter": "Kavach Equipment Installation Layout drawings for conventional WAG-7/ARNO/Crew/Non Crew friendly Locomotives", "upload_file": "uploads/1748515953_Signed CoE letter regarding WAG7 with Arno Kavach Equipment Layout.pdf"}
+            ];
+            allKMPData = sampleData;
+            populateKMPCategoryFilter();
+            applyKMPFilters();
+            updateKMPStatus('KMP Sample data loaded successfully', 'success');
+        }
+
+        function applyKMPFilters() {
+            const searchTerm = document.getElementById('searchAll').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const priorityFilter = document.getElementById('priorityFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+            
+            let filteredData = allKMPData;
+            
+            if (searchTerm) {
+                filteredData = filteredData.filter(item => 
+                    Object.values(item).some(value => value.toString().toLowerCase().includes(searchTerm))
+                );
+            }
+            if (categoryFilter) {
+                filteredData = filteredData.filter(item => item.category === categoryFilter);
+            }
+            if (priorityFilter) {
+                filteredData = filteredData.filter(item => item.priority === priorityFilter);
+            }
+            if (dateFilter) {
+                filteredData = filteredData.filter(item => item.letter_date >= dateFilter);
+            }
+            
+            renderKMPTable(filteredData);
+            updateKMPRecordCount(filteredData.length);
+        }
+
+        function renderKMPTable(data) {
+            const tableBodyKMP = document.getElementById('tableBodyKMP');
+            if (data.length === 0) {
+                tableBodyKMP.innerHTML = '<tr><td colspan="7" class="no-data">No matching records found</td></tr>';
+                return;
+            }
+            tableBodyKMP.innerHTML = data.map(createKMPTableRow).join('');
+        }
+        // --- END KMP SCRIPT ---
+
+        // --- START TAB SCRIPT ---
+        function openTab(event, tabName) {
+            const tabPanes = document.getElementsByClassName('tab-pane');
+            for (let i = 0; i < tabPanes.length; i++) {
+                tabPanes[i].style.display = 'none';
+                tabPanes[i].classList.remove('active');
+            }
+
+            const tabButtons = document.getElementsByClassName('tab-button');
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+
+            document.getElementById(tabName).style.display = 'block';
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+        // --- END TAB SCRIPT ---
+
+        // --- START RDSO/RB SCRIPT ---
+        const rdsoCsvData = `Letter,Date,Subject
+Functional Requirement Specifications,11.04.2022,Functional Requirement Specifications - FRS - 4
+System Requirement Specification of KAVACH (The Indian Railway Automatic Train Protection System),07.06.2024,System Requirement Specification of KAVACH (The Indian Railway Automatic Train Protection System) - SRS - 4.0 Amdt-3
+"Specification of KAVACH (The Indian Railway ATP)-Mode Transitions, SOS and MA Handling",16.07.2024,"Specification of KAVACH (The Indian Railway ATP)-Mode Transitions, SOS and MA Handling - Annexure-A1 - 4.0, Amdt-6"
+Onboard KAVACH Configurable Parameters,16.07.2024,Onboard KAVACH Configurable Parameters - Annexure-A2 - 4.0 Amdt-3
+Stationary KAVACH Configurable Parameters,16.07.2024,Stationary KAVACH Configurable Parameters - Annexure-A3 - 4.0 Amdt. 3
+Loco Pilot’s Operation-cum-indication Panel (LP-OCIP (DMI)) Display Requirements,11.07.2024,Loco Pilot’s Operation-cum-indication Panel (LP-OCIP (DMI)) Display Requirements - Annexure-B - 4.0 Amdt-3
+KAVACH Multiple Access Scheme & Radio Communication Protocol,27.06.2024,KAVACH Multiple Access Scheme & Radio Communication Protocol - Annexure-C - Version 4.0 Amdt-10
+KAVACH RFID Tag Data Format,07.06.2024,KAVACH RFID Tag Data Format - Annexure-D - Version 4.0 Amdt-7
+KAVACH UHF Radio Modem Requirements,27.06.2024,KAVACH UHF Radio Modem Requirements - Annexure-E1 - 4
+KAVACH RFID Fixing Arrangement Guidelines,27.06.2024,KAVACH RFID Fixing Arrangement Guidelines - Annexure-F - 4.0 Amdt. 1
+KAVACH Network Monitoring System Protocol,16.07.2024,"KAVACH Network Monitoring System Protocol - Annexure-G - 4.0, Amdt-4"
+KAVACH RFID Tag-TIN Layout Guidelines,07.06.2024,"KAVACH RFID Tag-TIN Layout Guidelines - Annexure-H - Ver. 4.0, Amdt. 5"
+KAVACH Control Table Guidelines,07.06.2024,KAVACH Control Table Guidelines - Annexure-I - Ver. 4.0 Amdt. 6
+Remote Interface Units,03.07.2024,"Remote Interface Units - Annexure-J - 4.0, Amdt.-3"
+SKAVACH to SKAVACH Interface,27.06.2024,SKAVACH to SKAVACH Interface - Annexure-P - 4.0 Amdt. 4
+KAVACH Station Master Operation and Indication Panel (SMOCIP) Requirement,16.07.2024,"KAVACH Station Master Operation and Indication Panel (SMOCIP) Requirement - Annexure-Q - 4.0 , Amdt. 1"
+Factory Acceptance Test format,27.01.2025,"Factory Acceptance Test format -  - SIF 0515, Ver-1.2"
+TCAS Field Trial for Various Scenarios - Observation Format,21.12.2021,"TCAS Field Trial for Various Scenarios - Observation Format -  - 0524, Ver.-2.0"
+KAVACH Interoperability Test Format for Version 4.0,28.01.2025,"KAVACH Interoperability Test Format for Version 4.0 -  - SIF 0594, Ver.-1.1"
+Acceptance Test Format for KAVACH Hardware of M/s Firm’s name,08.11.2024,Acceptance Test Format for KAVACH Hardware of M/s Firm’s name -  - RDSO/ SPN/196/2020 (VERSION 4.0)
+Type Test Format for KAVACH Hardware of M/S Firm’s Name,08.11.2024,Type Test Format for KAVACH Hardware of M/S Firm’s Name -  - RDSO/ SPN/196/2020 (VERSION 4.0)
+Test format for UHF Radio MODEM,15.01.2025,"Test format for UHF Radio MODEM -  - SIF1505, Version 1.0"
+Template for Pre-commissioning Checklist for Onboard KAVACH,28.04.2025,Template for Pre-commissioning Checklist for Onboard KAVACH -  - -
+Functional Test Format of KAVACH,06.05.2025,"Functional Test Format of KAVACH -  - SIF-0533, Ver.-4.21"
+Functional Test Format of DMI,06.05.2025,"Functional Test Format of DMI -  - SIF-0522, Ver.-1.4"
+Functional Test Format of Event Logging,06.05.2025,"Functional Test Format of Event Logging -  - SIF-00595, Ver.-1.0"
+Standard Operating Procedure (SOP) for Generic Product Approval of KAVACH,06.05.2025,Standard Operating Procedure (SOP) for Generic Product Approval of KAVACH -  - Document No. 1506<br>Version 1.0
+SITE ACCEPTANCE TEST Procedure for Stationary KAVACH (The Indian Railway Automatic Train Protection System) as per RDSO/ SPN/196/2020 Version 4.0,15.03.2024,SITE ACCEPTANCE TEST Procedure for Stationary KAVACH (The Indian Railway Automatic Train Protection System) as per RDSO/ SPN/196/2020 Version 4.0 -  - SIF-0593 Ver 1.0`;
+
+        const railwayBoardCsvData = `"Okay, here is the table ""Kavach"" extracted from the HTML content and presented in Markdown format:",,
+,,
+Letter No.,Date,Subject
+2025,,
+2023/S&T/Dev/Kavach Corres-Part (1),11.04.2025,Implementation of Measures Related to Kavach System.
+2024/S&T/Dev/Maintenance Policy,17.01.2025,Streamlining of Maintenance activity for assets created under Kavach Project
+,,
+2024,,
+2023/S&T/Dev/Kavach.Corres.,04.09.24,Implementation of Kavach System on Indian Railways.
+2023/S&T/Dev/Kavach.Corres.,09.08.2024,Implementation of Kavach System on Indian Railways in Mission Mode.
+2020/Sig/TCAS/Estimates,29.05.2024,Signalling Alteration/Modification works in existing/proposed Kavach territory
+2023,,
+2021/Sig/TCAS,04.10.2023,Kavach Working Group
+2023/S&T/Dev/Kavach Corrres,11.09.2023,"Advance execution of Infrastructure works Towers, OFC, Buildings & Feeder Power Supply on GQ, GD routes."
+2020/Sig/TCAS/Development,04.07.2023,Sections identified for survey of Kavach on GQ/GD Routes.
+2020/Sig/IRISET,31.05.2023,Special courses on â€˜Kavachâ€™ for Dy.CSTEs/Sr.DSTEs
+2020/Sig/TCAS/Estimates (e3316629),18.05.2023,Components of Kavach/CTC inclusion in yard remodeling/ABS/LC gate/Signalling works
+2022/Sig/33/1/SEM/Misc,31.03.2023,"Addendum and Corrigendum Slip No. 1 of the IRSEM, July 2021 â€“ Para no. 9.2.1, 9.2.2, 22.3.1"
+2022,,
+2021/Sig/Committee/KavachmaintenanceCost,31.01.2022,"EPC Tender for provision of TCAS in New Delhi Mumbai, New Delhi Howrah sections and other section of IR."
+2021,,
+2013/Sig/TCAS/status,18.01.2021,"EPC Tender for provision of TCAS in new Delhi â€“Mumbai, New Delhi- Howrah sections and other sections of IR."
+2014/Sig/ATP/IR,18.02.2021,Approved scheme for TCAS & Automatic Signalling.
+2014/Sig/ATP/IR,19.02.2021,Committee for interoperability of features between TCAS & ETCS level-2
+2014/Sig/TPWS/160 kmph/Pt./loose,30.03.2021,Raising speed to 160 kmph on new Delhi-Mumbai central route.
+2020,,
+2016/Sig/Modernisation,02.01.2020,Provision of Modern Automatic Train Protection System.
+2013/Sig/TCAS/Status,16.01.2020,Request for approval for engaging consultancy services at international level to develop interoperability between ETCS Level-2 and TCAS and other requirement for Indian Railways.
+2013/Sig/TCAS/status,30.01.2020,Execution of works of TCAS on 1200 km on SCR- Monitoring.
+2019/Sig/17/36/ETCS L-2(e-3304767),17.04.2020,Applying for associate membership of EULYNX for designing of Interface between EI/Relay Interlocking and RBC in the project of ETCS L-2
+2019,,
+2014/Sig/TPWS/160KMPH/Loose,09.10.2019,Signalling and Telecommunication works in connection with raising of speed to 160 KMPH in Delhi- Mumbai and Delhi â€“Kolkata Section preparation of Detailed Estimates
+2017/Sig/Modernization Signalling,24.10.2019,Organizing Technical Workshop on Automatic Train Protection (ATP) System with special focus on ETCS Level-2.
+2014/Sig/TPWS/160 KMPH/Loose,28.10.19,Signalling and Telecommunication works in connection with raising of speed to 160 KMPH in Delhi â€“ Mumbai and Delhi â€“ Kolkata Sections â€“ preparation of Detailed Estimate.
+2017/Sig/Modernization/Signaling,31.10.2019,Sanction of Signalling project deliberated in 34th GCM.
+2019/Sig/17/36/ETCS L-2,13.11.2019,Interoperability of TCAS and ETCS Level-2 ATP Systems.
+2017/Sig/Modernization/Signalling,22.11.2019,Points notes during Honâ€™ble MRâ€™s interaction with Member of Railway Board on 06.11.2019
+2019/AM(Sig)/Insp Note/1,29.11.2019,"Recorded Note on CBTC with AM (SIG),Railway Board during the discussion held on 16.11.2019 at MRVC."
+2019/Sig/17/36/ETCS L-2,04.12.2019,Inter â€“Operability of TCAS and ETCS Level-2 ATP System.
+2017/Sig Modernization,10.12.2019,Pilot Project of Provision ETCS Level-2 on four Sections of Indian Railway.
+2017,,
+2013/Sig/TCAS/Status,12.05.2017,Field trial for development of TCAS: E70 & CCB type brake interfaced Locos (WAP-5) at speeds up to 160 KMPH.
+2014/Signal/PMO,07.07.2017,Inclusion of proposal of TPWS works (ETCS L-I) for Trunk routes in works programme 2018-19.
+2016,,
+2016/Mobility(S&T)/9/1,29/31.08.2016,Mission Raftaar - Data for Signalling Asset Reliability and Road Map.
+2015,,
+2013/Sig/TPWS,17.03.2015,Execution of sanctioned TPWS works on Indian Railways.
+2013/Sig/TPWS.,22.06.2015,Provision of Train Protection & Warning System (TPWS) based on ETCL-1 Technology.
+2010,,
+2010/Sig/OBTPS,27.09.2010,On Board Train Protection System.
+2005/Sig./TPWS/1(DLI-AGC)/Vol.II,12.10.2010,TPWS projects on Railways.`;
+
+
+        function parseCSV(csvString) {
+            console.log("--- Starting parseCSV for a dataset ---");
+            const lines = csvString.trim().split('\n');
+            let headerLineIndex = -1;
+            console.log("Total lines from CSV string:", lines.length);
+
+            for (let i = 0; i < lines.length; i++) {
+                const lineContent = lines[i].toLowerCase();
+                if ((lineContent.includes("letter,") || lineContent.includes("letter no,")) &&
+                    lineContent.includes("date,") &&
+                    lineContent.includes("subject")) {
+                    if (lines[i].split(',').length >= 3) { 
+                        headerLineIndex = i;
+                        console.log("Header found at line index:", headerLineIndex, "Content:", `"${lines[headerLineIndex]}"`);
+                        break;
+                    }
+                }
+            }
+
+            if (headerLineIndex === -1) {
+                console.warn("Could not find a valid CSV header row in this dataset.");
+                return { headers: [], data: [] };
+            }
+            
+            const headers = lines[headerLineIndex].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+            console.log("Parsed headers:", headers);
+            const data = [];
+
+            for (let i = headerLineIndex + 1; i < lines.length; i++) {
+                const currentLine = lines[i].trim();
+                 // console.log(`Processing line ${i}: "${currentLine}"`); // Log each line being processed
+
+                if (currentLine === "") {
+                    console.log(`Line ${i}: Skipping empty line: "${currentLine}"`);
+                    continue;
+                }
+
+                const values = currentLine.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                
+                if (values.length > 0 && /^\d{4}$/.test(values[0].trim()) && values.slice(1).every(v => v.trim() === "")) {
+                    console.log(`Line ${i}: Skipping year line: "${currentLine}"`);
+                    continue;
+                }
+                if (values.every(v => v.trim() === "")) {
+                    console.log(`Line ${i}: Skipping comma-only line: "${currentLine}"`);
+                    continue;
+                }
+
+                const entry = {};
+                let hasEssentialData = false;
+                for (let j = 0; j < headers.length; j++) {
+                    let value = values[j] ? values[j].trim() : '';
+                    if (value.startsWith('"') && value.endsWith('"')) {
+                        value = value.substring(1, value.length - 1);
+                    }
+                    value = value.replace(/""/g, '"'); 
+                    entry[headers[j]] = value;
+                    if (j < 3 && value !== '') { 
+                        hasEssentialData = true;
+                    }
+                }
+                
+                const allHeadersPresentInEntry = headers.every(h => entry.hasOwnProperty(h));
+
+                if (allHeadersPresentInEntry && hasEssentialData) {
+                    data.push(entry);
+                    // console.log(`Line ${i}: Added entry:`, entry); // Log added entries
+                } else {
+                    console.warn(`Line ${i}: Skipping line: "${currentLine}"`, {allHeadersPresentInEntry, hasEssentialData, parsedEntry: entry, originalValues: values});
+                }
+            }
+            console.log("--- Finished parseCSV for this dataset, data count:", data.length, "First item:", (data.length > 0 ? data[0] : "N/A"), "---");
+            return { headers, data };
+        }
+
+
+        function renderSimpleTable(csvData, tableBodyId, recordCountId, columnMapping = null) {
+            const { headers: parsedHeaders, data } = parseCSV(csvData); // parseCSV will log its process
+            const tableBody = document.getElementById(tableBodyId);
+            const recordCountEl = document.getElementById(recordCountId);
+
+            if (!tableBody || !recordCountEl) {
+                console.error(`Table body or record count element not found for ${tableBodyId}`);
+                return;
+            }
+            
+            const displayTableHeaders = ['Letter', 'Date', 'Subject']; 
+
+            if (data.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="${displayTableHeaders.length}" class="no-data">No data available</td></tr>`;
+                recordCountEl.textContent = '0 records';
+                return;
+            }
+
+            let tableHTML = '';
+            data.forEach(row => {
+                tableHTML += '<tr>';
+                displayTableHeaders.forEach(displayHeader => {
+                    let actualDataKey = displayHeader; 
+
+                    if (columnMapping && columnMapping[displayHeader]) {
+                        actualDataKey = columnMapping[displayHeader]; 
+                    }
+                    
+                    const cellClass = (displayHeader === 'Subject') ? 'class="simple-table-subject-cell"' : '';
+                    tableHTML += `<td ${cellClass}>${row[actualDataKey] || ''}</td>`;
+                });
+                tableHTML += '</tr>';
+            });
+            tableBody.innerHTML = tableHTML;
+            recordCountEl.textContent = `${data.length} record${data.length !== 1 ? 's' : ''}`;
+        }
+        // --- END RDSO/RB SCRIPT ---
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize KMP Tab
+            fetchKMPData();
+            document.getElementById('searchAll').addEventListener('input', applyKMPFilters);
+            document.getElementById('categoryFilter').addEventListener('change', applyKMPFilters);
+            document.getElementById('priorityFilter').addEventListener('change', applyKMPFilters);
+            document.getElementById('dateFilter').addEventListener('change', applyKMPFilters);
+
+            // Initialize RDSO Tab
+            console.log("Initializing RDSO Tab");
+            renderSimpleTable(rdsoCsvData, 'rdsoTableBody', 'recordCountRDSO');
+            
+            // Initialize Railway Board Tab with its own data
+            console.log("Initializing Railway Board Tab");
+            const rbColumnMapping = { 'Letter': 'Letter No.' }; 
+            renderSimpleTable(railwayBoardCsvData, 'rbTableBody', 'recordCountRB', rbColumnMapping);
+
+            document.getElementById('kmpTab').style.display = 'block';
+            document.getElementById('kmpTab').classList.add('active');
         });
-
     </script>
-
 </body>
 </html>
