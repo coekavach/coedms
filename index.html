@@ -3,457 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Railway Data Dashboard</title>
+    <title>Kavach Documents</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        .tab-container {
             overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-
-        .header {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        .header p {
-            opacity: 0.9;
-            font-size: 1.1rem;
-        }
-
-        .tabs {
-            display: flex;
-            background: #f8f9fa;
-            border-bottom: 3px solid #e9ecef;
-        }
-
-        .tab {
-            flex: 1;
-            padding: 20px;
-            background: #f8f9fa;
+        .tab-container button {
+            background-color: inherit;
+            float: left;
             border: none;
+            outline: none;
             cursor: pointer;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #495057;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
         }
 
-        .tab::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.5s;
+        .tab-container button:hover {
+            background-color: #ddd;
         }
 
-        .tab:hover::before {
-            left: 100%;
-        }
-
-        .tab:hover {
-            background: #e9ecef;
-            transform: translateY(-2px);
-        }
-
-        .tab.active {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: #fff;
-        }
-
-        .content {
-            padding: 30px;
-            min-height: 400px;
+        .tab-container button.active {
+            background-color: #ccc;
+            font-weight: bold;
         }
 
         .tab-content {
             display: none;
+            padding: 15px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+            background-color: white;
         }
 
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.5s ease-in;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            font-size: 14px;
+            word-wrap: break-word; /* Helps prevent long strings from breaking layout */
         }
 
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #666;
+        th {
+            background-color: #e9e9e9;
         }
 
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .loader {
+            border: 5px solid #f3f3f3; /* Light grey */
+            border-top: 5px solid #3498db; /* Blue */
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 30px;
+            height: 30px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 20px auto;
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        .error {
-            color: #dc3545;
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .data-table th {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .data-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #e9ecef;
-            transition: background-color 0.2s ease;
-        }
-
-        .data-table tr:hover td {
-            background-color: #f8f9fa;
-        }
-
-        .data-table tr:nth-child(even) td {
-            background-color: #f8f9fa;
-        }
-
-        .data-table tr:nth-child(even):hover td {
-            background-color: #e9ecef;
-        }
-
-        .refresh-btn {
-            background: linear-gradient(135deg, #28a745, #20c997);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-        }
-
-        .refresh-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
-        }
-
-        .refresh-btn:active {
-            transform: translateY(0);
-        }
-
-        .no-data {
-            text-align: center;
-            padding: 50px;
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                margin: 10px;
-                border-radius: 10px;
-            }
-
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .tabs {
-                flex-direction: column;
-            }
-
-            .tab {
-                padding: 15px;
-                font-size: 1rem;
-            }
-
-            .content {
-                padding: 20px;
-            }
-
-            .data-table {
-                font-size: 0.9rem;
-            }
-
-            .data-table th,
-            .data-table td {
-                padding: 10px 8px;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Railway Data Dashboard</h1>
-            <p>RDSO & Railway Board Information System</p>
-        </div>
-        
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('rdso')">RDSO</button>
-            <button class="tab" onclick="switchTab('railway-board')">Railway Board</button>
-        </div>
-        
-        <div class="content">
-            <div id="rdso" class="tab-content active">
-                <button class="refresh-btn" onclick="loadData('rdso')">🔄 Refresh RDSO Data</button>
-                <div id="rdso-content">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        <p>Loading RDSO data...</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="railway-board" class="tab-content">
-                <button class="refresh-btn" onclick="loadData('railway-board')">🔄 Refresh Railway Board Data</button>
-                <div id="railway-board-content">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        <p>Loading Railway Board data...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+    <h1>Kavach Related Documents</h1>
+
+    <div class="tab-container">
+        <button class="tab-button" id="defaultOpen" onclick="openTab(event, 'RDSO')">RDSO</button>
+        <button class="tab-button" onclick="openTab(event, 'RailwayBoard')">Railway Board</button>
+    </div>
+
+    <div id="RDSO" class="tab-content">
+        <h2>RDSO Specifications & Test Formats</h2>
+        <div class="loader" id="loaderRDSO"></div>
+        <table id="rdsoTable">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div id="RailwayBoard" class="tab-content">
+        <h2>Railway Board Policy Letters & Circulars</h2>
+        <div class="loader" id="loaderRailwayBoard"></div>
+        <table id="railwayBoardTable">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
     </div>
 
     <script>
-        // Base URL for the Google Sheets
-        const BASE_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlXoH4ekrswe0-BRLB4ZSx8cGjn-3OK-BGcvStNnuOKALm9IfakG4NTOLcYVM6dE7GgQx2f4qNEMDp/pub';
-        
-        // Sheet URLs for different tabs
-        const SHEET_URLS = {
-            'rdso': `${BASE_URL}?gid=0&single=true&output=csv`,
-            'railway-board': `${BASE_URL}?gid=1&single=true&output=csv`
-        };
-
-        let currentTab = 'rdso';
-        let cachedData = {};
-
-        function switchTab(tabName) {
-            // Update tab buttons
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
-            
-            // Update content
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
-            
-            currentTab = tabName;
-            
-            // Load data if not already loaded
-            if (!cachedData[tabName]) {
-                loadData(tabName);
+        function openTab(evt, tabId) {
+            var i, tabcontent, tabbuttons;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+            }
+            document.getElementById(tabId).style.display = "block";
+            if (evt) { // Check if evt is passed (not for initial default open)
+                evt.currentTarget.className += " active";
+            } else { // For initial default open
+                 document.getElementById('defaultOpen').className += " active";
             }
         }
 
-        async function loadData(tabName) {
-            const contentDiv = document.getElementById(`${tabName}-content`);
-            
-            // Show loading state
-            contentDiv.innerHTML = `
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <p>Loading ${tabName === 'rdso' ? 'RDSO' : 'Railway Board'} data...</p>
-                </div>
-            `;
-
-            try {
-                const response = await fetch(SHEET_URLS[tabName]);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const csvText = await response.text();
-                const data = parseCSV(csvText);
-                
-                if (data.length === 0) {
-                    throw new Error('No data found in the sheet');
-                }
-                
-                cachedData[tabName] = data;
-                displayData(tabName, data);
-                
-            } catch (error) {
-                console.error('Error loading data:', error);
-                contentDiv.innerHTML = `
-                    <div class="error">
-                        <h3>Error Loading Data</h3>
-                        <p>Unable to load ${tabName === 'rdso' ? 'RDSO' : 'Railway Board'} data. Please check:</p>
-                        <ul>
-                            <li>Internet connection</li>
-                            <li>Google Sheet accessibility</li>
-                            <li>Sheet tab names (should be exactly "RDSO" and "Railway Board")</li>
-                        </ul>
-                        <p><strong>Error details:</strong> ${error.message}</p>
-                        <button class="refresh-btn" onclick="loadData('${tabName}')" style="margin-top: 15px;">
-                            🔄 Try Again
-                        </button>
-                    </div>
-                `;
-            }
-        }
-
+        // More robust CSV parser to handle quoted fields with commas
         function parseCSV(csvText) {
             const lines = csvText.trim().split('\n');
-            const headers = lines[0].split(',').map(header => header.trim().replace(/"/g, ''));
-            const data = [];
+            if (lines.length === 0) return { headers: [], rows: [] };
+
+            const parseLine = (line) => {
+                const values = [];
+                let inQuotes = false;
+                let currentValue = '';
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    if (char === '"') {
+                        if (inQuotes && i + 1 < line.length && line[i+1] === '"') { // Handle "" escape for a quote inside a quote
+                            currentValue += '"';
+                            i++; // Skip the next quote
+                        } else {
+                            inQuotes = !inQuotes;
+                        }
+                    } else if (char === ',' && !inQuotes) {
+                        values.push(currentValue.trim());
+                        currentValue = '';
+                    } else {
+                        currentValue += char;
+                    }
+                }
+                values.push(currentValue.trim()); // Add the last value
+                return values.map(val => val.replace(/^"|"$/g, '').replace(/""/g, '"')); // Remove surrounding quotes and unescape ""
+            };
+
+            const headers = parseLine(lines[0]);
+            const rows = [];
 
             for (let i = 1; i < lines.length; i++) {
-                const values = parseCSVLine(lines[i]);
+                if (lines[i].trim() === "") continue; // Skip empty lines
+                const values = parseLine(lines[i]);
                 if (values.length === headers.length) {
                     const row = {};
                     headers.forEach((header, index) => {
-                        row[header] = values[index] || '';
+                        row[header] = values[index];
                     });
-                    data.push(row);
-                }
-            }
-
-            return data;
-        }
-
-        function parseCSVLine(line) {
-            const result = [];
-            let current = '';
-            let inQuotes = false;
-
-            for (let i = 0; i < line.length; i++) {
-                const char = line[i];
-                
-                if (char === '"' && (i === 0 || line[i-1] === ',')) {
-                    inQuotes = true;
-                } else if (char === '"' && inQuotes && (i === line.length - 1 || line[i+1] === ',')) {
-                    inQuotes = false;
-                } else if (char === ',' && !inQuotes) {
-                    result.push(current.trim());
-                    current = '';
+                    rows.push(row);
                 } else {
-                    current += char;
+                    console.warn("Skipping malformed CSV line:", lines[i], "Expected", headers.length, "values, got", values.length, values);
                 }
             }
-            
-            result.push(current.trim());
-            return result.map(cell => cell.replace(/"/g, ''));
+            return { headers, rows };
         }
 
-        function displayData(tabName, data) {
-            const contentDiv = document.getElementById(`${tabName}-content`);
-            
-            if (data.length === 0) {
-                contentDiv.innerHTML = `
-                    <div class="no-data">
-                        <h3>No Data Available</h3>
-                        <p>No data found for ${tabName === 'rdso' ? 'RDSO' : 'Railway Board'}</p>
-                    </div>
-                `;
-                return;
+
+        async function fetchAndDisplayCSV(gid, tableElementId, loaderElementId, tabName) {
+            const sheetUrl = `https://docs.google.com/spreadsheets/d/e/2PACX-1vSlXoH4ekrswe0-BRLB4ZSx8cGjn-3OK-BGcvStNnuOKALm9IfakG4NTOLcYVM6dE7GgQx2f4qNEMDp/pub?gid=${gid}&single=true&output=csv&_=${new Date().getTime()}`;
+            const table = document.getElementById(tableElementId);
+            const loader = document.getElementById(loaderElementId);
+            const thead = table.querySelector('thead');
+            const tbody = table.querySelector('tbody');
+
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+            loader.style.display = 'block';
+
+            console.log(`Fetching data for ${tabName} from: ${sheetUrl}`);
+
+            try {
+                const response = await fetch(sheetUrl, { cache: "no-store" }); // Added no-store to try and bypass cache
+                console.log(`Response status for ${tabName}: ${response.status}, ok: ${response.ok}`);
+
+                if (!response.ok) {
+                    let errorText = `Status: ${response.status} ${response.statusText}.`;
+                    try {
+                        const bodyText = await response.text();
+                        console.error(`Error response body for ${tabName}:`, bodyText);
+                        // Avoid showing full HTML error pages in the table cell
+                        if (bodyText.toLowerCase().includes("<html")) {
+                             errorText += ` Received HTML error page from server.`;
+                        } else {
+                            errorText += ` Server response: ${bodyText.substring(0, 200)}...`;
+                        }
+                    } catch (e) {
+                        console.warn("Could not read error response body:", e);
+                        errorText += ` Could not read error response body.`;
+                    }
+                    throw new Error(`Network request failed for ${tabName}. ${errorText}`);
+                }
+
+                const csvText = await response.text();
+                if (!csvText || csvText.trim() === "") {
+                    console.warn(`CSV data for ${tabName} is empty or whitespace.`);
+                    tbody.innerHTML = `<tr><td colspan="1" style="text-align:center;">No data received for ${tabName}. The sheet might be empty or not published correctly.</td></tr>`;
+                    loader.style.display = 'none';
+                    return;
+                }
+
+                console.log(`Raw CSV for ${tabName}:\n`, csvText.substring(0, 500) + "..."); // Log first 500 chars
+
+                const { headers, rows } = parseCSV(csvText);
+
+                if (!headers || headers.length === 0) {
+                     console.error(`No headers found in CSV for ${tabName}. CSV content:`, csvText);
+                     throw new Error(`No headers found in CSV for ${tabName}. Check CSV format or if the sheet is empty/published correctly.`);
+                }
+                console.log(`Parsed Headers for ${tabName}:`, headers);
+                console.log(`Number of Parsed Rows for ${tabName}:`, rows.length);
+
+
+                const headerRow = document.createElement('tr');
+                headers.forEach(headerText => {
+                    const th = document.createElement('th');
+                    th.textContent = headerText;
+                    headerRow.appendChild(th);
+                });
+                thead.appendChild(headerRow);
+
+                if (rows.length === 0) {
+                     tbody.innerHTML = `<tr><td colspan="${headers.length}" style="text-align:center;">No data rows found for ${tabName} (headers are present).</td></tr>`;
+                } else {
+                    rows.forEach((rowData, rowIndex) => {
+                        // console.log(`Processing row ${rowIndex} for ${tabName}:`, rowData); // Log each row
+                        const tr = document.createElement('tr');
+                        headers.forEach(header => {
+                            const td = document.createElement('td');
+                            const cellData = rowData[header] !== undefined ? String(rowData[header]) : ''; // Ensure it's a string
+
+                            // Columns that might contain HTML for links
+                            const htmlColumns = ['title', 'letter no.', 'reference'];
+                            if (htmlColumns.includes(header.toLowerCase().trim())) {
+                               td.innerHTML = cellData;
+                            } else {
+                               td.textContent = cellData;
+                            }
+                            tr.appendChild(td);
+                        });
+                        tbody.appendChild(tr);
+                    });
+                }
+
+            } catch (error) {
+                console.error(`Full error for ${tabName}:`, error);
+                const colspanValue = (thead.firstChild && thead.firstChild.children.length > 0) ? thead.firstChild.children.length : 1;
+                tbody.innerHTML = `<tr><td colspan="${colspanValue}" style="color:red; text-align:center;">Failed to load data for ${tabName}. ${error.message}. Check console for details.</td></tr>`;
+            } finally {
+                loader.style.display = 'none';
             }
-
-            const headers = Object.keys(data[0]);
-            
-            let tableHTML = `
-                <div style="overflow-x: auto;">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                ${headers.map(header => `<th>${header}</th>`).join('')}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${data.map(row => `
-                                <tr>
-                                    ${headers.map(header => `<td>${row[header] || ''}</td>`).join('')}
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-                <div style="margin-top: 20px; text-align: center; color: #666;">
-                    <p>Total records: ${data.length}</p>
-                    <p>Last updated: ${new Date().toLocaleString()}</p>
-                </div>
-            `;
-
-            contentDiv.innerHTML = tableHTML;
         }
 
-        // Load initial data
-        window.addEventListener('load', () => {
-            loadData('rdso');
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchAndDisplayCSV(0, 'rdsoTable', 'loaderRDSO', 'RDSO');
+            fetchAndDisplayCSV(737400844, 'railwayBoardTable', 'loaderRailwayBoard', 'Railway Board');
+            openTab(null, 'RDSO');
         });
+
     </script>
+
 </body>
 </html>
