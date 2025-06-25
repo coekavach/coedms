@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Tab Data Viewer</title>
+    <title>Upload Data Table</title>
     <style>
         * {
             margin: 0;
@@ -43,58 +43,12 @@
             font-size: 14px;
         }
 
-        /* Tab Styles */
-        .tabs {
-            background: white;
-            border-radius: 8px 8px 0 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 0;
-            overflow: hidden;
-        }
-
-        .tab-buttons {
-            display: flex;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .tab-button {
-            flex: 1;
-            padding: 15px 20px;
-            background: #f8f9fa;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            color: #6c757d;
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-        }
-
-        .tab-button:hover {
-            background: #e9ecef;
-            color: #495057;
-        }
-
-        .tab-button.active {
-            background: white;
-            color: #007bff;
-            border-bottom-color: #007bff;
-        }
-
-        .tab-content {
-            background: white;
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
         .filters {
+            background: white;
             padding: 20px;
-            border-bottom: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
         }
 
         .filter-row {
@@ -157,9 +111,8 @@
         .status {
             padding: 12px 16px;
             border-radius: 4px;
-            margin: 20px;
+            margin-bottom: 20px;
             font-size: 14px;
-            display: none;
         }
 
         .status.loading {
@@ -178,6 +131,13 @@
             background: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
         }
 
         .table-header {
@@ -323,10 +283,6 @@
         }
 
         @media (max-width: 768px) {
-            .tab-buttons {
-                flex-direction: column;
-            }
-
             .filter-row {
                 grid-template-columns: 1fr;
                 gap: 10px;
@@ -357,300 +313,115 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Railway Data Management System</h1>
-            <p>View and filter documents from KMP, RDSO, and Railway Board</p>
+            <h1>KMP Advanced Search</h1>
+            <p>View and filter Documents from KMP</p>
         </div>
 
-        <div class="tabs">
-            <div class="tab-buttons">
-                <button class="tab-button active" onclick="switchTab('kmp')">KMP Advanced Search</button>
-                <button class="tab-button" onclick="switchTab('rdso')">RDSO</button>
-                <button class="tab-button" onclick="switchTab('railway-board')">Railway Board</button>
+        <div class="filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label>Search All</label>
+                    <input type="text" class="filter-input" placeholder="Search records..." id="searchAll">
+                </div>
+                <div class="filter-group">
+                    <label>Category</label>
+                    <select class="filter-input" id="categoryFilter">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Priority</label>
+                    <select class="filter-input" id="priorityFilter">
+                        <option value="">All Priorities</option>
+                        <option value="High">High</option>
+                        <option value="Normal">Normal</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Date From</label>
+                    <input type="date" class="filter-input" id="dateFilter">
+                </div>
+                <button class="refresh-btn" onclick="fetchData()" id="refreshBtn">
+                    Refresh
+                </button>
             </div>
+        </div>
 
-            <!-- KMP Tab -->
-            <div class="tab-content active" id="kmp-tab">
-                <div class="filters">
-                    <div class="filter-row">
-                        <div class="filter-group">
-                            <label>Search All</label>
-                            <input type="text" class="filter-input" placeholder="Search records..." id="kmp-searchAll">
-                        </div>
-                        <div class="filter-group">
-                            <label>Category</label>
-                            <select class="filter-input" id="kmp-categoryFilter">
-                                <option value="">All Categories</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label>Priority</label>
-                            <select class="filter-input" id="kmp-priorityFilter">
-                                <option value="">All Priorities</option>
-                                <option value="High">High</option>
-                                <option value="Normal">Normal</option>
-                                <option value="Low">Low</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label>Date From</label>
-                            <input type="date" class="filter-input" id="kmp-dateFilter">
-                        </div>
-                        <button class="refresh-btn" onclick="fetchKMPData()" id="kmp-refreshBtn">
-                            Refresh
-                        </button>
-                    </div>
-                </div>
+        <div class="status" id="status" style="display: none;"></div>
 
-                <div class="status" id="kmp-status"></div>
-
-                <div class="table-header">
-                    <div class="table-title">KMP Records</div>
-                    <div class="record-count" id="kmp-recordCount">0 records</div>
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Category</th>
-                                <th>Priority</th>
-                                <th>Date</th>
-                                <th>Letter Number</th>
-                                <th>Subject</th>
-                                <th>File</th>
-                            </tr>
-                        </thead>
-                        <tbody id="kmp-tableBody">
-                        </tbody>
-                    </table>
-                </div>
+        <div class="table-container">
+            <div class="table-header">
+                <div class="table-title">Records</div>
+                <div class="record-count" id="recordCount">0 records</div>
             </div>
-
-            <!-- RDSO Tab -->
-            <div class="tab-content" id="rdso-tab">
-                <div class="filters">
-                    <div class="filter-row">
-                        <div class="filter-group">
-                            <label>Search All</label>
-                            <input type="text" class="filter-input" placeholder="Search records..." id="rdso-searchAll">
-                        </div>
-                        <div class="filter-group">
-                            <label>Category</label>
-                            <select class="filter-input" id="rdso-categoryFilter">
-                                <option value="">All Categories</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label>Priority</label>
-                            <select class="filter-input" id="rdso-priorityFilter">
-                                <option value="">All Priorities</option>
-                                <option value="High">High</option>
-                                <option value="Normal">Normal</option>
-                                <option value="Low">Low</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label>Date From</label>
-                            <input type="date" class="filter-input" id="rdso-dateFilter">
-                        </div>
-                        <button class="refresh-btn" onclick="fetchRDSOData()" id="rdso-refreshBtn">
-                            Refresh
-                        </button>
-                    </div>
-                </div>
-
-                <div class="status" id="rdso-status"></div>
-
-                <div class="table-header">
-                    <div class="table-title">RDSO Records</div>
-                    <div class="record-count" id="rdso-recordCount">0 records</div>
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Category</th>
-                                <th>Priority</th>
-                                <th>Date</th>
-                                <th>Letter Number</th>
-                                <th>Subject</th>
-                                <th>File</th>
-                            </tr>
-                        </thead>
-                        <tbody id="rdso-tableBody">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Railway Board Tab -->
-            <div class="tab-content" id="railway-board-tab">
-                <div class="filters">
-                    <div class="filter-row">
-                        <div class="filter-group">
-                            <label>Search All</label>
-                            <input type="text" class="filter-input" placeholder="Search records..." id="rb-searchAll">
-                        </div>
-                        <div class="filter-group">
-                            <label>Category</label>
-                            <select class="filter-input" id="rb-categoryFilter">
-                                <option value="">All Categories</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label>Priority</label>
-                            <select class="filter-input" id="rb-priorityFilter">
-                                <option value="">All Priorities</option>
-                                <option value="High">High</option>
-                                <option value="Normal">Normal</option>
-                                <option value="Low">Low</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label>Date From</label>
-                            <input type="date" class="filter-input" id="rb-dateFilter">
-                        </div>
-                        <button class="refresh-btn" onclick="fetchRailwayBoardData()" id="rb-refreshBtn">
-                            Refresh
-                        </button>
-                    </div>
-                </div>
-
-                <div class="status" id="rb-status"></div>
-
-                <div class="table-header">
-                    <div class="table-title">Railway Board Records</div>
-                    <div class="record-count" id="rb-recordCount">0 records</div>
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Category</th>
-                                <th>Priority</th>
-                                <th>Date</th>
-                                <th>Letter Number</th>
-                                <th>Subject</th>
-                                <th>File</th>
-                            </tr>
-                        </thead>
-                        <tbody id="rb-tableBody">
-                        </tbody>
-                    </table>
-                </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Category</th>
+                            <th>Priority</th>
+                            <th>Date</th>
+                            <th>Letter Number</th>
+                            <th>Subject</th>
+                            <th>File</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <script>
-        let kmpData = [];
-        let rdsoData = [];
-        let railwayBoardData = [];
-        
-        const KMP_API_URL = 'https://coekms.in/Api/UploadData';
-        const GOOGLE_SHEET_BASE_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlXoH4ekrswe0-BRLB4ZSx8cGjn-3OK-BGcvStNnuOKALm9IfakG4NTOLcYVM6dE7GgQx2f4qNEMDp/pub?output=csv';
-        
-        let activeTab = 'kmp';
-
-        // Tab switching functionality
-        function switchTab(tabName) {
-            // Update button states
-            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
-            
-            // Update content visibility
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(`${tabName}-tab`).classList.add('active');
-            
-            activeTab = tabName;
-            
-            // Load data for the active tab if not already loaded
-            if (tabName === 'kmp' && kmpData.length === 0) {
-                fetchKMPData();
-            } else if (tabName === 'rdso' && rdsoData.length === 0) {
-                fetchRDSOData();
-            } else if (tabName === 'railway-board' && railwayBoardData.length === 0) {
-                fetchRailwayBoardData();
-            }
-        }
+        let allData = [];
+        const API_URL = 'https://coekms.in/Api/UploadData';
 
         // Format date function
         function formatDate(dateString) {
-            if (!dateString) return '';
             const date = new Date(dateString);
-            return isNaN(date.getTime()) ? dateString : date.toLocaleDateString('en-GB');
+            return date.toLocaleDateString('en-GB');
         }
 
         // Get priority class
         function getPriorityClass(priority) {
-            if (!priority) return 'priority-normal';
             return `priority-${priority.toLowerCase()}`;
         }
 
         // Extract filename from path
         function getFileName(filePath) {
-            if (!filePath) return 'No File';
             return filePath.split('/').pop().split('_').slice(1).join('_') || 'View File';
         }
 
-        // Create table row for KMP data
-        function createKMPTableRow(item) {
+        // Create table row
+        function createTableRow(item) {
             return `
                 <tr>
-                    <td>${item.id || ''}</td>
+                    <td>${item.id}</td>
                     <td class="category-cell">
-                        <div class="category-main">${item.category || ''}</div>
-                        <div class="category-sub">${item.subcategory || ''}</div>
+                        <div class="category-main">${item.category}</div>
+                        <div class="category-sub">${item.subcategory}</div>
                     </td>
-                    <td><span class="priority-badge ${getPriorityClass(item.priority)}">${item.priority || 'Normal'}</span></td>
+                    <td><span class="priority-badge ${getPriorityClass(item.priority)}">${item.priority}</span></td>
                     <td>${formatDate(item.letter_date)}</td>
-                    <td>${item.letter_number || ''}</td>
-                    <td class="subject-cell">${item.subject_of_letter || ''}</td>
+                    <td>${item.letter_number}</td>
+                    <td class="subject-cell">${item.subject_of_letter}</td>
                     <td>
-                        ${item.upload_file ? `
-                            <a href="https://coekms.in/${item.upload_file}" 
-                               target="_blank" 
-                               class="file-link">
-                                ${getFileName(item.upload_file)}
-                            </a>
-                        ` : 'No File'}
-                    </td>
-                </tr>
-            `;
-        }
-
-        // Create table row for Google Sheets data
-        function createGoogleSheetsTableRow(item, index) {
-            return `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td class="category-cell">
-                        <div class="category-main">${item.Category || ''}</div>
-                        <div class="category-sub">${item.Subcategory || ''}</div>
-                    </td>
-                    <td><span class="priority-badge ${getPriorityClass(item.Priority)}">${item.Priority || 'Normal'}</span></td>
-                    <td>${formatDate(item['Letter Date'] || item.Date)}</td>
-                    <td>${item['Letter Number'] || ''}</td>
-                    <td class="subject-cell">${item['Subject of Letter'] || item.Subject || ''}</td>
-                    <td>
-                        ${item['File URL'] || item.File ? `
-                            <a href="${item['File URL'] || item.File}" 
-                               target="_blank" 
-                               class="file-link">
-                                View File
-                            </a>
-                        ` : 'No File'}
+                        <a href="https://coekms.in/${item.upload_file}" 
+                           target="_blank" 
+                           class="file-link">
+                            ${getFileName(item.upload_file)}
+                        </a>
                     </td>
                 </tr>
             `;
         }
 
         // Update status
-        function updateStatus(tabPrefix, message, type) {
-            const statusDiv = document.getElementById(`${tabPrefix}-status`);
+        function updateStatus(message, type) {
+            const statusDiv = document.getElementById('status');
             statusDiv.textContent = message;
             statusDiv.className = `status ${type}`;
             statusDiv.style.display = 'block';
@@ -662,21 +433,15 @@
             }
         }
 
-        // Update record count
-        function updateRecordCount(tabPrefix, count) {
-            document.getElementById(`${tabPrefix}-recordCount`).textContent = `${count} record${count !== 1 ? 's' : ''}`;
+        // Update record count and populate filters
+        function updateRecordCount(count) {
+            document.getElementById('recordCount').textContent = `${count} record${count !== 1 ? 's' : ''}`;
         }
 
         // Populate category filter
-        function populateCategoryFilter(tabPrefix, data) {
-            const categoryFilter = document.getElementById(`${tabPrefix}-categoryFilter`);
-            let categories = [];
-            
-            if (tabPrefix === 'kmp') {
-                categories = [...new Set(data.map(item => item.category).filter(Boolean))].sort();
-            } else {
-                categories = [...new Set(data.map(item => item.Category).filter(Boolean))].sort();
-            }
+        function populateCategoryFilter() {
+            const categoryFilter = document.getElementById('categoryFilter');
+            const categories = [...new Set(allData.map(item => item.category))].sort();
             
             categoryFilter.innerHTML = '<option value="">All Categories</option>';
             categories.forEach(category => {
@@ -684,28 +449,29 @@
             });
         }
 
-        // Fetch KMP data from API
-        async function fetchKMPData() {
-            const refreshBtn = document.getElementById('kmp-refreshBtn');
-            const tableBody = document.getElementById('kmp-tableBody');
+        // Fetch data from API
+        async function fetchData() {
+            const refreshBtn = document.getElementById('refreshBtn');
+            const tableBody = document.getElementById('tableBody');
             
             try {
                 refreshBtn.disabled = true;
                 refreshBtn.textContent = 'Loading...';
-                updateStatus('kmp', 'Loading data from KMP API...', 'loading');
+                updateStatus('Loading data from API...', 'loading');
 
+                // Try multiple methods to fetch data
                 let response;
                 let result;
                 
                 try {
-                    response = await fetch(KMP_API_URL);
+                    response = await fetch(API_URL);
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     result = await response.json();
                 } catch (corsError) {
                     console.log('Direct fetch failed, trying CORS proxy...');
-                    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(KMP_API_URL)}`;
+                    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(API_URL)}`;
                     
                     try {
                         response = await fetch(proxyUrl);
@@ -715,7 +481,7 @@
                         result = await response.json();
                     } catch (proxyError) {
                         console.log('First proxy failed, trying alternative...');
-                        const altProxyUrl = `https://corsproxy.io/?${encodeURIComponent(KMP_API_URL)}`;
+                        const altProxyUrl = `https://corsproxy.io/?${encodeURIComponent(API_URL)}`;
                         response = await fetch(altProxyUrl);
                         if (!response.ok) {
                             throw new Error(`Alternative proxy error! status: ${response.status}`);
@@ -725,139 +491,61 @@
                 }
                 
                 if (result.success && result.data) {
-                    kmpData = result.data;
-                    populateCategoryFilter('kmp', kmpData);
+                    allData = result.data;
+                    populateCategoryFilter();
                     
-                    if (kmpData.length === 0) {
+                    if (allData.length === 0) {
                         tableBody.innerHTML = '<tr><td colspan="7" class="no-data">No data available</td></tr>';
-                        updateRecordCount('kmp', 0);
+                        updateRecordCount(0);
                     } else {
-                        applyFilters('kmp');
-                        updateStatus('kmp', `Successfully loaded ${kmpData.length} records`, 'success');
+                        applyFilters();
+                        updateStatus(`Successfully loaded ${allData.length} records`, 'success');
                     }
                 } else {
                     throw new Error('Invalid API response format');
                 }
             } catch (error) {
-                console.error('Error fetching KMP data:', error);
-                updateStatus('kmp', 'Failed to load KMP data. Loading sample data instead.', 'error');
-                loadKMPSampleData();
-            } finally {
-                refreshBtn.disabled = false;
-                refreshBtn.textContent = 'Refresh';
-            }
-        }
-
-        // Fetch RDSO data from Google Sheets
-        async function fetchRDSOData() {
-            const refreshBtn = document.getElementById('rdso-refreshBtn');
-            const tableBody = document.getElementById('rdso-tableBody');
-            
-            try {
-                refreshBtn.disabled = true;
-                refreshBtn.textContent = 'Loading...';
-                updateStatus('rdso', 'Loading RDSO data from Google Sheets...', 'loading');
-
-                const sheetUrl = `${GOOGLE_SHEET_BASE_URL}&gid=0`; // Assuming RDSO is the first sheet
-                const response = await fetch(sheetUrl);
+                console.error('Error fetching data:', error);
                 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                let errorMessage = 'Failed to load data';
+                let solutions = '';
+                
+                if (error.message.includes('NetworkError') || error.message.includes('CORS')) {
+                    errorMessage = 'CORS Error - Cannot access API from local file';
+                    solutions = `
+                        <div class="error-solutions">
+                            <h4>Solutions:</h4>
+                            <ol>
+                                <li>Upload to a web server (Apache, Nginx, etc.)</li>
+                                <li>Use local server: <code>python -m http.server 8000</code></li>
+                                <li>Install CORS browser extension for testing</li>
+                                <li>Ask API provider to add CORS headers</li>
+                            </ol>
+                            <button onclick="loadSampleData()" class="sample-btn">Load Sample Data</button>
+                        </div>
+                    `;
+                } else {
+                    errorMessage = error.message;
                 }
                 
-                const csvText = await response.text();
-                
-                Papa.parse(csvText, {
-                    header: true,
-                    skipEmptyLines: true,
-                    complete: function(results) {
-                        if (results.errors.length > 0) {
-                            console.warn('CSV parsing errors:', results.errors);
-                        }
-                        
-                        rdsoData = results.data.filter(row => 
-                            Object.values(row).some(value => value && value.trim())
-                        );
-                        
-                        populateCategoryFilter('rdso', rdsoData);
-                        
-                        if (rdsoData.length === 0) {
-                            tableBody.innerHTML = '<tr><td colspan="7" class="no-data">No RDSO data available</td></tr>';
-                            updateRecordCount('rdso', 0);
-                        } else {
-                            applyFilters('rdso');
-                            updateStatus('rdso', `Successfully loaded ${rdsoData.length} RDSO records`, 'success');
-                        }
-                    }
-                });
-                
-            } catch (error) {
-                console.error('Error fetching RDSO data:', error);
-                updateStatus('rdso', 'Failed to load RDSO data from Google Sheets', 'error');
-                tableBody.innerHTML = '<tr><td colspan="7" class="no-data">Failed to load RDSO data</td></tr>';
-                updateRecordCount('rdso', 0);
+                updateStatus(errorMessage, 'error');
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="no-data">
+                            ${errorMessage}
+                            ${solutions}
+                        </td>
+                    </tr>
+                `;
+                updateRecordCount(0);
             } finally {
                 refreshBtn.disabled = false;
                 refreshBtn.textContent = 'Refresh';
             }
         }
 
-        // Fetch Railway Board data from Google Sheets
-        async function fetchRailwayBoardData() {
-            const refreshBtn = document.getElementById('rb-refreshBtn');
-            const tableBody = document.getElementById('rb-tableBody');
-            
-            try {
-                refreshBtn.disabled = true;
-                refreshBtn.textContent = 'Loading...';
-                updateStatus('rb', 'Loading Railway Board data from Google Sheets...', 'loading');
-
-                const sheetUrl = `${GOOGLE_SHEET_BASE_URL}&gid=1`; // Assuming Railway Board is the second sheet
-                const response = await fetch(sheetUrl);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const csvText = await response.text();
-                
-                Papa.parse(csvText, {
-                    header: true,
-                    skipEmptyLines: true,
-                    complete: function(results) {
-                        if (results.errors.length > 0) {
-                            console.warn('CSV parsing errors:', results.errors);
-                        }
-                        
-                        railwayBoardData = results.data.filter(row => 
-                            Object.values(row).some(value => value && value.trim())
-                        );
-                        
-                        populateCategoryFilter('rb', railwayBoardData);
-                        
-                        if (railwayBoardData.length === 0) {
-                            tableBody.innerHTML = '<tr><td colspan="7" class="no-data">No Railway Board data available</td></tr>';
-                            updateRecordCount('rb', 0);
-                        } else {
-                            applyFilters('rb');
-                            updateStatus('rb', `Successfully loaded ${railwayBoardData.length} Railway Board records`, 'success');
-                        }
-                    }
-                });
-                
-            } catch (error) {
-                console.error('Error fetching Railway Board data:', error);
-                updateStatus('rb', 'Failed to load Railway Board data from Google Sheets', 'error');
-                tableBody.innerHTML = '<tr><td colspan="7" class="no-data">Failed to load Railway Board data</td></tr>';
-                updateRecordCount('rb', 0);
-            } finally {
-                refreshBtn.disabled = false;
-                refreshBtn.textContent = 'Refresh';
-            }
-        }
-
-        // Load sample KMP data
-        function loadKMPSampleData() {
+        // Load sample data
+        function loadSampleData() {
             const sampleData = [
                 {
                     "id": 143,
@@ -870,3 +558,98 @@
                     "upload_file": "uploads/1748610721_Declaration by CalAmp US reg Opening of Guardian Radio Protocols.pdf"
                 },
                 {
+                    "id": 136,
+                    "category": "LTE",
+                    "subcategory": "Advisories",
+                    "priority": "High",
+                    "letter_date": "2025-05-17",
+                    "letter_number": "TO COE",
+                    "subject_of_letter": "TO COE IRISET",
+                    "upload_file": "uploads/1748602408_Kavach Troubleshooting Directory for 3-Phase Locomotives.pdf"
+                },
+                {
+                    "id": 124,
+                    "category": "Kavach",
+                    "subcategory": "Advisories",
+                    "priority": "Low",
+                    "letter_date": "2025-04-25",
+                    "letter_number": "IRISET/CoE/Kavach/Misc",
+                    "subject_of_letter": "Kavach Equipment Installation Layout drawings for conventional WAG-7/ARNO/Crew/Non Crew friendly Locomotives",
+                    "upload_file": "uploads/1748515953_Signed CoE letter regarding WAG7 with Arno Kavach Equipment Layout.pdf"
+                }
+            ];
+            
+            allData = sampleData;
+            populateCategoryFilter();
+            applyFilters();
+            updateStatus('Sample data loaded successfully', 'success');
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchAll').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const priorityFilter = document.getElementById('priorityFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+            
+            let filteredData = allData;
+            
+            // Apply search filter
+            if (searchTerm) {
+                filteredData = filteredData.filter(item => {
+                    return Object.values(item).some(value => 
+                        value.toString().toLowerCase().includes(searchTerm)
+                    );
+                });
+            }
+            
+            // Apply category filter
+            if (categoryFilter) {
+                filteredData = filteredData.filter(item => 
+                    item.category.toLowerCase() === categoryFilter.toLowerCase()
+                );
+            }
+            
+            // Apply priority filter
+            if (priorityFilter) {
+                filteredData = filteredData.filter(item => 
+                    item.priority === priorityFilter
+                );
+            }
+            
+            // Apply date filter
+            if (dateFilter) {
+                filteredData = filteredData.filter(item => 
+                    item.letter_date >= dateFilter
+                );
+            }
+            
+            renderTable(filteredData);
+            updateRecordCount(filteredData.length);
+        }
+
+        // Render table with data
+        function renderTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            
+            if (data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" class="no-data">No matching records found</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = data.map(createTableRow).join('');
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchData();
+            
+            // Add event listeners for filters
+            document.getElementById('searchAll').addEventListener('input', applyFilters);
+            document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+            document.getElementById('priorityFilter').addEventListener('change', applyFilters);
+            document.getElementById('dateFilter').addEventListener('change', applyFilters);
+        });
+    </script>
+</body>
+</html>
