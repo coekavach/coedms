@@ -3,653 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Data Table</title>
+    <title>Kavach Documents</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f8f9fa;
-            color: #212529;
-            line-height: 1.5;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
-
-        .header p {
-            color: #6c757d;
-            font-size: 14px;
-        }
-
-        .filters {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        .filter-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr auto;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .filter-group label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #495057;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
-
-        .filter-input {
-            padding: 8px 12px;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            font-size: 14px;
-            background: white;
-            transition: border-color 0.2s;
-        }
-
-        .filter-input:focus {
-            outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
-        }
-
-        .refresh-btn {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background-color 0.2s;
-            white-space: nowrap;
-        }
-
-        .refresh-btn:hover:not(:disabled) {
-            background: #0056b3;
-        }
-
-        .refresh-btn:disabled {
-            background: #6c757d;
-            cursor: not-allowed;
-        }
-
-        .status {
-            padding: 12px 16px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        .status.loading {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
-        }
-
-        .status.success {
-            background: #d1edff;
-            color: #0c5460;
-            border: 1px solid #b8daff;
-        }
-
-        .status.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .table-container {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        .tab-container {
             overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            margin-bottom: 10px;
         }
 
-        .table-header {
-            padding: 16px 20px;
-            background: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .tab-container button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
         }
 
-        .table-title {
-            font-weight: 600;
-            color: #495057;
+        .tab-container button:hover {
+            background-color: #ddd;
         }
 
-        .record-count {
-            font-size: 14px;
-            color: #6c757d;
+        .tab-container button.active {
+            background-color: #ccc;
+            font-weight: bold;
         }
 
-        .table-wrapper {
-            overflow-x: auto;
+        .tab-content {
+            display: none;
+            padding: 15px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+            background-color: white;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-        }
-
-        thead th {
-            background: #f8f9fa;
-            padding: 12px 16px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 13px;
-            color: #495057;
-            border-bottom: 2px solid #dee2e6;
-            white-space: nowrap;
-        }
-
-        tbody td {
-            padding: 12px 16px;
-            border-bottom: 1px solid #dee2e6;
-            vertical-align: top;
-        }
-
-        tbody tr:hover {
-            background: #f8f9fa;
-        }
-
-        .priority-badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .priority-normal {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-
-        .priority-high {
-            background: #ffebee;
-            color: #d32f2f;
-        }
-
-        .priority-low {
-            background: #e8f5e8;
-            color: #388e3c;
-        }
-
-        .category-cell {
-            font-size: 13px;
-        }
-
-        .category-main {
-            font-weight: 600;
-            color: #495057;
-        }
-
-        .category-sub {
-            color: #6c757d;
-            font-size: 12px;
-        }
-
-        .subject-cell {
-            max-width: 300px;
-            word-wrap: break-word;
-            font-size: 13px;
-            line-height: 1.4;
-        }
-
-        .file-link {
-            color: #007bff;
-            text-decoration: none;
-            font-size: 13px;
-        }
-
-        .file-link:hover {
-            text-decoration: underline;
-        }
-
-        .no-data {
-            text-align: center;
-            padding: 40px;
-            color: #6c757d;
-        }
-
-        .error-solutions {
-            margin-top: 20px;
-            padding: 20px;
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 4px;
-        }
-
-        .error-solutions h4 {
-            color: #856404;
-            margin-bottom: 10px;
-        }
-
-        .error-solutions ol {
-            color: #856404;
-            margin-left: 20px;
-        }
-
-        .sample-btn {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
             margin-top: 15px;
         }
 
-        .sample-btn:hover {
-            background: #218838;
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            font-size: 14px;
         }
 
-        @media (max-width: 768px) {
-            .filter-row {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
+        th {
+            background-color: #e9e9e9;
+        }
 
-            .filter-row .refresh-btn {
-                justify-self: start;
-            }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
 
-            .table-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .loader {
+            border: 5px solid #f3f3f3; /* Light grey */
+            border-top: 5px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
 
-            .subject-cell {
-                max-width: 200px;
-            }
-
-            thead th,
-            tbody td {
-                padding: 8px 12px;
-                font-size: 12px;
-            }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>KMP Advanced Search</h1>
-            <p>View and filter Documents from KMP</p>
-        </div>
 
-        <div class="filters">
-            <div class="filter-row">
-                <div class="filter-group">
-                    <label>Search All</label>
-                    <input type="text" class="filter-input" placeholder="Search records..." id="searchAll">
-                </div>
-                <div class="filter-group">
-                    <label>Category</label>
-                    <select class="filter-input" id="categoryFilter">
-                        <option value="">All Categories</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Priority</label>
-                    <select class="filter-input" id="priorityFilter">
-                        <option value="">All Priorities</option>
-                        <option value="High">High</option>
-                        <option value="Normal">Normal</option>
-                        <option value="Low">Low</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Date From</label>
-                    <input type="date" class="filter-input" id="dateFilter">
-                </div>
-                <button class="refresh-btn" onclick="fetchData()" id="refreshBtn">
-                    Refresh
-                </button>
-            </div>
-        </div>
+    <h1>Kavach Related Documents</h1>
 
-        <div class="status" id="status" style="display: none;"></div>
+    <div class="tab-container">
+        <button class="tab-button" id="defaultOpen" onclick="openTab(event, 'RDSO')">RDSO</button>
+        <button class="tab-button" onclick="openTab(event, 'RailwayBoard')">Railway Board</button>
+    </div>
 
-        <div class="table-container">
-            <div class="table-header">
-                <div class="table-title">Records</div>
-                <div class="record-count" id="recordCount">0 records</div>
-            </div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Category</th>
-                            <th>Priority</th>
-                            <th>Date</th>
-                            <th>Letter Number</th>
-                            <th>Subject</th>
-                            <th>File</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div id="RDSO" class="tab-content">
+        <h2>RDSO Specifications & Test Formats</h2>
+        <div class="loader" id="loaderRDSO"></div>
+        <table id="rdsoTable">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div id="RailwayBoard" class="tab-content">
+        <h2>Railway Board Policy Letters & Circulars</h2>
+        <div class="loader" id="loaderRailwayBoard"></div>
+        <table id="railwayBoardTable">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
     </div>
 
     <script>
-        let allData = [];
-        const API_URL = 'https://coekms.in/Api/UploadData';
-
-        // Format date function
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-GB');
-        }
-
-        // Get priority class
-        function getPriorityClass(priority) {
-            return `priority-${priority.toLowerCase()}`;
-        }
-
-        // Extract filename from path
-        function getFileName(filePath) {
-            return filePath.split('/').pop().split('_').slice(1).join('_') || 'View File';
-        }
-
-        // Create table row
-        function createTableRow(item) {
-            return `
-                <tr>
-                    <td>${item.id}</td>
-                    <td class="category-cell">
-                        <div class="category-main">${item.category}</div>
-                        <div class="category-sub">${item.subcategory}</div>
-                    </td>
-                    <td><span class="priority-badge ${getPriorityClass(item.priority)}">${item.priority}</span></td>
-                    <td>${formatDate(item.letter_date)}</td>
-                    <td>${item.letter_number}</td>
-                    <td class="subject-cell">${item.subject_of_letter}</td>
-                    <td>
-                        <a href="https://coekms.in/${item.upload_file}" 
-                           target="_blank" 
-                           class="file-link">
-                            ${getFileName(item.upload_file)}
-                        </a>
-                    </td>
-                </tr>
-            `;
-        }
-
-        // Update status
-        function updateStatus(message, type) {
-            const statusDiv = document.getElementById('status');
-            statusDiv.textContent = message;
-            statusDiv.className = `status ${type}`;
-            statusDiv.style.display = 'block';
-            
-            if (type === 'success') {
-                setTimeout(() => {
-                    statusDiv.style.display = 'none';
-                }, 3000);
+        function openTab(evt, tabId) {
+            var i, tabcontent, tabbuttons;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+            }
+            document.getElementById(tabId).style.display = "block";
+            if (evt) { // Check if evt is passed (not for initial default open)
+                evt.currentTarget.className += " active";
+            } else { // For initial default open
+                 document.getElementById('defaultOpen').className += " active";
             }
         }
 
-        // Update record count and populate filters
-        function updateRecordCount(count) {
-            document.getElementById('recordCount').textContent = `${count} record${count !== 1 ? 's' : ''}`;
-        }
+        // Simple CSV parser
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            const headers = lines[0].split(',').map(header => header.trim().replace(/^"|"$/g, '')); // Remove surrounding quotes if any
+            const rows = [];
 
-        // Populate category filter
-        function populateCategoryFilter() {
-            const categoryFilter = document.getElementById('categoryFilter');
-            const categories = [...new Set(allData.map(item => item.category))].sort();
-            
-            categoryFilter.innerHTML = '<option value="">All Categories</option>';
-            categories.forEach(category => {
-                categoryFilter.innerHTML += `<option value="${category}">${category}</option>`;
-            });
-        }
+            for (let i = 1; i < lines.length; i++) {
+                const values = [];
+                let currentLine = lines[i];
+                let inQuotes = false;
+                let currentValue = '';
 
-        // Fetch data from API
-        async function fetchData() {
-            const refreshBtn = document.getElementById('refreshBtn');
-            const tableBody = document.getElementById('tableBody');
-            
-            try {
-                refreshBtn.disabled = true;
-                refreshBtn.textContent = 'Loading...';
-                updateStatus('Loading data from API...', 'loading');
-
-                // Try multiple methods to fetch data
-                let response;
-                let result;
-                
-                try {
-                    response = await fetch(API_URL);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    result = await response.json();
-                } catch (corsError) {
-                    console.log('Direct fetch failed, trying CORS proxy...');
-                    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(API_URL)}`;
-                    
-                    try {
-                        response = await fetch(proxyUrl);
-                        if (!response.ok) {
-                            throw new Error(`Proxy error! status: ${response.status}`);
-                        }
-                        result = await response.json();
-                    } catch (proxyError) {
-                        console.log('First proxy failed, trying alternative...');
-                        const altProxyUrl = `https://corsproxy.io/?${encodeURIComponent(API_URL)}`;
-                        response = await fetch(altProxyUrl);
-                        if (!response.ok) {
-                            throw new Error(`Alternative proxy error! status: ${response.status}`);
-                        }
-                        result = await response.json();
-                    }
-                }
-                
-                if (result.success && result.data) {
-                    allData = result.data;
-                    populateCategoryFilter();
-                    
-                    if (allData.length === 0) {
-                        tableBody.innerHTML = '<tr><td colspan="7" class="no-data">No data available</td></tr>';
-                        updateRecordCount(0);
+                // More robust splitting to handle commas within quotes
+                for (let char of currentLine) {
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        values.push(currentValue.trim().replace(/^"|"$/g, ''));
+                        currentValue = '';
                     } else {
-                        applyFilters();
-                        updateStatus(`Successfully loaded ${allData.length} records`, 'success');
+                        currentValue += char;
                     }
-                } else {
-                    throw new Error('Invalid API response format');
                 }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                
-                let errorMessage = 'Failed to load data';
-                let solutions = '';
-                
-                if (error.message.includes('NetworkError') || error.message.includes('CORS')) {
-                    errorMessage = 'CORS Error - Cannot access API from local file';
-                    solutions = `
-                        <div class="error-solutions">
-                            <h4>Solutions:</h4>
-                            <ol>
-                                <li>Upload to a web server (Apache, Nginx, etc.)</li>
-                                <li>Use local server: <code>python -m http.server 8000</code></li>
-                                <li>Install CORS browser extension for testing</li>
-                                <li>Ask API provider to add CORS headers</li>
-                            </ol>
-                            <button onclick="loadSampleData()" class="sample-btn">Load Sample Data</button>
-                        </div>
-                    `;
-                } else {
-                    errorMessage = error.message;
+                values.push(currentValue.trim().replace(/^"|"$/g, '')); // Add the last value
+
+                if (values.length === headers.length) { // Ensure data row matches header count
+                    const row = {};
+                    headers.forEach((header, index) => {
+                        row[header] = values[index];
+                    });
+                    rows.push(row);
                 }
-                
-                updateStatus(errorMessage, 'error');
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="7" class="no-data">
-                            ${errorMessage}
-                            ${solutions}
-                        </td>
-                    </tr>
-                `;
-                updateRecordCount(0);
-            } finally {
-                refreshBtn.disabled = false;
-                refreshBtn.textContent = 'Refresh';
             }
+            return { headers, rows };
         }
 
-        // Load sample data
-        function loadSampleData() {
-            const sampleData = [
-                {
-                    "id": 143,
-                    "category": "Kavach",
-                    "subcategory": "Advisories",
-                    "priority": "Normal",
-                    "letter_date": "2025-05-07",
-                    "letter_number": "MEDHA1",
-                    "subject_of_letter": "MEDHA TEST LETTER TO COE",
-                    "upload_file": "uploads/1748610721_Declaration by CalAmp US reg Opening of Guardian Radio Protocols.pdf"
-                },
-                {
-                    "id": 136,
-                    "category": "LTE",
-                    "subcategory": "Advisories",
-                    "priority": "High",
-                    "letter_date": "2025-05-17",
-                    "letter_number": "TO COE",
-                    "subject_of_letter": "TO COE IRISET",
-                    "upload_file": "uploads/1748602408_Kavach Troubleshooting Directory for 3-Phase Locomotives.pdf"
-                },
-                {
-                    "id": 124,
-                    "category": "Kavach",
-                    "subcategory": "Advisories",
-                    "priority": "Low",
-                    "letter_date": "2025-04-25",
-                    "letter_number": "IRISET/CoE/Kavach/Misc",
-                    "subject_of_letter": "Kavach Equipment Installation Layout drawings for conventional WAG-7/ARNO/Crew/Non Crew friendly Locomotives",
-                    "upload_file": "uploads/1748515953_Signed CoE letter regarding WAG7 with Arno Kavach Equipment Layout.pdf"
+        async function fetchAndDisplayCSV(gid, tableElementId, loaderElementId, tabName) {
+            const sheetUrl = `https://docs.google.com/spreadsheets/d/e/2PACX-1vSlXoH4ekrswe0-BRLB4ZSx8cGjn-3OK-BGcvStNnuOKALm9IfakG4NTOLcYVM6dE7GgQx2f4qNEMDp/pub?gid=${gid}&single=true&output=csv&_=${new Date().getTime()}`; // Cache buster
+            const table = document.getElementById(tableElementId);
+            const loader = document.getElementById(loaderElementId);
+            const thead = table.querySelector('thead');
+            const tbody = table.querySelector('tbody');
+
+            thead.innerHTML = ''; // Clear previous headers
+            tbody.innerHTML = ''; // Clear previous content
+            loader.style.display = 'block'; // Show loader
+
+            try {
+                const response = await fetch(sheetUrl);
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok for ${tabName}: ${response.statusText}`);
                 }
-            ];
-            
-            allData = sampleData;
-            populateCategoryFilter();
-            applyFilters();
-            updateStatus('Sample data loaded successfully', 'success');
-        }
+                const csvText = await response.text();
+                const { headers, rows } = parseCSV(csvText);
 
-        // Apply filters
-        function applyFilters() {
-            const searchTerm = document.getElementById('searchAll').value.toLowerCase();
-            const categoryFilter = document.getElementById('categoryFilter').value;
-            const priorityFilter = document.getElementById('priorityFilter').value;
-            const dateFilter = document.getElementById('dateFilter').value;
-            
-            let filteredData = allData;
-            
-            // Apply search filter
-            if (searchTerm) {
-                filteredData = filteredData.filter(item => {
-                    return Object.values(item).some(value => 
-                        value.toString().toLowerCase().includes(searchTerm)
-                    );
+                // Populate headers
+                const headerRow = document.createElement('tr');
+                headers.forEach(headerText => {
+                    const th = document.createElement('th');
+                    th.textContent = headerText;
+                    headerRow.appendChild(th);
                 });
+                thead.appendChild(headerRow);
+
+                // Populate rows
+                rows.forEach(rowData => {
+                    const tr = document.createElement('tr');
+                    headers.forEach(header => {
+                        const td = document.createElement('td');
+                        const cellData = rowData[header] || ''; // Handle undefined data
+                        // If the column is "Title" or "Letter No.", treat content as HTML for links
+                        if (header.toLowerCase() === 'title' || header.toLowerCase() === 'letter no.' || header.toLowerCase() === 'reference') {
+                           td.innerHTML = cellData; // Allow HTML for links
+                        } else {
+                           td.textContent = cellData;
+                        }
+                        tr.appendChild(td);
+                    });
+                    tbody.appendChild(tr);
+                });
+
+            } catch (error) {
+                console.error(`Error fetching or parsing CSV for ${tabName}:`, error);
+                tbody.innerHTML = `<tr><td colspan="${thead.firstChild ? thead.firstChild.children.length : 1}" style="color:red; text-align:center;">Failed to load data for ${tabName}. ${error.message}</td></tr>`;
+            } finally {
+                loader.style.display = 'none'; // Hide loader
             }
-            
-            // Apply category filter
-            if (categoryFilter) {
-                filteredData = filteredData.filter(item => 
-                    item.category.toLowerCase() === categoryFilter.toLowerCase()
-                );
-            }
-            
-            // Apply priority filter
-            if (priorityFilter) {
-                filteredData = filteredData.filter(item => 
-                    item.priority === priorityFilter
-                );
-            }
-            
-            // Apply date filter
-            if (dateFilter) {
-                filteredData = filteredData.filter(item => 
-                    item.letter_date >= dateFilter
-                );
-            }
-            
-            renderTable(filteredData);
-            updateRecordCount(filteredData.length);
         }
 
-        // Render table with data
-        function renderTable(data) {
-            const tableBody = document.getElementById('tableBody');
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchAndDisplayCSV(0, 'rdsoTable', 'loaderRDSO', 'RDSO'); // GID for RDSO sheet
+            fetchAndDisplayCSV(737400844, 'railwayBoardTable', 'loaderRailwayBoard', 'Railway Board'); // GID for Railway Board sheet
             
-            if (data.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="7" class="no-data">No matching records found</td></tr>';
-                return;
-            }
-
-            tableBody.innerHTML = data.map(createTableRow).join('');
-        }
-
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
-            fetchData();
-            
-            // Add event listeners for filters
-            document.getElementById('searchAll').addEventListener('input', applyFilters);
-            document.getElementById('categoryFilter').addEventListener('change', applyFilters);
-            document.getElementById('priorityFilter').addEventListener('change', applyFilters);
-            document.getElementById('dateFilter').addEventListener('change', applyFilters);
+            // Open the default tab
+            openTab(null, 'RDSO'); // Pass null for event as it's a programmatic click
         });
+
     </script>
+
 </body>
 </html>
