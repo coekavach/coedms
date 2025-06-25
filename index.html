@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Data Table</title>
+    <title>Upload Data Table - Library Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,113 +15,117 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: white; 
-            color: #212529;
-            line-height: 1.5;
+            font-family: 'Merriweather', serif;
+            background-color: #f5f0e1; /* Antique paper/parchment */
+            color: #4a3b31; /* Dark, desaturated brown for text */
+            line-height: 1.6;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 25px 20px;
         }
 
-        /* Tab Styles */
+        /* Tab Styles - Like old card catalog labels or book spines */
         .tabs-navigation {
             display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #dee2e6;
-            background-color: #fff; 
+            margin-bottom: 0; /* Remove bottom margin to connect with panes */
+            border-bottom: 3px solid #5C3D2E; /* Dark wood accent */
+            background-color: #6B4F40; /* Rich, medium-dark wood brown */
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
-            padding-top: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+            padding-top: 5px; /* Slight padding for the top */
+            box-shadow: 0 3px 7px rgba(0,0,0,0.2), inset 0 1px 2px rgba(255,255,255,0.1);
         }
 
         .tab-button {
-            padding: 12px 25px;
+            padding: 14px 28px;
             cursor: pointer;
             border: none;
             background-color: transparent;
-            font-size: 16px;
+            font-family: 'Lora', serif;
+            font-size: 17px;
             font-weight: 500;
-            color: #495057;
-            border-bottom: 3px solid transparent;
-            margin-bottom: -1px; 
-            transition: color 0.2s, border-bottom-color 0.2s;
+            color: #E0D6CC; /* Light, warm gray for text on dark bg */
+            border-bottom: 4px solid transparent;
+            margin-bottom: -3px; /* Align with bottom border of navigation */
+            transition: color 0.2s, background-color 0.2s, border-bottom-color 0.2s;
+            position: relative; /* For pseudo-elements if needed */
+            border-right: 1px solid #5C3D2E; /* Separator */
+        }
+        .tab-button:last-child {
+            border-right: none;
         }
 
         .tab-button:hover {
-            color: #007bff;
+            color: #fff;
+            background-color: #8E7463; /* Lighter wood tone on hover */
         }
 
         .tab-button.active {
-            color: #007bff;
-            border-bottom-color: #007bff;
+            color: #fff;
+            background-color: #8E7463; /* Lighter, slightly desaturated wood tone */
+            border-bottom-color: #D4AF37; /* Old Gold / Brass accent */
+            font-weight: 600;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .tab-pane {
-            display: none; 
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: none;
+            background: #FAF6F0; /* Lighter parchment for content area */
+            padding: 25px;
+            border: 1px solid #D7C6B7; /* Softer border */
+            border-top: none; /* Connects to tabs-navigation border */
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         .tab-pane.active {
-            display: block; 
+            display: block;
         }
-        
+
+        /* KMP Tab Specific Header/Filters styling */
          #kmpTab .header, #kmpTab .filters {
-            padding: 0; 
-            box-shadow: none; 
-            margin-bottom: 20px;
-            border-radius: 0;
-         }
-         #kmpTab .header { 
-            background: white;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            border-radius: 6px;
+            background-color: #F0EBE3; /* Slightly different shade from pane */
+            border: 1px solid #D7C6B7;
          }
-         #kmpTab .filters { 
-            background: white;
+         /* General Header styles */
+        .header {
+            background: #F0EBE3; /* Slightly different shade from pane */
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-         }
-
-
-        .header { 
-            background: white;
-            padding: 0 0 20px 0; 
-            border-radius: 8px;
-            margin-bottom: 20px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            border: 1px solid #D7C6B7;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
 
         .header h1 {
-            font-size: 24px;
-            color: #2c3e50;
-            margin-bottom: 5px;
+            font-family: 'Lora', serif;
+            font-size: 26px;
+            color: #5C3D2E; /* Darker, richer brown for headings */
+            margin-bottom: 8px;
+            font-weight: 600;
         }
 
         .header p {
-            color: #6c757d;
-            font-size: 14px;
+            color: #7A6A5D; /* Softer brown for subtext */
+            font-size: 15px;
+            font-style: italic;
         }
 
-        .filters { /* Specific to KMP tab */
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+        .filters { /* General filter styling, used by KMP */
+            /* Styles already defined in #kmpTab .filters, this is a fallback if used elsewhere */
         }
 
         .filter-row {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr auto;
-            gap: 15px;
+            gap: 18px;
             align-items: center;
         }
 
@@ -128,105 +135,118 @@
         }
 
         .filter-group label {
-            font-size: 12px;
+            font-family: 'Lora', serif;
+            font-size: 13px;
             font-weight: 600;
-            color: #495057;
-            margin-bottom: 5px;
+            color: #6B4F40; /* Wood brown */
+            margin-bottom: 6px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .filter-input {
-            padding: 8px 12px;
-            border: 1px solid #dee2e6;
+            padding: 10px 14px;
+            border: 1px solid #C5B5A5; /* Brownish border */
             border-radius: 4px;
             font-size: 14px;
-            background: white;
-            transition: border-color 0.2s;
+            font-family: 'Merriweather', serif;
+            background: #fff; /* White for input readability */
+            color: #4a3b31;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .filter-input:focus {
             outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+            border-color: #8E7463; /* Lighter wood tone focus */
+            box-shadow: 0 0 0 3px rgba(142, 116, 99, 0.2);
         }
 
         .refresh-btn {
-            background: #007bff;
+            background: #795548; /* Brown, like an old leather button */
             color: white;
-            border: none;
-            padding: 10px 20px;
+            border: 1px solid #5D4037; /* Darker border */
+            padding: 11px 22px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
+            font-family: 'Lora', serif;
             font-weight: 500;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, box-shadow 0.2s;
             white-space: nowrap;
-            align-self: end; 
-            margin-bottom: 1px; 
+            align-self: end;
+            margin-bottom: 1px;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.15);
         }
 
         .refresh-btn:hover:not(:disabled) {
-            background: #0056b3;
+            background: #5D4037; /* Darker brown */
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
         }
 
         .refresh-btn:disabled {
-            background: #6c757d;
+            background: #a1887f;
+            border-color: #8d6e63;
             cursor: not-allowed;
+            box-shadow: none;
         }
 
         .status {
-            padding: 12px 16px;
+            padding: 14px 18px;
             border-radius: 4px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             font-size: 14px;
+            border: 1px solid;
         }
 
         .status.loading {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
+            background: #fff8e1; /* Creamy yellow */
+            color: #795548; /* Brown text */
+            border-color: #ffecb3;
         }
 
         .status.success {
-            background: #d1edff;
-            color: #0c5460;
-            border: 1px solid #b8daff;
+            background: #e8f5e9; /* Muted green */
+            color: #2e7d32;
+            border-color: #c8e6c9;
         }
 
         .status.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: #ffebee; /* Muted red */
+            color: #8c2a2a;
+            border-color: #ffcdd2;
         }
 
         .table-container {
-            background: white;
-            border-radius: 8px;
+            background: #fffdf7; /* Light cream for table background */
+            border-radius: 6px;
             overflow: hidden;
-        }
-       
-        #kmpTab .table-container, #rdsoTab .table-container, #rbTab .table-container {
-             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid #D7C6B7; /* Softer border */
         }
 
+        #kmpTab .table-container, #rdsoTab .table-container, #rbTab .table-container {
+             box-shadow: 0 2px 5px rgba(0,0,0,0.07);
+        }
 
         .table-header {
             padding: 16px 20px;
-            background: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
+            background: #E0D6CC; /* Light, warm gray, like an old ledger page header */
+            border-bottom: 2px solid #BCAAA4; /* Muted brown border */
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .table-title {
+            font-family: 'Lora', serif;
             font-weight: 600;
-            color: #495057;
+            color: #5C3D2E; /* Darker brown */
+            font-size: 16px;
         }
 
         .record-count {
             font-size: 14px;
-            color: #6c757d;
+            color: #7A6A5D; /* Softer brown */
+            font-style: italic;
         }
 
         .table-wrapper {
@@ -239,137 +259,160 @@
         }
 
         thead th {
-            background: #f8f9fa;
-            padding: 12px 16px;
+            background: #A47F6A; /* Muted, warm brown, like a leather book spine */
+            padding: 14px 18px;
             text-align: left;
+            font-family: 'Lora', serif;
             font-weight: 600;
-            font-size: 13px;
-            color: #495057;
-            border-bottom: 2px solid #dee2e6;
+            font-size: 14px;
+            color: #FDF6E3; /* Creamy text for contrast */
+            border-bottom: 2px solid #6B4F40; /* Darker wood brown */
             white-space: nowrap;
         }
 
         tbody td {
-            padding: 12px 16px;
-            border-bottom: 1px solid #dee2e6;
+            padding: 12px 18px;
+            border-bottom: 1px solid #E0D6CC; /* Light warm gray line */
             vertical-align: top;
-            font-size: 13px; 
+            font-size: 13.5px;
+            color: #4a3b31;
         }
 
         tbody tr:hover {
-            background: #f8f9fa;
+            background: #F0EBE3; /* Slightly darker parchment on hover */
         }
+        tbody tr:nth-child(even) {
+            background-color: #fbf8f2; /* Very subtle striping */
+        }
+        tbody tr:nth-child(even):hover {
+            background: #E9E2D8;
+        }
+
 
         .priority-badge {
-            padding: 4px 8px;
-            border-radius: 12px;
+            padding: 5px 10px;
+            border-radius: 15px;
             font-size: 11px;
-            font-weight: 600;
+            font-family: 'Merriweather', sans-serif; /* A clear sans-serif might be better here for small text */
+            font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid;
         }
 
-        .priority-normal {
-            background: #e3f2fd;
-            color: #1976d2;
+        .priority-normal { /* Muted blue/gray */
+            background: #e3f2fd; color: #1565c0; border-color: #90caf9;
         }
 
-        .priority-high {
-            background: #ffebee;
-            color: #d32f2f;
+        .priority-high { /* Muted, deeper red */
+            background: #ffebee; color: #c62828; border-color: #ef9a9a;
         }
 
-        .priority-low {
-            background: #e8f5e8;
-            color: #388e3c;
+        .priority-low { /* Muted, earthy green */
+            background: #e8f5e9; color: #2e7d32; border-color: #a5d6a7;
         }
+
 
         .category-cell {
-            font-size: 13px;
+            font-size: 13.5px;
         }
 
         .category-main {
             font-weight: 600;
-            color: #495057;
+            color: #5C3D2E; /* Darker brown */
         }
 
         .category-sub {
-            color: #6c757d;
+            color: #7A6A5D; /* Softer brown */
             font-size: 12px;
+            font-style: italic;
         }
 
-        .subject-cell { 
+        .subject-cell {
             max-width: 300px;
             word-wrap: break-word;
-            line-height: 1.4;
-        }
-        
-        .simple-table-subject-cell {
-            max-width: 450px; 
-            word-wrap: break-word;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
+        .simple-table-subject-cell {
+            max-width: 450px;
+            word-wrap: break-word;
+            line-height: 1.5;
+        }
 
         .file-link {
-            color: #007bff;
+            color: #00695c; /* Teal/Dark Green - like old ink */
             text-decoration: none;
-            font-size: 13px;
+            font-size: 13.5px;
+            font-weight: 500;
         }
 
         .file-link:hover {
             text-decoration: underline;
+            color: #004d40;
         }
 
         .no-data {
             text-align: center;
             padding: 40px;
-            color: #6c757d;
+            color: #7A6A5D;
+            font-style: italic;
         }
 
         .error-solutions {
             margin-top: 20px;
             padding: 20px;
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
+            background: #fff8e1; /* Creamy yellow for errors */
+            border: 1px solid #ffecb3;
             border-radius: 4px;
         }
 
         .error-solutions h4 {
-            color: #856404;
+            color: #795548; /* Brown text */
             margin-bottom: 10px;
+            font-family: 'Lora', serif;
         }
 
         .error-solutions ol {
-            color: #856404;
+            color: #795548; /* Brown text */
             margin-left: 20px;
         }
 
         .sample-btn {
-            background: #28a745;
+            background: #558b2f; /* Darker, earthy green */
             color: white;
-            border: none;
-            padding: 8px 16px;
+            border: 1px solid #33691e;
+            padding: 9px 18px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 13px;
+            font-family: 'Lora', serif;
             margin-top: 15px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
         .sample-btn:hover {
-            background: #218838;
+            background: #33691e;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.15);
         }
-        
+
+        @media (max-width: 992px) { /* Adjust breakpoint for filter row */
+            .filter-row {
+                grid-template-columns: 1fr 1fr; /* Two columns */
+            }
+             .filter-row .refresh-btn {
+                grid-column: 1 / -1; /* Span full width */
+                justify-self: start;
+                margin-top: 10px;
+            }
+        }
+
         @media (max-width: 768px) {
             .filter-row {
-                grid-template-columns: 1fr;
-                gap: 10px;
+                grid-template-columns: 1fr; /* Single column */
             }
 
-            .filter-row .refresh-btn {
-                justify-self: start;
-            }
-
-            #kmpTab .table-header { 
+            #kmpTab .table-header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 8px;
@@ -384,20 +427,36 @@
 
             thead th,
             tbody td {
-                padding: 8px 12px;
-                font-size: 12px;
+                padding: 10px 14px; /* Slightly adjusted padding */
+                font-size: 12.5px;
             }
             .tabs-navigation {
-                flex-direction: column; 
-                 border-bottom: none;
+                flex-direction: column;
+                border-bottom: none; /* Remove main bottom border */
+                border-top-right-radius: 8px; /* Keep consistent */
+                border-top-left-radius: 8px;
             }
             .tab-button {
-                border-bottom: 1px solid #dee2e6; 
+                border-bottom: 1px solid #5C3D2E; /* Separator for stacked tabs */
                 margin-bottom: 0;
+                border-right: none; /* Remove side border */
+                border-radius: 0; /* Full width button */
             }
             .tab-button.active {
-                border-bottom-color: #007bff; 
-                border-bottom-width:3px;
+                border-bottom-color: #D4AF37; /* Gold accent still visible */
+                border-bottom-width:3px; /* Ensure active border is prominent */
+            }
+            .tab-button:last-child {
+                border-bottom: none; /* No border for the very last button */
+            }
+            .tab-button.active:last-child {
+                 border-bottom: 3px solid #D4AF37; /* Ensure active border for last item too */
+            }
+
+            .tab-pane {
+                border-top-left-radius: 0; /* Connect to stacked tabs */
+                border-top-right-radius: 0;
+                border-top: 1px solid #D7C6B7; /* Add top border when tabs are stacked */
             }
         }
     </style>
@@ -406,7 +465,7 @@
     <div class="container">
         <!-- Tab Navigation -->
         <div class="tabs-navigation">
-            <button class="tab-button active" onclick="openTab(event, 'kmpTab')">KMP Advanced Search</button>
+            <button class="tab-button active" onclick="openTab(event, 'kmpTab')">CoE Kavach</button>
             <button class="tab-button" onclick="openTab(event, 'rdsoTab')">RDSO</button>
             <button class="tab-button" onclick="openTab(event, 'rbTab')">Railway Board</button>
         </div>
@@ -414,15 +473,15 @@
         <!-- Tab Content Panes -->
         <div id="kmpTab" class="tab-pane active">
             <div class="header">
-                <h1>KMP Advanced Search</h1>
-                <p>View and filter Documents from KMP</p>
+                <h1>CoE Kavach</h1>
+                <p>Explore and refine documents from the Knowledge Management Portal.</p>
             </div>
 
             <div class="filters">
                 <div class="filter-row">
                     <div class="filter-group">
                         <label>Search All</label>
-                        <input type="text" class="filter-input" placeholder="Search records..." id="searchAll">
+                        <input type="text" class="filter-input" placeholder="Keywords, numbers, dates..." id="searchAll">
                     </div>
                     <div class="filter-group">
                         <label>Category</label>
@@ -444,7 +503,7 @@
                         <input type="date" class="filter-input" id="dateFilter">
                     </div>
                     <button class="refresh-btn" onclick="fetchKMPData()" id="refreshBtn">
-                        Refresh
+                        Refresh Records
                     </button>
                 </div>
             </div>
@@ -453,7 +512,7 @@
 
             <div class="table-container">
                 <div class="table-header">
-                    <div class="table-title">Records</div>
+                    <div class="table-title">KMP Document Archive</div>
                     <div class="record-count" id="recordCountKMP">0 records</div>
                 </div>
                 <div class="table-wrapper">
@@ -479,20 +538,20 @@
         <div id="rdsoTab" class="tab-pane">
             <div class="header">
                 <h1>RDSO Documents</h1>
-                <p>Displaying letters and specifications from RDSO.</p>
+                <p>Browse letters and specifications issued by RDSO.</p>
             </div>
             <div class="table-container">
                 <div class="table-header">
-                    <div class="table-title">RDSO Letters</div>
+                    <div class="table-title">RDSO Letters & Specifications</div>
                     <div class="record-count" id="recordCountRDSO">0 records</div>
                 </div>
                 <div class="table-wrapper">
                     <table id="rdsoDataTable">
                         <thead>
                             <tr>
-                                <th>Letter</th>
+                                <th>Document Title</th>
                                 <th>Date</th>
-                                <th>Subject</th>
+                                <th>Subject / Details</th>
                             </tr>
                         </thead>
                         <tbody id="rdsoTableBody"></tbody>
@@ -504,18 +563,18 @@
         <div id="rbTab" class="tab-pane">
             <div class="header">
                 <h1>Railway Board Documents</h1>
-                <p>Displaying letters and specifications from Railway Board.</p>
+                <p>Access circulars and directives from the Railway Board.</p>
             </div>
             <div class="table-container">
                  <div class="table-header">
-                    <div class="table-title">Railway Board Letters</div>
+                    <div class="table-title">Railway Board Circulars</div>
                     <div class="record-count" id="recordCountRB">0 records</div>
                 </div>
                 <div class="table-wrapper">
                     <table id="rbDataTable">
                         <thead>
                             <tr>
-                                <th>Letter</th>
+                                <th>Letter No.</th>
                                 <th>Date</th>
                                 <th>Subject</th>
                             </tr>
@@ -534,14 +593,16 @@
 
         function formatDateKMP(dateString) {
             const date = new Date(dateString);
-            return date.toLocaleDateString('en-GB');
+            return date.toLocaleDateString('en-GB'); // Day/Month/Year
         }
 
         function getPriorityClassKMP(priority) {
+            if (!priority) return 'priority-normal'; // Default
             return `priority-${priority.toLowerCase()}`;
         }
 
         function getFileNameKMP(filePath) {
+            if (!filePath) return 'N/A';
             return filePath.split('/').pop().split('_').slice(1).join('_') || 'View File';
         }
 
@@ -550,16 +611,16 @@
                 <tr>
                     <td>${item.id}</td>
                     <td class="category-cell">
-                        <div class="category-main">${item.category}</div>
-                        <div class="category-sub">${item.subcategory}</div>
+                        <div class="category-main">${item.category || 'N/A'}</div>
+                        <div class="category-sub">${item.subcategory || ''}</div>
                     </td>
-                    <td><span class="priority-badge ${getPriorityClassKMP(item.priority)}">${item.priority}</span></td>
-                    <td>${formatDateKMP(item.letter_date)}</td>
-                    <td>${item.letter_number}</td>
-                    <td class="subject-cell">${item.subject_of_letter}</td>
+                    <td><span class="priority-badge ${getPriorityClassKMP(item.priority)}">${item.priority || 'Normal'}</span></td>
+                    <td>${item.letter_date ? formatDateKMP(item.letter_date) : 'N/A'}</td>
+                    <td>${item.letter_number || 'N/A'}</td>
+                    <td class="subject-cell">${item.subject_of_letter || 'No Subject'}</td>
                     <td>
-                        <a href="https://coekms.in/${item.upload_file}" 
-                           target="_blank" 
+                        <a href="https://coekms.in/${item.upload_file}"
+                           target="_blank"
                            class="file-link">
                             ${getFileNameKMP(item.upload_file)}
                         </a>
@@ -567,13 +628,13 @@
                 </tr>
             `;
         }
-        
+
         function updateKMPStatus(message, type) {
             const statusDiv = document.getElementById('statusKMP');
             statusDiv.textContent = message;
             statusDiv.className = `status ${type}`;
             statusDiv.style.display = 'block';
-            
+
             if (type === 'success') {
                 setTimeout(() => {
                     statusDiv.style.display = 'none';
@@ -586,102 +647,100 @@
         }
 
         function populateKMPCategoryFilter() {
-            const categoryFilter = document.getElementById('categoryFilter'); 
-            const categories = [...new Set(allKMPData.map(item => item.category))].sort();
-            
-            categoryFilter.innerHTML = '<option value="">All Categories</option>';
+            const categoryFilter = document.getElementById('categoryFilter');
+            const categories = [...new Set(allKMPData.map(item => item.category).filter(Boolean))].sort(); // Filter out null/empty categories
+
+            categoryFilter.innerHTML = '<option value="">All Categories</option>'; // Keep default
             categories.forEach(category => {
                 categoryFilter.innerHTML += `<option value="${category}">${category}</option>`;
             });
         }
 
         async function fetchKMPData() {
-            const refreshBtn = document.getElementById('refreshBtn'); 
+            const refreshBtn = document.getElementById('refreshBtn');
             const tableBodyKMP = document.getElementById('tableBodyKMP');
-            
+
             try {
                 refreshBtn.disabled = true;
                 refreshBtn.textContent = 'Loading...';
-                updateKMPStatus('Loading data from API...', 'loading');
+                updateKMPStatus('Fetching KMP records from the archive...', 'loading');
 
                 let response;
                 let result;
-                
+
                 try {
                     response = await fetch(API_URL);
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     result = await response.json();
                 } catch (corsError) {
-                    console.log('Direct fetch failed, trying CORS proxy...');
+                    console.info('Direct fetch failed, attempting proxy...');
                     const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(API_URL)}`;
                     try {
                         response = await fetch(proxyUrl);
                         if (!response.ok) throw new Error(`Proxy error! status: ${response.status}`);
                         result = await response.json();
                     } catch (proxyError) {
-                        console.log('First proxy failed, trying alternative...');
+                        console.info('First proxy failed, trying alternative...');
                         const altProxyUrl = `https://corsproxy.io/?${encodeURIComponent(API_URL)}`;
                         response = await fetch(altProxyUrl);
                         if (!response.ok) throw new Error(`Alternative proxy error! status: ${response.status}`);
                         result = await response.json();
                     }
                 }
-                
+
                 if (result.success && result.data) {
                     allKMPData = result.data;
                     populateKMPCategoryFilter();
-                    
+
                     if (allKMPData.length === 0) {
-                        tableBodyKMP.innerHTML = '<tr><td colspan="7" class="no-data">No data available</td></tr>';
+                        tableBodyKMP.innerHTML = '<tr><td colspan="7" class="no-data">No records found in the archive.</td></tr>';
                         updateKMPRecordCount(0);
+                         updateKMPStatus('Archive is currently empty.', 'success');
                     } else {
                         applyKMPFilters();
-                        updateKMPStatus(`Successfully loaded ${allKMPData.length} records`, 'success');
+                        updateKMPStatus(`Successfully retrieved ${allKMPData.length} records.`, 'success');
                     }
                 } else {
-                    throw new Error('Invalid API response format');
+                    throw new Error(result.message || 'Invalid API response format');
                 }
             } catch (error) {
                 console.error('Error fetching KMP data:', error);
-                let errorMessage = 'Failed to load KMP data';
+                let errorMessage = `Failed to load KMP records: ${error.message}`;
                 let solutions = '';
-                
-                if (error.message.includes('NetworkError') || error.message.includes('CORS') || error.message.includes('Failed to fetch')) {
-                    errorMessage = 'CORS Error - Cannot access KMP API';
+
+                if (error.message.includes('NetworkError') || error.message.includes('CORS') || error.message.includes('Failed to fetch') || error.message.includes('proxy error')) {
+                    errorMessage = 'Network Error: Unable to access KMP Data API.';
                     solutions = `
                         <div class="error-solutions">
-                            <h4>Solutions:</h4>
+                            <h4>Troubleshooting:</h4>
                             <ol>
-                                <li>Ensure you are connected to the internet.</li>
-                                <li>Try opening this page on a web server.</li>
-                                <li>Use a browser extension for CORS if testing locally.</li>
+                                <li>Check your internet connection.</li>
+                                <li>The API might be temporarily unavailable or blocking requests.</li>
+                                <li>If using locally, CORS policies might be an issue. Try a web server.</li>
                             </ol>
-                            <button onclick="loadKMPSampleData()" class="sample-btn">Load KMP Sample Data</button>
+                            <button onclick="loadKMPSampleData()" class="sample-btn">Load Sample KMP Data</button>
                         </div>
                     `;
-                } else {
-                    errorMessage = error.message;
                 }
-                
                 updateKMPStatus(errorMessage, 'error');
                 tableBodyKMP.innerHTML = `<tr><td colspan="7" class="no-data">${errorMessage}${solutions}</td></tr>`;
                 updateKMPRecordCount(0);
             } finally {
                 refreshBtn.disabled = false;
-                refreshBtn.textContent = 'Refresh';
+                refreshBtn.textContent = 'Refresh Records';
             }
         }
 
         function loadKMPSampleData() {
             const sampleData = [
-                {"id": 143, "category": "Kavach", "subcategory": "Advisories", "priority": "Normal", "letter_date": "2025-05-07", "letter_number": "MEDHA1", "subject_of_letter": "MEDHA TEST LETTER TO COE", "upload_file": "uploads/1748610721_Declaration by CalAmp US reg Opening of Guardian Radio Protocols.pdf"},
-                {"id": 136, "category": "LTE", "subcategory": "Advisories", "priority": "High", "letter_date": "2025-05-17", "letter_number": "TO COE", "subject_of_letter": "TO COE IRISET", "upload_file": "uploads/1748602408_Kavach Troubleshooting Directory for 3-Phase Locomotives.pdf"},
-                {"id": 124, "category": "Kavach", "subcategory": "Advisories", "priority": "Low", "letter_date": "2025-04-25", "letter_number": "IRISET/CoE/Kavach/Misc", "subject_of_letter": "Kavach Equipment Installation Layout drawings for conventional WAG-7/ARNO/Crew/Non Crew friendly Locomotives", "upload_file": "uploads/1748515953_Signed CoE letter regarding WAG7 with Arno Kavach Equipment Layout.pdf"}
+                {"id": 143, "category": "Kavach", "subcategory": "Advisories", "priority": "Normal", "letter_date": "2025-05-07", "letter_number": "MEDHA1", "subject_of_letter": "MEDHA TEST LETTER TO COE - Sample for demonstration purposes.", "upload_file": "uploads/1748610721_Declaration.pdf"},
+                {"id": 136, "category": "LTE", "subcategory": "Advisories", "priority": "High", "letter_date": "2025-05-17", "letter_number": "TO COE", "subject_of_letter": "TO COE IRISET - Urgent review required for new LTE guidelines.", "upload_file": "uploads/1748602408_KavachTroubleshooting.pdf"},
+                {"id": 124, "category": "Kavach", "subcategory": "Layouts", "priority": "Low", "letter_date": "2025-04-25", "letter_number": "IRISET/CoE/Kavach/Misc", "subject_of_letter": "Kavach Equipment Installation Layout drawings for conventional WAG-7/ARNO/Crew/Non Crew friendly Locomotives - For archival.", "upload_file": "uploads/1748515953_SignedCoELetter.pdf"}
             ];
             allKMPData = sampleData;
             populateKMPCategoryFilter();
             applyKMPFilters();
-            updateKMPStatus('KMP Sample data loaded successfully', 'success');
+            updateKMPStatus('KMP Sample data loaded. This is not live data.', 'success');
         }
 
         function applyKMPFilters() {
@@ -689,12 +748,12 @@
             const categoryFilter = document.getElementById('categoryFilter').value;
             const priorityFilter = document.getElementById('priorityFilter').value;
             const dateFilter = document.getElementById('dateFilter').value;
-            
+
             let filteredData = allKMPData;
-            
+
             if (searchTerm) {
-                filteredData = filteredData.filter(item => 
-                    Object.values(item).some(value => value.toString().toLowerCase().includes(searchTerm))
+                filteredData = filteredData.filter(item =>
+                    Object.values(item).some(value => value && value.toString().toLowerCase().includes(searchTerm))
                 );
             }
             if (categoryFilter) {
@@ -704,9 +763,11 @@
                 filteredData = filteredData.filter(item => item.priority === priorityFilter);
             }
             if (dateFilter) {
-                filteredData = filteredData.filter(item => item.letter_date >= dateFilter);
+                // Ensure date comparison is correct (YYYY-MM-DD vs. API's date format if different)
+                // Assuming item.letter_date is also 'YYYY-MM-DD' from API or formatted consistently
+                filteredData = filteredData.filter(item => item.letter_date && item.letter_date >= dateFilter);
             }
-            
+
             renderKMPTable(filteredData);
             updateKMPRecordCount(filteredData.length);
         }
@@ -714,7 +775,7 @@
         function renderKMPTable(data) {
             const tableBodyKMP = document.getElementById('tableBodyKMP');
             if (data.length === 0) {
-                tableBodyKMP.innerHTML = '<tr><td colspan="7" class="no-data">No matching records found</td></tr>';
+                tableBodyKMP.innerHTML = '<tr><td colspan="7" class="no-data">No records match your current filter criteria.</td></tr>';
                 return;
             }
             tableBodyKMP.innerHTML = data.map(createKMPTableRow).join('');
@@ -741,7 +802,7 @@
         // --- END TAB SCRIPT ---
 
         // --- START RDSO/RB SCRIPT ---
-        const rdsoCsvData = `Letter,Date,Subject
+        const rdsoCsvData = `Document Title,Date,Subject / Details
 Functional Requirement Specifications,11.04.2022,Functional Requirement Specifications - FRS - 4
 System Requirement Specification of KAVACH (The Indian Railway Automatic Train Protection System),07.06.2024,System Requirement Specification of KAVACH (The Indian Railway Automatic Train Protection System) - SRS - 4.0 Amdt-3
 "Specification of KAVACH (The Indian Railway ATP)-Mode Transitions, SOS and MA Handling",16.07.2024,"Specification of KAVACH (The Indian Railway ATP)-Mode Transitions, SOS and MA Handling - Annexure-A1 - 4.0, Amdt-6"
@@ -771,8 +832,7 @@ Functional Test Format of Event Logging,06.05.2025,"Functional Test Format of Ev
 Standard Operating Procedure (SOP) for Generic Product Approval of KAVACH,06.05.2025,Standard Operating Procedure (SOP) for Generic Product Approval of KAVACH -  - Document No. 1506<br>Version 1.0
 SITE ACCEPTANCE TEST Procedure for Stationary KAVACH (The Indian Railway Automatic Train Protection System) as per RDSO/ SPN/196/2020 Version 4.0,15.03.2024,SITE ACCEPTANCE TEST Procedure for Stationary KAVACH (The Indian Railway Automatic Train Protection System) as per RDSO/ SPN/196/2020 Version 4.0 -  - SIF-0593 Ver 1.0`;
 
-        const railwayBoardCsvData = `"Okay, here is the table ""Kavach"" extracted from the HTML content and presented in Markdown format:",,
-,,
+        const railwayBoardCsvData = `,,,,
 Letter No.,Date,Subject
 2025,,
 2023/S&T/Dev/Kavach Corres-Part (1),11.04.2025,Implementation of Measures Related to Kavach System.
@@ -786,13 +846,13 @@ Letter No.,Date,Subject
 2021/Sig/TCAS,04.10.2023,Kavach Working Group
 2023/S&T/Dev/Kavach Corrres,11.09.2023,"Advance execution of Infrastructure works Towers, OFC, Buildings & Feeder Power Supply on GQ, GD routes."
 2020/Sig/TCAS/Development,04.07.2023,Sections identified for survey of Kavach on GQ/GD Routes.
-2020/Sig/IRISET,31.05.2023,Special courses on â€˜Kavachâ€™ for Dy.CSTEs/Sr.DSTEs
+2020/Sig/IRISET,31.05.2023,Special courses on 'Kavach' for Dy.CSTEs/Sr.DSTEs
 2020/Sig/TCAS/Estimates (e3316629),18.05.2023,Components of Kavach/CTC inclusion in yard remodeling/ABS/LC gate/Signalling works
-2022/Sig/33/1/SEM/Misc,31.03.2023,"Addendum and Corrigendum Slip No. 1 of the IRSEM, July 2021 â€“ Para no. 9.2.1, 9.2.2, 22.3.1"
+2022/Sig/33/1/SEM/Misc,31.03.2023,"Addendum and Corrigendum Slip No. 1 of the IRSEM, July 2021 - Para no. 9.2.1, 9.2.2, 22.3.1"
 2022,,
 2021/Sig/Committee/KavachmaintenanceCost,31.01.2022,"EPC Tender for provision of TCAS in New Delhi Mumbai, New Delhi Howrah sections and other section of IR."
 2021,,
-2013/Sig/TCAS/status,18.01.2021,"EPC Tender for provision of TCAS in new Delhi â€“Mumbai, New Delhi- Howrah sections and other sections of IR."
+2013/Sig/TCAS/status,18.01.2021,"EPC Tender for provision of TCAS in new Delhi -Mumbai, New Delhi- Howrah sections and other sections of IR."
 2014/Sig/ATP/IR,18.02.2021,Approved scheme for TCAS & Automatic Signalling.
 2014/Sig/ATP/IR,19.02.2021,Committee for interoperability of features between TCAS & ETCS level-2
 2014/Sig/TPWS/160 kmph/Pt./loose,30.03.2021,Raising speed to 160 kmph on new Delhi-Mumbai central route.
@@ -802,14 +862,14 @@ Letter No.,Date,Subject
 2013/Sig/TCAS/status,30.01.2020,Execution of works of TCAS on 1200 km on SCR- Monitoring.
 2019/Sig/17/36/ETCS L-2(e-3304767),17.04.2020,Applying for associate membership of EULYNX for designing of Interface between EI/Relay Interlocking and RBC in the project of ETCS L-2
 2019,,
-2014/Sig/TPWS/160KMPH/Loose,09.10.2019,Signalling and Telecommunication works in connection with raising of speed to 160 KMPH in Delhi- Mumbai and Delhi â€“Kolkata Section preparation of Detailed Estimates
+2014/Sig/TPWS/160KMPH/Loose,09.10.2019,Signalling and Telecommunication works in connection with raising of speed to 160 KMPH in Delhi- Mumbai and Delhi -Kolkata Section preparation of Detailed Estimates
 2017/Sig/Modernization Signalling,24.10.2019,Organizing Technical Workshop on Automatic Train Protection (ATP) System with special focus on ETCS Level-2.
-2014/Sig/TPWS/160 KMPH/Loose,28.10.19,Signalling and Telecommunication works in connection with raising of speed to 160 KMPH in Delhi â€“ Mumbai and Delhi â€“ Kolkata Sections â€“ preparation of Detailed Estimate.
+2014/Sig/TPWS/160 KMPH/Loose,28.10.19,Signalling and Telecommunication works in connection with raising of speed to 160 KMPH in Delhi - Mumbai and Delhi - Kolkata Sections - preparation of Detailed Estimate.
 2017/Sig/Modernization/Signaling,31.10.2019,Sanction of Signalling project deliberated in 34th GCM.
 2019/Sig/17/36/ETCS L-2,13.11.2019,Interoperability of TCAS and ETCS Level-2 ATP Systems.
-2017/Sig/Modernization/Signalling,22.11.2019,Points notes during Honâ€™ble MRâ€™s interaction with Member of Railway Board on 06.11.2019
+2017/Sig/Modernization/Signalling,22.11.2019,Points notes during Hon'ble MR's interaction with Member of Railway Board on 06.11.2019
 2019/AM(Sig)/Insp Note/1,29.11.2019,"Recorded Note on CBTC with AM (SIG),Railway Board during the discussion held on 16.11.2019 at MRVC."
-2019/Sig/17/36/ETCS L-2,04.12.2019,Inter â€“Operability of TCAS and ETCS Level-2 ATP System.
+2019/Sig/17/36/ETCS L-2,04.12.2019,Inter -Operability of TCAS and ETCS Level-2 ATP System.
 2017/Sig Modernization,10.12.2019,Pilot Project of Provision ETCS Level-2 on four Sections of Indian Railway.
 2017,,
 2013/Sig/TCAS/Status,12.05.2017,Field trial for development of TCAS: E70 & CCB type brake interfaced Locos (WAP-5) at speeds up to 160 KMPH.
@@ -825,83 +885,85 @@ Letter No.,Date,Subject
 
 
         function parseCSV(csvString) {
-            console.log("--- Starting parseCSV for a dataset ---");
             const lines = csvString.trim().split('\n');
             let headerLineIndex = -1;
-            console.log("Total lines from CSV string:", lines.length);
 
             for (let i = 0; i < lines.length; i++) {
                 const lineContent = lines[i].toLowerCase();
-                if ((lineContent.includes("letter,") || lineContent.includes("letter no,")) &&
-                    lineContent.includes("date,") &&
-                    lineContent.includes("subject")) {
-                    if (lines[i].split(',').length >= 3) { 
-                        headerLineIndex = i;
-                        console.log("Header found at line index:", headerLineIndex, "Content:", `"${lines[headerLineIndex]}"`);
-                        break;
+                const potentialHeaders = lines[i].split(',').map(h => h.trim().replace(/^"|"$/g, '').toLowerCase());
+                if (potentialHeaders.includes("letter no.") || potentialHeaders.includes("letter") || potentialHeaders.includes("document title")) {
+                     if (potentialHeaders.includes("date") && potentialHeaders.includes("subject") || potentialHeaders.includes("subject / details")) {
+                        if (lines[i].split(',').length >=3) {
+                            headerLineIndex = i;
+                            break;
+                        }
                     }
                 }
             }
 
             if (headerLineIndex === -1) {
-                console.warn("Could not find a valid CSV header row in this dataset.");
-                return { headers: [], data: [] };
+                console.warn("Could not find a valid CSV header row. CSV might be malformed or empty.");
+                // Try to use the first line if it looks like a header (heuristic)
+                if (lines.length > 0 && lines[0].split(',').length >= 3) {
+                    console.warn("Attempting to use first line as header.");
+                    headerLineIndex = 0;
+                } else {
+                    return { headers: [], data: [] };
+                }
             }
-            
+
             const headers = lines[headerLineIndex].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
-            console.log("Parsed headers:", headers);
             const data = [];
 
             for (let i = headerLineIndex + 1; i < lines.length; i++) {
                 const currentLine = lines[i].trim();
-                 // console.log(`Processing line ${i}: "${currentLine}"`); // Log each line being processed
-
-                if (currentLine === "") {
-                    console.log(`Line ${i}: Skipping empty line: "${currentLine}"`);
-                    continue;
+                if (currentLine === "" || currentLine.startsWith('"Okay, here is the table') || currentLine.startsWith(',,,')) {
+                    continue; // Skip empty lines or specific meta-lines
                 }
 
+                // Regex to split by comma, but not if comma is inside quotes
                 const values = currentLine.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                
+
+                // Skip lines that are just year separators like "2025,,"
                 if (values.length > 0 && /^\d{4}$/.test(values[0].trim()) && values.slice(1).every(v => v.trim() === "")) {
-                    console.log(`Line ${i}: Skipping year line: "${currentLine}"`);
                     continue;
                 }
-                if (values.every(v => v.trim() === "")) {
-                    console.log(`Line ${i}: Skipping comma-only line: "${currentLine}"`);
+                // Skip lines that are only commas
+                 if (values.every(v => v.trim() === "")) {
                     continue;
                 }
+
 
                 const entry = {};
-                let hasEssentialData = false;
+                let hasEssentialData = false; // Check if at least one of the first 3 columns has data
                 for (let j = 0; j < headers.length; j++) {
                     let value = values[j] ? values[j].trim() : '';
+                    // Remove surrounding quotes if they exist
                     if (value.startsWith('"') && value.endsWith('"')) {
                         value = value.substring(1, value.length - 1);
                     }
-                    value = value.replace(/""/g, '"'); 
+                    value = value.replace(/""/g, '"'); // Replace double quotes with single
                     entry[headers[j]] = value;
-                    if (j < 3 && value !== '') { 
+                    if (j < 3 && value !== '') { // Check first 3 columns for data
                         hasEssentialData = true;
                     }
                 }
-                
+
+                // Ensure the entry has properties for all headers and some essential data
                 const allHeadersPresentInEntry = headers.every(h => entry.hasOwnProperty(h));
 
                 if (allHeadersPresentInEntry && hasEssentialData) {
                     data.push(entry);
-                    // console.log(`Line ${i}: Added entry:`, entry); // Log added entries
                 } else {
-                    console.warn(`Line ${i}: Skipping line: "${currentLine}"`, {allHeadersPresentInEntry, hasEssentialData, parsedEntry: entry, originalValues: values});
+                     console.warn(`Skipping malformed or empty data line: "${currentLine}"`);
                 }
             }
-            console.log("--- Finished parseCSV for this dataset, data count:", data.length, "First item:", (data.length > 0 ? data[0] : "N/A"), "---");
             return { headers, data };
         }
 
 
         function renderSimpleTable(csvData, tableBodyId, recordCountId, columnMapping = null) {
-            const { headers: parsedHeaders, data } = parseCSV(csvData); // parseCSV will log its process
+            const { headers: parsedHeaders, data } = parseCSV(csvData);
             const tableBody = document.getElementById(tableBodyId);
             const recordCountEl = document.getElementById(recordCountId);
 
@@ -909,11 +971,14 @@ Letter No.,Date,Subject
                 console.error(`Table body or record count element not found for ${tableBodyId}`);
                 return;
             }
-            
-            const displayTableHeaders = ['Letter', 'Date', 'Subject']; 
+
+            // Determine display headers from the table structure in HTML (thead)
+            const tableElement = document.getElementById(tableBodyId).closest('table');
+            const displayTableHeaders = Array.from(tableElement.querySelectorAll('thead th')).map(th => th.textContent.trim());
+
 
             if (data.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="${displayTableHeaders.length}" class="no-data">No data available</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="${displayTableHeaders.length}" class="no-data">No documents available in this section.</td></tr>`;
                 recordCountEl.textContent = '0 records';
                 return;
             }
@@ -922,13 +987,26 @@ Letter No.,Date,Subject
             data.forEach(row => {
                 tableHTML += '<tr>';
                 displayTableHeaders.forEach(displayHeader => {
-                    let actualDataKey = displayHeader; 
+                    let actualDataKey = displayHeader; // By default, use the display header as the key
 
-                    if (columnMapping && columnMapping[displayHeader]) {
-                        actualDataKey = columnMapping[displayHeader]; 
+                    // If a column mapping is provided, use it to find the actual data key
+                    if (columnMapping) {
+                        // Find the key in mapping that corresponds to the displayHeader
+                        const mappedKey = Object.keys(columnMapping).find(key => columnMapping[key] === displayHeader);
+                        if (mappedKey) actualDataKey = mappedKey; // If "Letter No." is display, mappedKey "Letter"
+                        else if (row.hasOwnProperty(displayHeader)) actualDataKey = displayHeader; // Fallback to direct match
+                        else { // Try to find a match if the CSV header was slightly different
+                             const foundKey = parsedHeaders.find(h => h.toLowerCase().replace(/\s*\/\s*/g, ' ').includes(displayHeader.toLowerCase().replace(/\s*\/\s*/g, ' ')));
+                             if (foundKey) actualDataKey = foundKey;
+                        }
+                    } else {
+                         // If no mapping, try to find a best match for header (case-insensitive, ignore some chars)
+                         const foundKey = parsedHeaders.find(h => h.toLowerCase().replace(/[^a-z0-9]/gi, '') === displayHeader.toLowerCase().replace(/[^a-z0-9]/gi, ''));
+                         if (foundKey) actualDataKey = foundKey;
                     }
-                    
-                    const cellClass = (displayHeader === 'Subject') ? 'class="simple-table-subject-cell"' : '';
+
+
+                    const cellClass = (displayHeader.toLowerCase().includes('subject')) ? 'class="simple-table-subject-cell"' : '';
                     tableHTML += `<td ${cellClass}>${row[actualDataKey] || ''}</td>`;
                 });
                 tableHTML += '</tr>';
@@ -948,16 +1026,27 @@ Letter No.,Date,Subject
             document.getElementById('dateFilter').addEventListener('change', applyKMPFilters);
 
             // Initialize RDSO Tab
-            console.log("Initializing RDSO Tab");
+            // For RDSO, the HTML thead defines: Document Title, Date, Subject / Details
+            // CSV has: Document Title, Date, Subject / Details
             renderSimpleTable(rdsoCsvData, 'rdsoTableBody', 'recordCountRDSO');
-            
-            // Initialize Railway Board Tab with its own data
-            console.log("Initializing Railway Board Tab");
-            const rbColumnMapping = { 'Letter': 'Letter No.' }; 
-            renderSimpleTable(railwayBoardCsvData, 'rbTableBody', 'recordCountRB', rbColumnMapping);
 
-            document.getElementById('kmpTab').style.display = 'block';
-            document.getElementById('kmpTab').classList.add('active');
+            // Initialize Railway Board Tab
+            // For RB, HTML thead defines: Letter No., Date, Subject
+            // CSV has: Letter No., Date, Subject
+            // So, no explicit mapping needed if CSV headers match HTML thead textContent after parsing.
+            // The parseCSV and renderSimpleTable logic will try to match them.
+            renderSimpleTable(railwayBoardCsvData, 'rbTableBody', 'recordCountRB');
+
+
+            // Set KMP tab as active on load
+            const kmpTabButton = document.querySelector('.tabs-navigation .tab-button');
+             if (kmpTabButton) { // Ensure button exists before trying to click
+                kmpTabButton.click(); // Programmatically click to ensure openTab logic runs
+            } else { // Fallback if button isn't found for some reason
+                document.getElementById('kmpTab').style.display = 'block';
+                document.getElementById('kmpTab').classList.add('active');
+                if (kmpTabButton) kmpTabButton.classList.add('active');
+            }
         });
     </script>
 </body>
