@@ -26,29 +26,28 @@
             background-repeat: no-repeat;
         }
         
-        /* Modified Main Header Styles for minimal vertical space */
         .main-header {
             text-align: center;
-            margin-bottom: 20px; /* Reduced */
-            padding-bottom: 15px; /* Reduced */
+            margin-bottom: 20px;
+            padding-bottom: 15px;
             border-bottom: 1px solid #D7C6B7;
         }
 
         .main-header h1 {
             font-family: 'Lora', serif;
-            font-size: 32px; /* Reduced */
+            font-size: 32px;
             font-weight: 700;
             color: #5C3D2E;
-            margin-bottom: 2px; /* Reduced significantly */
-            line-height: 1.2; /* Tightened line height */
+            margin-bottom: 2px;
+            line-height: 1.2;
         }
 
         .main-header p {
             font-family: 'Merriweather', serif;
-            font-size: 17px; /* Reduced */
+            font-size: 17px;
             color: #7A6A5D;
             font-style: italic;
-            line-height: 1.2; /* Tightened line height */
+            line-height: 1.2;
             margin-bottom: 0;
         }
 
@@ -58,7 +57,6 @@
             padding: 25px 20px;
         }
 
-        /* Global Search Styles */
         .global-search-container {
             background-color: #F0EBE3;
             padding: 15px 20px;
@@ -74,7 +72,7 @@
 
         .global-search-container label {
             font-family: 'Lora', serif;
-            font-size: 14px; /* Slightly larger for global search */
+            font-size: 14px;
             font-weight: 600;
             color: #6B4F40;
             margin-bottom: 6px;
@@ -82,11 +80,9 @@
             letter-spacing: 0.5px;
         }
         .global-search-container .filter-input {
-             width: 100%; /* Make global search input take full width of its container */
+             width: 100%;
         }
 
-
-        /* Tab Styles */
         .tabs-navigation {
             display: flex;
             margin-bottom: 0;
@@ -143,7 +139,6 @@
             color: #fff;
         }
 
-
         .tab-pane {
             display: none;
             background: #FAF6F0;
@@ -158,62 +153,6 @@
             display: block;
         }
         
-         /* General Header styles (used within tabs) */
-        .header {
-            background: #F0EBE3;
-            padding: 20px;
-            border-radius: 6px;
-            margin-bottom: 25px;
-            border: 1px solid #D7C6B7;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-        }
-
-        .header h1 {
-            font-family: 'Lora', serif;
-            font-size: 26px;
-            color: #5C3D2E;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .header p {
-            color: #7A6A5D;
-            font-size: 15px;
-            font-style: italic;
-        }
-
-        .filter-group { /* General filter group, also used by Global Search */
-            display: flex;
-            flex-direction: column;
-        }
-
-        .filter-group label { /* General filter label */
-            font-family: 'Lora', serif;
-            font-size: 13px;
-            font-weight: 600;
-            color: #6B4F40;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .filter-input { /* General filter input */
-            padding: 10px 14px;
-            border: 1px solid #C5B5A5;
-            border-radius: 4px;
-            font-size: 14px;
-            font-family: 'Merriweather', serif;
-            background: #fff;
-            color: #4a3b31;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .filter-input:focus {
-            outline: none;
-            border-color: #8E7463;
-            box-shadow: 0 0 0 3px rgba(142, 116, 99, 0.2);
-        }
-
         .status {
             padding: 14px 18px;
             border-radius: 4px;
@@ -231,10 +170,7 @@
             border-radius: 6px;
             overflow: hidden;
             border: 1px solid #D7C6B7;
-        }
-
-        #kmpTab .table-container, #rdsoTab .table-container, #rbTab .table-container {
-             box-shadow: 0 2px 5px rgba(0,0,0,0.07);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.07);
         }
 
         .table-header {
@@ -309,23 +245,17 @@
             font-style: italic;
         }
 
-        @media (max-width: 992px) {
-            /* Responsive styles remain */
-        }
-
         @media (max-width: 768px) {
             body { background-attachment: scroll; }
-            #kmpTab .table-header { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .subject-cell { max-width: 200px; }
-            .simple-table-subject-cell { max-width: 250px; }
-            thead th, tbody td { padding: 10px 14px; font-size: 12.5px; }
-
             .tabs-navigation { flex-direction: column; border-bottom: none; border-top-right-radius: 8px; border-top-left-radius: 8px; }
             .tab-button { border-bottom: 1px solid #5C3D2E; margin-bottom: 0; border-right: none; border-radius: 0; }
             .tab-button.active { border-bottom-color: #D4AF37; border-bottom-width:3px; }
             .tab-button:last-child { border-bottom: none; }
             .tab-button.active:last-child { border-bottom: 3px solid #D4AF37; }
             .tab-pane { border-top-left-radius: 0; border-top-right-radius: 0; border-top: 1px solid #D7C6B7; }
+            .subject-cell { max-width: 200px; }
+            .simple-table-subject-cell { max-width: 250px; }
+            thead th, tbody td { padding: 10px 14px; font-size: 12.5px; }
         }
     </style>
 </head>
@@ -354,11 +284,7 @@
 
         <!-- Tab Content Panes -->
         <div id="kmpTab" class="tab-pane active">
-            
-            <!-- Refresh button and its container have been removed -->
-
             <div class="status" id="statusKMP" style="display: none;"></div>
-
             <div class="table-container">
                 <div class="table-header">
                     <div class="table-title">KMP Document Archive</div>
@@ -382,6 +308,7 @@
         </div>
 
         <div id="rdsoTab" class="tab-pane">
+            <div class="status" id="statusRDSO" style="display: none;"></div>
             <div class="table-container">
                 <div class="table-header">
                     <div class="table-title">RDSO Letters & Specifications</div>
@@ -391,9 +318,9 @@
                     <table id="rdsoDataTable">
                         <thead>
                             <tr>
-                                <th>Document Title</th>
+                                <th>Letter No.</th>
                                 <th>Date</th>
-                                <th>Subject / Details</th>
+                                <th>Subject</th>
                             </tr>
                         </thead>
                         <tbody id="rdsoTableBody"></tbody>
@@ -403,6 +330,7 @@
         </div>
 
         <div id="rbTab" class="tab-pane">
+            <div class="status" id="statusRB" style="display: none;"></div>
             <div class="table-container">
                  <div class="table-header">
                     <div class="table-title">Railway Board Circulars</div>
@@ -430,16 +358,23 @@
     </div>
 
     <script>
+        // --- GLOBAL CONFIG & STATE ---
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxMvd_NrMa2Kk1jglfwGKTfHUFrUbMWeu35Q3qkvFAIn_ko5E8QRNL8UjyKpdu2deZtPA/exec';
+        const KMP_API_URL = 'https://coekms.in/Api/UploadData';
+        
+        // Define the exact column headers from your Google Sheets here.
+        // The `Link` column is handled separately and does not need to be listed.
+        const RDSO_DATA_KEYS = ['Letter No.', 'Date', 'Subject'];
+        const RB_DATA_KEYS = ['Letter No.', 'Date', 'Subject'];
+
         let globalSearchTerm = '';
         let allKMPData = [];
-        // Store parsed data and headers for RDSO and RB
-        let allRDSOData = { data: [], headers: [] };
-        let allRBData = { data: [], headers: [] };
-
-        const API_URL = 'https://coekms.in/Api/UploadData';
-
+        let allRDSOData = { data: [] };
+        let allRBData = { data: [] };
+        
         // --- START KMP SCRIPT ---
         function formatDateKMP(dateString) {
+            if (!dateString) return 'N/A';
             const date = new Date(dateString);
             return date.toLocaleDateString('en-GB');
         }
@@ -452,7 +387,7 @@
         function createKMPTableRow(item) {
             return `
                 <tr>
-                    <td>${item.letter_date ? formatDateKMP(item.letter_date) : 'N/A'}</td>
+                    <td>${formatDateKMP(item.letter_date)}</td>
                     <td>${item.letter_number || 'N/A'}</td>
                     <td class="subject-cell">${item.subject_of_letter || 'No Subject'}</td>
                     <td>
@@ -463,10 +398,10 @@
                 </tr>
             `;
         }
-
+        
         function updateKMPStatus(message, type) {
             const statusDiv = document.getElementById('statusKMP');
-            statusDiv.innerHTML = message; 
+            statusDiv.innerHTML = message;
             statusDiv.className = `status ${type}`;
             statusDiv.style.display = 'block';
             if (type === 'success' && !message.includes('Sample data')) {
@@ -477,30 +412,22 @@
         function updateKMPRecordCount(count) {
             document.getElementById('recordCountKMP').textContent = `${count} record${count !== 1 ? 's' : ''}`;
         }
-
+        
         async function fetchKMPData() {
             const tableBodyKMP = document.getElementById('tableBodyKMP');
             try {
-                updateKMPStatus('Fetching KMP records...', 'loading');
+                updateKMPStatus('Fetching CoE Kavach records...', 'loading');
                 let response, result;
                 try {
-                    response = await fetch(API_URL);
+                    response = await fetch(KMP_API_URL);
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     result = await response.json();
                 } catch (corsError) {
                     console.info('Direct fetch failed, attempting proxy...');
-                    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(API_URL)}`;
-                    try {
-                        response = await fetch(proxyUrl);
-                        if (!response.ok) throw new Error(`Proxy error! status: ${response.status}`);
-                        result = await response.json();
-                    } catch (proxyError) {
-                        console.info('First proxy failed, trying alternative...');
-                        const altProxyUrl = `https://corsproxy.io/?${encodeURIComponent(API_URL)}`;
-                        response = await fetch(altProxyUrl);
-                        if (!response.ok) throw new Error(`Alternative proxy error! status: ${response.status}`);
-                        result = await response.json();
-                    }
+                    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(KMP_API_URL)}`;
+                    response = await fetch(proxyUrl);
+                    if (!response.ok) throw new Error(`Proxy error! status: ${response.status}`);
+                    result = await response.json();
                 }
                 if (result.success && result.data) {
                     allKMPData = result.data;
@@ -515,46 +442,38 @@
                 }
             } catch (error) {
                 console.error('Error fetching KMP data:', error);
-                let errorMessage = `Failed to load KMP records: ${error.message}`;
-                let solutions = '';
-                if (error.message.includes('NetworkError') || error.message.includes('CORS') || error.message.includes('Failed to fetch') || error.message.includes('proxy error')) {
-                    errorMessage = 'Network Error: Unable to access KMP Data API.';
-                    solutions = `<div class="error-solutions"><h4>Troubleshooting:</h4><ol><li>Check your internet connection.</li><li>The API might be temporarily unavailable or blocking requests.</li><li>If using locally, CORS policies might be an issue.</li></ol><button onclick="loadKMPSampleData()" class="sample-btn">Load Sample KMP Data</button></div>`;
-                }
+                let errorMessage = `Failed to load CoE Kavach records: ${error.message}`;
+                let solutions = `<div class="error-solutions"><h4>Troubleshooting:</h4><ol><li>Check your internet connection.</li><li>The API might be temporarily unavailable or blocking requests.</li></ol><button onclick="loadKMPSampleData()" class="sample-btn">Load Sample CoE Data</button></div>`;
                 updateKMPStatus(errorMessage + solutions, 'error');
                 tableBodyKMP.innerHTML = `<tr><td colspan="4" class="no-data">${errorMessage}${solutions}</td></tr>`;
                 updateKMPRecordCount(0);
             } finally {
-                // Refresh button logic removed
-                updateAllTabCounts(); // Update counts after fetch completes or fails
+                updateAllTabCounts();
             }
         }
 
         function loadKMPSampleData() {
-            const sampleData = [
-                {"id": 143, "category": "Kavach", "subcategory": "Advisories", "priority": "Normal", "letter_date": "2025-05-07", "letter_number": "MEDHA1", "subject_of_letter": "MEDHA TEST LETTER TO COE - Sample for demonstration purposes.", "upload_file": "uploads/1748610721_Declaration.pdf"},
-                {"id": 136, "category": "LTE", "subcategory": "Advisories", "priority": "High", "letter_date": "2025-05-17", "letter_number": "TO COE", "subject_of_letter": "TO COE IRISET - Urgent review required for new LTE guidelines.", "upload_file": "uploads/1748602408_KavachTroubleshooting.pdf"},
-                {"id": 124, "category": "Kavach", "subcategory": "Layouts", "priority": "Low", "letter_date": "2025-04-25", "letter_number": "IRISET/CoE/Kavach/Misc", "subject_of_letter": "Kavach Equipment Installation Layout drawings for conventional WAG-7/ARNO/Crew/Non Crew friendly Locomotives - For archival.", "upload_file": "uploads/1748515953_SignedCoELetter.pdf"}
+            allKMPData = [
+                {"id": 1, "letter_date": "2025-05-07", "letter_number": "MEDHA1", "subject_of_letter": "MEDHA TEST LETTER TO COE - Sample for demonstration purposes.", "upload_file": "uploads/1748610721_Declaration.pdf"},
+                {"id": 2, "letter_date": "2025-05-17", "letter_number": "TO COE", "subject_of_letter": "TO COE IRISET - Urgent review required for new LTE guidelines.", "upload_file": "uploads/1748602408_KavachTroubleshooting.pdf"}
             ];
-            allKMPData = sampleData;
             applyKMPFilters();
-            updateKMPStatus('KMP Sample data loaded. This is not live data.', 'success');
-            updateAllTabCounts();
+            updateKMPStatus('CoE Kavach Sample data loaded. This is not live data.', 'success');
         }
-
+        
         function applyKMPFilters() {
             let filteredData = allKMPData;
             if (globalSearchTerm) {
-                filteredData = filteredData.filter(item =>
+                filteredData = allKMPData.filter(item =>
                     Object.values(item).some(value => value && value.toString().toLowerCase().includes(globalSearchTerm))
                 );
             }
             renderKMPTable(filteredData);
-            updateKMPRecordCount(filteredData.length);
         }
 
         function renderKMPTable(data) {
             const tableBodyKMP = document.getElementById('tableBodyKMP');
+            updateKMPRecordCount(data.length);
             if (data.length === 0) {
                 tableBodyKMP.innerHTML = '<tr><td colspan="4" class="no-data">No records match your current filter criteria.</td></tr>';
             } else {
@@ -563,172 +482,151 @@
         }
         // --- END KMP SCRIPT ---
 
-        // --- START TAB SCRIPT ---
-        function openTab(event, tabName) {
-            const tabPanes = document.getElementsByClassName('tab-pane');
-            for (let i = 0; i < tabPanes.length; i++) {
-                tabPanes[i].style.display = 'none';
-                tabPanes[i].classList.remove('active');
+        // --- START RDSO SCRIPT ---
+        function updateRDSOStatus(message, type) {
+            const statusDiv = document.getElementById('statusRDSO');
+            statusDiv.innerHTML = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = 'block';
+            if (type === 'success' && !message.includes('Sample data')) {
+                setTimeout(() => { statusDiv.style.display = 'none'; }, 3000);
             }
-            const tabButtons = document.getElementsByClassName('tab-button');
-            for (let i = 0; i < tabButtons.length; i++) {
-                tabButtons[i].classList.remove('active');
-            }
-            document.getElementById(tabName).style.display = 'block';
-            document.getElementById(tabName).classList.add('active');
-            if (event && event.currentTarget) {
-                 event.currentTarget.classList.add('active');
-            } else { 
-                const buttons = document.getElementsByClassName('tab-button');
-                for (let btn of buttons) {
-                    if (btn.getAttribute('onclick').includes(`'${tabName}'`)) {
-                        btn.classList.add('active');
-                        break;
-                    }
-                }
-            }
-            applyGlobalSearch(); 
-        }
-        // --- END TAB SCRIPT ---
-
-        // --- START RDSO/RB & CSV SCRIPT ---
-        const rdsoCsvData = `Document Title,Date,Subject / Details,Link
-"Functional Requirement Specifications",11.04.2022,"Functional Requirement Specifications - FRS - 4",https://rdso.indianrailways.gov.in/uploads/files/Functional%20Requirements%20Specification%20of%20KAVACH%20RDSO-SPN-196-2020%20version%204-0.pdf
-"System Requirement Specification of KAVACH (The Indian Railway Automatic Train Protection System)",07.06.2024,"System Requirement Specification of KAVACH (The Indian Railway Automatic Train Protection System) - SRS - 4.0 Amdt-3",https://rdso.indianrailways.gov.in/uploads/System%20requiremnt%20specification%20amd%203%20ver%204_0.pdf
-"Specification of KAVACH (The Indian Railway ATP)-Mode Transitions, SOS and MA Handling",16.07.2024,"Specification of KAVACH (The Indian Railway ATP)-Mode Transitions, SOS and MA Handling - Annexure-A1 - 4.0, Amdt-6",https://rdso.indianrailways.gov.in/uploads/files/Annexure-A1-%20Mode%20Transition%2C%20SOS%20and%20MA%20handling%20%20%20Amdt-6%20%20%2016-07-2024%20Final%20Signed.pdf
-"Onboard KAVACH Configurable Parameters",16.07.2024,"Onboard KAVACH Configurable Parameters - Annexure-A2 - 4.0 Amdt-3",https://rdso.indianrailways.gov.in/uploads/files/Annexure-A2-Specification%20of%20%20Kavach%20(The%20Indian%20Railway%20ATP)-%20Onboard%20KAVACH%20Configurable%20Parameters%20Amdt-3%2016_07_2024%20Final%20after%20signed.pdf
-"Stationary KAVACH Configurable Parameters",16.07.2024,"Stationary KAVACH Configurable Parameters - Annexure-A3 - 4.0 Amdt. 3",https://rdso.indianrailways.gov.in/uploads/Annexure-A3-Specification%20of%20Kavach%20(The%20Indian%20Railway%20ATP)-%20Stationary%20KAVACH%20Configurable%20Parameters%20Amdt-3%2016_07_2024%20Final%20Signed.pdf
-"Loco Pilot’s Operation-cum-indication Panel (LP-OCIP (DMI)) Display Requirements",11.07.2024,"Loco Pilot’s Operation-cum-indication Panel (LP-OCIP (DMI)) Display Requirements - Annexure-B - 4.0 Amdt-3",https://rdso.indianrailways.gov.in/uploads/Annexure-B-LP-OCIP%20Display%20Requirement%20-%20Amdt-3%20Final%20Signed.pdf
-"KAVACH Multiple Access Scheme & Radio Communication Protocol",27.06.2024,"KAVACH Multiple Access Scheme & Radio Communication Protocol - Annexure-C - Version 4.0 Amdt-10",https://rdso.indianrailways.gov.in/uploads/Annexure-C-Specification%20of%20Kavach%20(The%20Indian%20Railway%20ATP)-%20Multiple%20Access%20Scheme%20%26%20Protocol%20with%20Amendment-10%2027-06-2024-2%20signed.pdf
-"KAVACH RFID Tag Data Format",07.06.2024,"KAVACH RFID Tag Data Format - Annexure-D - Version 4.0 Amdt-7",https://rdso.indianrailways.gov.in/uploads/Annexure%20-D%20Tag%20Data%20Formal%20-Amdt-7%20(1).pdf
-"KAVACH UHF Radio Modem Requirements",27.06.2024,"KAVACH UHF Radio Modem Requirements - Annexure-E1 - 4",https://rdso.indianrailways.gov.in/uploads/ANNEXURE-E1%20SPECIFICATION%20OF%20KAVACH%20(THE%20INDIAN%20RAILWAY%20ATP)-UHF%20RADIO%20MODEM%20REQUIREMENTS%20signed.pdf
-"KAVACH RFID Fixing Arrangement Guidelines",27.06.2024,"KAVACH RFID Fixing Arrangement Guidelines - Annexure-F - 4.0 Amdt. 1",https://rdso.indianrailways.gov.in/uploads/Annexure%20F-%20Specification%20of%20Kavach%20(The%20Indian%20Railway%20ATP)-%20RFID%20Tag%20and%20Fixing%20Arrangement%20Guidelines%20Amdt-1%20Signed.pdf
-"KAVACH Network Monitoring System Protocol",16.07.2024,"KAVACH Network Monitoring System Protocol - Annexure-G - 4.0, Amdt-4",https://rdso.indianrailways.gov.in/uploads/files/Annexure-G-Specification%20of%20%20Kavach%20(The%20Indian%20Railway%20ATP)-%20Network%20Monitoring%20System%20%20Protocol-Amdt-4%2016_07_2024%20Final%20Signed.pdf
-"KAVACH RFID Tag-TIN Layout Guidelines",07.06.2024,"KAVACH RFID Tag-TIN Layout Guidelines - Annexure-H - Ver. 4.0, Amdt. 5",https://rdso.indianrailways.gov.in/uploads/Annexure-H%20-KAVACH%20RFID%20Tag-TIN%20Layout%20guidelines%20Admt-5.pdf
-"KAVACH Control Table Guidelines",07.06.2024,"KAVACH Control Table Guidelines - Annexure-I - Ver. 4.0 Amdt. 6",https://rdso.indianrailways.gov.in/uploads/Final%20Annexure_I_KAVACH_TOC%20Amdt-6.pdf
-"Remote Interface Units",03.07.2024,"Remote Interface Units - Annexure-J - 4.0, Amdt.-3",https://rdso.indianrailways.gov.in/uploads/Annexure%20%E2%80%93%20J%20-Specification%20of%20KAVACH%20(The%20Indian%20Railway%20ATP)-%20Remote%20Interface%20Unit%20Amdt-3%20Signed.pdf
-"SKAVACH to SKAVACH Interface",27.06.2024,"SKAVACH to SKAVACH Interface - Annexure-P - 4.0 Amdt. 4",https://rdso.indianrailways.gov.in/uploads/Annexure-P%20-Specification%20of%20Kavach%20(The%20Indian%20Railway%20ATP)-%20S-KAVACH-%20S-KAVACH%20Interface%20Requirements%20Amdt-4%20Signed.pdf
-"KAVACH Station Master Operation and Indication Panel (SMOCIP) Requirement",16.07.2024,"KAVACH Station Master Operation and Indication Panel (SMOCIP) Requirement - Annexure-Q - 4.0 , Amdt. 1",https://rdso.indianrailways.gov.in/uploads/files/Annexure%20Q%20amd1%20Final%20Signed.pdf
-"Factory Acceptance Test format",27.01.2025,"Factory Acceptance Test format -  - SIF 0515, Ver-1.2",https://rdso.indianrailways.gov.in/uploads/2025-01-28-Final%20FAT%20Testing%20Procedure%20Ver%201_2%20Dated%2027-01-2025.pdf
-"TCAS Field Trial for Various Scenarios - Observation Format",21.12.2021,"TCAS Field Trial for Various Scenarios - Observation Format -  - 0524, Ver.-2.0",https://rdso.indianrailways.gov.in/uploads/TCAS%20SAT%20Format%2022_12_2021.pdf
-"KAVACH Interoperability Test Format for Version 4.0",28.01.2025,"KAVACH Interoperability Test Format for Version 4.0 -  - SIF 0594, Ver.-1.1",https://rdso.indianrailways.gov.in/uploads/2025-01-28-Interoperability%20Test%20Format%20for%20Version%204.pdf
-"Acceptance Test Format for KAVACH Hardware of M/s Firm’s name",08.11.2024,"Acceptance Test Format for KAVACH Hardware of M/s Firm’s name -  - RDSO/ SPN/196/2020 (VERSION 4.0)",https://rdso.indianrailways.gov.in/uploads/files/08_11_2024-Template%20Common%20Acceptance%20Test%20Format%20for%20KAVACH%20Version%204_0.pdf
-"Type Test Format for KAVACH Hardware of M/S Firm’s Name",08.11.2024,"Type Test Format for KAVACH Hardware of M/S Firm’s Name -  - RDSO/ SPN/196/2020 (VERSION 4.0)",https://rdso.indianrailways.gov.in/uploads/files/08_11_2024-Template%20Common%20Type%20test%20%20Format%20for%20KAVACH%20Version%204_0.pdf
-"Test format for UHF Radio MODEM",15.01.2025,"Test format for UHF Radio MODEM -  - SIF1505, Version 1.0",https://rdso.indianrailways.gov.in/uploads/2025-01-15-Test%20format%20Radio%20MODEM%20dated%2015_01_2025.pdf
-"Template for Pre-commissioning Checklist for Onboard KAVACH",28.04.2025,"Template for Pre-commissioning Checklist for Onboard KAVACH -  - -",https://rdso.indianrailways.gov.in/uploads/2025-04-28-Template%20for%20Pre-commissioning%20Checklist%20for%20Onboard%20%20KAVACH.pdf
-"Functional Test Format of KAVACH",06.05.2025,"Functional Test Format of KAVACH -  - SIF-0533, Ver.-4.21",https://rdso.indianrailways.gov.in/uploads/2025-05-08-Functional%20Test%20Format%20of%20KAVACH.pdf
-"Functional Test Format of DMI",06.05.2025,"Functional Test Format of DMI -  - SIF-0522, Ver.-1.4",https://rdso.indianrailways.gov.in/uploads/2025-05-08-DMI%20Functional%20Test%20Format(1).pdf
-"Functional Test Format of Event Logging",06.05.2025,"Functional Test Format of Event Logging -  - SIF-00595, Ver.-1.0",https://rdso.indianrailways.gov.in/uploads/2025-05-08-Functional%20Test%20format%20of%20event%20logger.pdf
-"Standard Operating Procedure (SOP) for Generic Product Approval of KAVACH",06.05.2025,"Standard Operating Procedure (SOP) for Generic Product Approval of KAVACH -  - Document No. 1506<br>Version 1.0",https://rdso.indianrailways.gov.in/uploads/files/2025-06-10-letter%20for%20issue%20%20Standard%20Operating%20Procedure%20(SOP)%20for%20Generic%20Product%20Approval%20of%20KAVACH%20dated%2009-05-2025.pdf
-"SITE ACCEPTANCE TEST Procedure for Stationary KAVACH (The Indian Railway Automatic Train Protection System) as per RDSO/ SPN/196/2020 Version 4.0",15.03.2024,"SITE ACCEPTANCE TEST Procedure for Stationary KAVACH (The Indian Railway Automatic Train Protection System) as per RDSO/ SPN/196/2020 Version 4.0 -  - SIF-0593 Ver 1.0",https://rdso.indianrailways.gov.in/uploads/files/20215-06-18-Site%20Acceptance%20Test%20Scheme%20for%20Stationary%20KAVACH%20(IRATP)%20Application%20Logic%20for%20Version%204-0%20-SIF-0593%20Version%201-0.pdf`;
-
-        const railwayBoardCsvData = `,,,,
-Letter No.,Date,Subject,Link
-"2023/S&T/Dev/Kavach Corres-Part (1)",11.04.2025,"Implementation of Measures Related to Kavach System.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2025/Implementation%20of%20Measures%20Related%20to%20Kavach%20System.pdf"
-"2024/S&T/Dev/Maintenance Policy",17.01.2025,"Streamlining of Maintenance activity for assets created under Kavach Project","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2025/17_01_25%20Streamlining%20of%20Maintenance%20activity%20for%20assets%20created%20under%20Kavach%20Project.pdf"
-"2023/S&T/Dev/Kavach.Corres.",04.09.24,"Implementation of Kavach System on Indian Railways.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/Implementation%20of%20Kavach%20System%20on%20Indian%20Railways.pdf"
-"2023/S&T/Dev/Kavach.Corres.",09.08.2024,"Implementation of Kavach System on Indian Railways in Mission Mode.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2024/Implementation%20of%20Kavach%20System%20on%20Indian%20Railways%20in%20Mission%20Mode.pdf"
-"2020/Sig/TCAS/Estimates",29.05.2024,"Signalling Alteration/Modification works in existing/proposed Kavach territory","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2024/Signalling%20Alteration%20or%20Modification%20works%20in%20existing%20or%20proposed%20Kavach%20territory.pdf"
-"2021/Sig/TCAS",04.10.2023,"Kavach Working Group","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2023/04_10_23.pdf"
-"2023/S&T/Dev/Kavach Corrres",11.09.2023,"Advance execution of Infrastructure works Towers, OFC, Buildings & Feeder Power Supply on GQ, GD routes.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2023/11_09_23.pdf"
-"2020/Sig/TCAS/Development",04.07.2023,"Sections identified for survey of Kavach on GQ/GD Routes.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2023/Sections%20identified%20for%20survey%20of%20Kavach%20on%20GQGD%20Routes(1).pdf"
-"2020/Sig/IRISET",31.05.2023,"Special courses on ‘Kavach’ for Dy.CSTEs/Sr.DSTEs","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2023/31_05_23%20Special%20courses%20on%20%E2%80%98Kavach%E2%80%99%20for%20Dy_CSTEsSr_DSTEs.pdf"
-"2020/Sig/TCAS/Estimates (e3316629)",18.05.2023,"Components of Kavach/CTC inclusion in yard remodeling/ABS/LC gate/Signalling works","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2023/Letter%20dtd%2018_05_23%20(2).pdf"
-"2022/Sig/33/1/SEM/Misc",31.03.2023,"Addendum and Corrigendum Slip No. 1 of the IRSEM, July 2021 – Para no. 9.2.1, 9.2.2, 22.3.1","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2023/letter%20dtd%2031_03_23.pdf"
-"2021/Sig/Committee/KavachmaintenanceCost",31.01.2022,"EPC Tender for provision of TCAS in New Delhi Mumbai, New Delhi Howrah sections and other section of IR.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2021/1(1).pdf"
-"2013/Sig/TCAS/status",18.01.2021,"EPC Tender for provision of TCAS in new Delhi –Mumbai, New Delhi- Howrah sections and other sections of IR.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2021/14.pdf"
-"2014/Sig/ATP/IR",18.02.2021,"Approved scheme for TCAS & Automatic Signalling.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2021/10.pdf"
-"2014/Sig/ATP/IR",19.02.2021,"Committee for interoperability of features between TCAS & ETCS level-2","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2021/7.pdf"
-"2014/Sig/TPWS/160 kmph/Pt./loose",30.03.2021,"Raising speed to 160 kmph on new Delhi-Mumbai central route.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2021/1.pdf"
-"2016/Sig/Modernisation",02.01.2020,"Provision of Modern Automatic Train Protection System.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2020/19.pdf"
-"2013/Sig/TCAS/Status",16.01.2020,"Request for approval for engaging consultancy services at international level to develop interoperability between ETCS Level-2 and TCAS...","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2020/12_16012020.pdf"
-"2013/Sig/TCAS/status",30.01.2020,"Execution of works of TCAS on 1200 km on SCR- Monitoring.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2020/10.pdf"
-"2019/Sig/17/36/ETCS L-2(e-3304767)",17.04.2020,"Applying for associate membership of EULYNX for designing of Interface between EI/Relay Interlocking and RBC in the project of ETCS L-2","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2020/13-20.pdf"
-"2014/Sig/TPWS/160KMPH/Loose",09.10.2019,"Signalling and Telecommunication works in connection with raising of speed to 160 KMPH in Delhi- Mumbai and Delhi –Kolkata Section preparation of Detailed Estimates","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2019/49-2019.pdf"
-"2017/Sig/Modernization Signalling",24.10.2019,"Organizing Technical Workshop on Automatic Train Protection (ATP) System with special focus on ETCS Level-2.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2019/43-2019.pdf"
-"2014/Sig/TPWS/160 KMPH/Loose",28.10.19,"Signalling and Telecommunication works in connection with raising of speed to 160 KMPH in Delhi – Mumbai and Delhi – Kolkata Sections – preparation of Detailed Estimate.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2019/41-2019.pdf"
-"2017/Sig/Modernization/Signaling",31.10.2019,"Sanction of Signalling project deliberated in 34th GCM.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2019/34-2019.pdf"
-"2019/Sig/17/36/ETCS L-2",13.11.2019,"Interoperability of TCAS and ETCS Level-2 ATP Systems.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2019/29-2019.pdf"
-"2017/Sig/Modernization/Signalling",22.11.2019,"Points notes during Hon’ble MR’s interaction with Member of Railway Board on 06.11.2019","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2019/27-2019.pdf"
-"2019/AM(Sig)/Insp Note/1",29.11.2019,"Recorded Note on CBTC with AM (SIG),Railway Board during the discussion held on 16.11.2019 at MRVC.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2019/21-2019.pdf"
-"2019/Sig/17/36/ETCS L-2",04.12.2019,"Inter –Operability of TCAS and ETCS Level-2 ATP System.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2019/18-2019.pdf"
-"2017/Sig Modernization",10.12.2019,"Pilot Project of Provision ETCS Level-2 on four Sections of Indian Railway.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/2019/13-2019.pdf"
-"2013/Sig/TCAS/Status",12.05.2017,"Field trial for development of TCAS: E70 & CCB type brake interfaced Locos (WAP-5) at speeds up to 160 KMPH.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/downloads/circulars/2017/22.pdf"
-"2014/Signal/PMO",07.07.2017,"Inclusion of proposal of TPWS works (ETCS L-I) for Trunk routes in works programme 2018-19.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/downloads/circulars/20171/1.pdf"
-"2016/Mobility(S&T)/9/1","29/31.08.2016","Mission Raftaar - Data for Signalling Asset Reliability and Road Map.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/downloads/circulars/2016/11_Asset_Reliability.pdf"
-"2013/Sig/TPWS",17.03.2015,"Execution of sanctioned TPWS works on Indian Railways.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/downloads/circulars/2015/4.pdf"
-"2013/Sig/TPWS.",22.06.2015,"Provision of Train Protection & Warning System (TPWS) based on ETCL-1 Technology.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/downloads/circulars/2015/13.pdf"
-"2010/Sig/OBTPS",27.09.2010,"On Board Train Protection System.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/downloads/circulars/2010/10.pdf"
-"2005/Sig./TPWS/1(DLI-AGC)/Vol.II",12.10.2010,"TPWS projects on Railways.","https://indianrailways.gov.in/railwayboard/uploads/directorate/signal/downloads/circulars/2010/9.pdf"`;
-
-
-        function parseCSV(csvString) {
-            const lines = csvString.trim().split('\n');
-            let headerLineIndex = -1;
-            for (let i = 0; i < lines.length; i++) {
-                const potentialHeaders = lines[i].split(',').map(h => h.trim().replace(/^"|"$/g, '').toLowerCase());
-                if ((potentialHeaders.includes("letter no.") || potentialHeaders.includes("document title")) &&
-                    (potentialHeaders.includes("date") && (potentialHeaders.includes("subject") || potentialHeaders.includes("subject / details"))) &&
-                    lines[i].split(',').length >=3) {
-                    headerLineIndex = i;
-                    break;
-                }
-            }
-            if (headerLineIndex === -1) {
-                if (lines.length > 0 && lines[0].split(',').length >= 3) headerLineIndex = 0;
-                else return { headers: [], data: [] };
-            }
-            const headers = lines[headerLineIndex].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
-            const data = [];
-            for (let i = headerLineIndex + 1; i < lines.length; i++) {
-                const currentLine = lines[i].trim();
-                if (!currentLine || currentLine.startsWith(',,,') || /^\d{4},,$/.test(currentLine.replace(/,/g, m => m))) continue;
-                const values = currentLine.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                if (values.every(v => v.trim() === "")) continue;
-
-                const entry = {};
-                let hasEssentialData = false;
-                for (let j = 0; j < headers.length; j++) {
-                    let value = values[j] ? values[j].trim().replace(/^"|"$/g, '').replace(/""/g, '"') : '';
-                    entry[headers[j]] = value;
-                    if (j < 3 && value) hasEssentialData = true;
-                }
-                if (headers.every(h => entry.hasOwnProperty(h)) && hasEssentialData) {
-                    data.push(entry);
-                }
-            }
-            return { headers, data };
         }
 
-        function renderSimpleTable(dataToRender, tableBodyId, recordCountId, htmlTableHeadersTexts) {
-            const tableBody = document.getElementById(tableBodyId);
-            const recordCountEl = document.getElementById(recordCountId);
-            if (!tableBody || !recordCountEl) { console.error("Missing elements for " + tableBodyId); return; }
-
-            recordCountEl.textContent = `${dataToRender.length} record${dataToRender.length !== 1 ? 's' : ''}`;
-            if (dataToRender.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="${htmlTableHeadersTexts.length}" class="no-data">No documents match your criteria.</td></tr>`;
+        async function fetchRDSOData() {
+            updateRDSOStatus('Fetching RDSO records...', 'loading');
+            
+            if (!SCRIPT_URL || SCRIPT_URL.includes('YOUR_GOOGLE')) {
+                const errorMessage = 'Google Apps Script URL is not configured.';
+                const solutions = `<div class="error-solutions"><button onclick="loadRDSOSampleData()" class="sample-btn">Load Sample RDSO Data</button></div>`;
+                updateRDSOStatus(errorMessage + solutions, 'error');
+                renderSimpleTable([], 'rdsoTableBody', 'recordCountRDSO', RDSO_DATA_KEYS);
                 return;
             }
-            let tableHTML = '';
-            dataToRender.forEach(row => {
-                tableHTML += '<tr>';
-                htmlTableHeadersTexts.forEach(headerText => {
-                    let cellValue = row[headerText] || '';
-                    const cellClass = (headerText.toLowerCase().includes('subject')) ? 'class="simple-table-subject-cell"' : '';
+
+            try {
+                const response = await fetch(`${SCRIPT_URL}?sheet=RDSO`);
+                if (!response.ok) throw new Error(`Network response was not ok (status: ${response.status})`);
+                const result = await response.json();
+
+                if (result.success && Array.isArray(result.data)) {
+                    allRDSOData.data = result.data;
+                    updateRDSOStatus(`Successfully retrieved ${result.data.length} RDSO records.`, 'success');
+                } else {
+                    throw new Error(result.message || 'Invalid data format from Google Script.');
+                }
+            } catch (error) {
+                console.error('Error fetching RDSO data:', error);
+                const errorMessage = `Failed to load RDSO records: ${error.message}`;
+                const solutions = `<div class="error-solutions"><h4>Troubleshooting:</h4><ol><li>Verify the Google Apps Script URL.</li><li>Ensure the sheet is named "RDSO" and has a "Link" column.</li><li>Ensure RDSO sheet headers are exactly: ${RDSO_DATA_KEYS.join(', ')}.</li></ol><button onclick="loadRDSOSampleData()" class="sample-btn">Load Sample RDSO Data</button></div>`;
+                updateRDSOStatus(errorMessage + solutions, 'error');
+            } finally {
+                applySimpleTableSearch(allRDSOData.data, 'rdsoTableBody', 'recordCountRDSO', RDSO_DATA_KEYS);
+                updateAllTabCounts();
+            }
+        }
+        
+        function loadRDSOSampleData() {
+             allRDSOData.data = [
+                {"Letter No.": "RDSO/SPN/TC/FRS/4", "Date": "11.04.2022", "Subject": "Functional Requirement Specifications for Kavach - FRS v4.0", "Link": "https://indianrailways.gov.in/railwayboard/uploads/codes/frs_kavach.pdf"},
+                {"Letter No.": "RDSO/SPN/TC/SRS/4.3", "Date": "07.06.2024", "Subject": "System Requirement Specification for Kavach - SRS v4.0 Amdt-3", "Link": "https://indianrailways.gov.in/railwayboard/uploads/codes/srs_kavach.pdf"}
+             ];
+             applySimpleTableSearch(allRDSOData.data, 'rdsoTableBody', 'recordCountRDSO', RDSO_DATA_KEYS);
+             updateRDSOStatus('RDSO Sample data loaded. This is not live data.', 'success');
+             updateAllTabCounts();
+        }
+        // --- END RDSO SCRIPT ---
+
+        // --- START RAILWAY BOARD SCRIPT ---
+         function updateRBStatus(message, type) {
+            const statusDiv = document.getElementById('statusRB');
+            statusDiv.innerHTML = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = 'block';
+            if (type === 'success' && !message.includes('Sample data')) {
+                setTimeout(() => { statusDiv.style.display = 'none'; }, 3000);
+            }
+        }
+
+        async function fetchRBData() {
+            updateRBStatus('Fetching Railway Board records...', 'loading');
+            
+            if (!SCRIPT_URL || SCRIPT_URL.includes('YOUR_GOOGLE')) {
+                const errorMessage = 'Google Apps Script URL is not configured.';
+                const solutions = `<div class="error-solutions"><button onclick="loadRBSampleData()" class="sample-btn">Load Sample RB Data</button></div>`;
+                updateRBStatus(errorMessage + solutions, 'error');
+                renderSimpleTable([], 'rbTableBody', 'recordCountRB', RB_DATA_KEYS);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${SCRIPT_URL}?sheet=Railway Board`);
+                if (!response.ok) throw new Error(`Network response was not ok (status: ${response.status})`);
+                const result = await response.json();
+
+                if (result.success && Array.isArray(result.data)) {
+                    allRBData.data = result.data;
+                    updateRBStatus(`Successfully retrieved ${result.data.length} Railway Board records.`, 'success');
+                } else {
+                    throw new Error(result.message || 'Invalid data format from Google Script.');
+                }
+            } catch (error) {
+                console.error('Error fetching Railway Board data:', error);
+                const errorMessage = `Failed to load Railway Board records: ${error.message}`;
+                const solutions = `<div class="error-solutions"><h4>Troubleshooting:</h4><ol><li>Verify the Google Apps Script URL.</li><li>Ensure the sheet is named "Railway Board" and has a "Link" column.</li><li>Ensure RB sheet headers are exactly: ${RB_DATA_KEYS.join(', ')}.</li></ol><button onclick="loadRBSampleData()" class="sample-btn">Load Sample RB Data</button></div>`;
+                updateRBStatus(errorMessage + solutions, 'error');
+            } finally {
+                applySimpleTableSearch(allRBData.data, 'rbTableBody', 'recordCountRB', RB_DATA_KEYS);
+                updateAllTabCounts();
+            }
+        }
+        
+        function loadRBSampleData() {
+             allRBData.data = [
+                {"Letter No.": "2023/S&T/Dev/Kavach", "Date": "11.04.2025", "Subject": "Implementation of Measures Related to Kavach System.", "Link": "https://indianrailways.gov.in/railwayboard/uploads/directorate/signal_telecom/downloads/2023/Kavach_Implementation.pdf"},
+                {"Letter No.": "2024/S&T/Dev/Maint", "Date": "17.01.2025", "Subject": "Streamlining of Maintenance activity for assets.", "Link": "https://indianrailways.gov.in/railwayboard/uploads/directorate/signal_telecom/downloads/2024/Maintenance_Streamlining.pdf"}
+             ];
+             applySimpleTableSearch(allRBData.data, 'rbTableBody', 'recordCountRB', RB_DATA_KEYS);
+             updateRBStatus('Railway Board Sample data loaded. This is not live data.', 'success');
+             updateAllTabCounts();
+        }
+        // --- END RAILWAY BOARD SCRIPT ---
+
+        // --- GENERAL TABLE & SEARCH SCRIPT ---
+        function renderSimpleTable(dataToRender, tableBodyId, recordCountId, dataKeys) {
+            const tableBody = document.getElementById(tableBodyId);
+            const recordCountEl = document.getElementById(recordCountId);
+            
+            recordCountEl.textContent = `${dataToRender.length} record${dataToRender.length !== 1 ? 's' : ''}`;
+            
+            if (dataToRender.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="${dataKeys.length}" class="no-data">No documents found.</td></tr>`;
+                return;
+            }
+
+            let tableHTML = dataToRender.map(row => {
+                let rowHTML = '<tr>';
+                dataKeys.forEach((key, index) => {
+                    let cellValue = row[key] || '';
+                    const cellClass = (key.toLowerCase().includes('subject')) ? 'class="simple-table-subject-cell"' : '';
                     
-                    if ((headerText === 'Document Title' || headerText === 'Letter No.') && row.Link) {
-                        cellValue = `<a href="${row.Link}" target="_blank" class="file-link">${cellValue}</a>`;
+                    // MODIFIED LOGIC: If this is the last column in the defined keys AND a 'Link' property exists,
+                    // wrap the cell content in a hyperlink.
+                    const isLastColumn = index === dataKeys.length - 1;
+                    if (isLastColumn && row.Link) {
+                        cellValue = `<a href="${row.Link}" target="_blank" class="file-link">${cellValue || 'View File'}</a>`;
                     }
                     
-                    tableHTML += `<td ${cellClass}>${cellValue}</td>`;
+                    rowHTML += `<td ${cellClass}>${cellValue}</td>`;
                 });
-                tableHTML += '</tr>';
-            });
+                rowHTML += '</tr>';
+                return rowHTML;
+            }).join('');
+            
             tableBody.innerHTML = tableHTML;
         }
 
-        function applySimpleTableSearch(fullDataset, tableBodyId, recordCountId, tableHeadersElements) {
+        function applySimpleTableSearch(fullDataset, tableBodyId, recordCountId, dataKeys) {
             let filteredData = fullDataset;
             if (globalSearchTerm) {
                 filteredData = fullDataset.filter(row =>
@@ -737,53 +635,48 @@ Letter No.,Date,Subject,Link
                     )
                 );
             }
-            const displayTableHeadersTexts = Array.from(tableHeadersElements).map(th => th.textContent.trim());
-            renderSimpleTable(filteredData, tableBodyId, recordCountId, displayTableHeadersTexts);
+            renderSimpleTable(filteredData, tableBodyId, recordCountId, dataKeys);
         }
-        // --- END RDSO/RB SCRIPT ---
 
-        // --- GLOBAL UTILITIES ---
-        function updateAllTabCounts() {
-            // KMP Count
-            let kmpCount = allKMPData.length;
-            if (globalSearchTerm) {
-                kmpCount = allKMPData.filter(item =>
-                    Object.values(item).some(value => value && value.toString().toLowerCase().includes(globalSearchTerm))
-                ).length;
-            }
-            document.querySelector('#kmpTabButton .tab-record-count').textContent = `(${kmpCount})`;
-
-            // RDSO Count
-            let rdsoCount = allRDSOData.data.length;
-            if (globalSearchTerm) {
-                rdsoCount = allRDSOData.data.filter(row =>
-                    Object.values(row).some(value => value && value.toString().toLowerCase().includes(globalSearchTerm))
-                ).length;
-            }
-            document.querySelector('#rdsoTabButton .tab-record-count').textContent = `(${rdsoCount})`;
+        // --- GLOBAL UTILITIES & TAB SCRIPT ---
+        function openTab(event, tabName) {
+            Array.from(document.getElementsByClassName('tab-pane')).forEach(pane => {
+                pane.style.display = 'none';
+                pane.classList.remove('active');
+            });
+            Array.from(document.getElementsByClassName('tab-button')).forEach(btn => btn.classList.remove('active'));
             
-            // Railway Board Count
-            let rbCount = allRBData.data.length;
-            if (globalSearchTerm) {
-                rbCount = allRBData.data.filter(row =>
-                    Object.values(row).some(value => value && value.toString().toLowerCase().includes(globalSearchTerm))
-                ).length;
-            }
-            document.querySelector('#rbTabButton .tab-record-count').textContent = `(${rbCount})`;
+            const activePane = document.getElementById(tabName);
+            activePane.style.display = 'block';
+            activePane.classList.add('active');
+            event.currentTarget.classList.add('active');
+            applyGlobalSearch(); 
         }
 
+        function updateAllTabCounts() {
+            function getFilteredCount(dataset) {
+                if (!globalSearchTerm) return dataset.length;
+                return dataset.filter(item => Object.values(item).some(v => v && v.toString().toLowerCase().includes(globalSearchTerm))).length;
+            }
+            document.querySelector('#kmpTabButton .tab-record-count').textContent = `(${getFilteredCount(allKMPData)})`;
+            document.querySelector('#rdsoTabButton .tab-record-count').textContent = `(${getFilteredCount(allRDSOData.data)})`;
+            document.querySelector('#rbTabButton .tab-record-count').textContent = `(${getFilteredCount(allRBData.data)})`;
+        }
 
         function applyGlobalSearch() {
             const activeTabPane = document.querySelector('.tab-pane.active');
             if (!activeTabPane) return;
-            const activeTabId = activeTabPane.id;
-
-            if (activeTabId === 'kmpTab') {
-                applyKMPFilters();
-            } else if (activeTabId === 'rdsoTab') {
-                applySimpleTableSearch(allRDSOData.data, 'rdsoTableBody', 'recordCountRDSO', document.getElementById('rdsoDataTable').querySelectorAll('thead th'));
-            } else if (activeTabId === 'rbTab') {
-                applySimpleTableSearch(allRBData.data, 'rbTableBody', 'recordCountRB', document.getElementById('rbDataTable').querySelectorAll('thead th'));
+            
+            switch (activeTabPane.id) {
+                case 'kmpTab':
+                    applyKMPFilters();
+                    break;
+                case 'rdsoTab':
+                    applySimpleTableSearch(allRDSOData.data, 'rdsoTableBody', 'recordCountRDSO', RDSO_DATA_KEYS);
+                    break;
+                case 'rbTab':
+                    applySimpleTableSearch(allRBData.data, 'rbTableBody', 'recordCountRB', RB_DATA_KEYS);
+                    break;
             }
         }
 
@@ -791,33 +684,16 @@ Letter No.,Date,Subject,Link
         document.addEventListener('DOMContentLoaded', function() {
             document.title = 'Kavach Library';
             
-            const globalSearchInput = document.getElementById('globalSearchInput');
-            globalSearchInput.addEventListener('input', (event) => {
-                globalSearchTerm = event.target.value.toLowerCase();
+            document.getElementById('globalSearchInput').addEventListener('input', (event) => {
+                globalSearchTerm = event.target.value.toLowerCase().trim();
                 applyGlobalSearch();
-                updateAllTabCounts(); // Update counts on every search input
+                updateAllTabCounts();
             });
 
+            // Fetch data for all tabs
             fetchKMPData();
-
-            // Parse and render RDSO data
-            const rdsoParsedResult = parseCSV(rdsoCsvData);
-            allRDSOData.data = rdsoParsedResult.data;
-            allRDSOData.headers = rdsoParsedResult.headers; 
-            const rdsoTableHeadersElements = document.getElementById('rdsoDataTable').querySelectorAll('thead th');
-            const rdsoDisplayHeadersTexts = Array.from(rdsoTableHeadersElements).map(th => th.textContent.trim());
-            renderSimpleTable(allRDSOData.data, 'rdsoTableBody', 'recordCountRDSO', rdsoDisplayHeadersTexts);
-
-            // Parse and render Railway Board data
-            const rbParsedResult = parseCSV(railwayBoardCsvData);
-            allRBData.data = rbParsedResult.data;
-            allRBData.headers = rbParsedResult.headers; 
-            const rbTableHeadersElements = document.getElementById('rbDataTable').querySelectorAll('thead th');
-            const rbDisplayHeadersTexts = Array.from(rbTableHeadersElements).map(th => th.textContent.trim());
-            renderSimpleTable(allRBData.data, 'rbTableBody', 'recordCountRB', rbDisplayHeadersTexts);
-
-            // Set initial tab counts after all data is loaded
-            updateAllTabCounts();
+            fetchRDSOData();
+            fetchRBData();
         });
     </script>
 </body>
