@@ -491,7 +491,7 @@
             } catch (error) {
                 console.error('Error fetching KMP data:', error);
                 let errorMessage = `Failed to load CoE Kavach records: ${error.message}`;
-                let solutions = `<div class="error-solutions"><h4>Troubleshooting:</h4><ol><li>Check your internet connection.</li><li>The API might be temporarily unavailable or blocking requests.</li></ol><button onclick="loadKMPSampleData()" class="sample-btn">Load Sample CoE Data</button></div>`;
+                let solutions = `<div class="error-solutions"><h4>Troubleshooting:</h4><ol><li>Check your internet connection.</li><li>The API might be temporarily unavailable or blocking requests.</li></ol><button onclick="fetchKMPData()" class="sample-btn">Reload</button></div>`;
                 updateKMPStatus(errorMessage + solutions, 'error');
                 tableBodyKMP.innerHTML = `<tr><td colspan="4" class="no-data">${errorMessage}${solutions}</td></tr>`;
                 updateKMPRecordCount(0);
