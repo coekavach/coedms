@@ -183,6 +183,10 @@
             color: #fff;
         }
 
+        .tab-content-container {
+             /* This new container will hold all tab panes */
+        }
+
         .tab-pane {
             display: none;
             background: #FAF6F0;
@@ -271,6 +275,8 @@
         .error-solutions { margin-top: 20px; padding: 20px; background: #fff8e1; border: 1px solid #ffecb3; border-radius: 4px;}
         .error-solutions h4 { color: #795548; margin-bottom: 10px; font-family: 'Lora', serif; }
         .error-solutions ol { color: #795548; margin-left: 20px; }
+        .error-solutions code { background-color: #E0D6CC; padding: 2px 4px; border-radius: 3px; font-family: monospace;}
+
 
         .sample-btn {
             background: #558b2f; color: white; border: 1px solid #33691e; padding: 9px 18px;
@@ -315,7 +321,6 @@
         <div class="global-search-container">
             <div class="search-wrapper">
                 <label for="globalSearchInput" class="sr-only">Search All Documents</label>
-                <!-- Search Icon (SVG) -->
                 <svg class="search-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
                     <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                 </svg>
@@ -323,80 +328,37 @@
             </div>
         </div>
 
-        <!-- Tab Navigation -->
+        <!-- Tab Navigation (Dynamically populated) -->
         <div class="tabs-navigation">
-            <button id="kmpTabButton" class="tab-button active" onclick="openTab(event, 'kmpTab')">CoE Kavach<span class="tab-record-count"></span></button>
-            <button id="rdsoTabButton" class="tab-button" onclick="openTab(event, 'rdsoTab')">RDSO<span class="tab-record-count"></span></button>
-            <button id="rbTabButton" class="tab-button" onclick="openTab(event, 'rbTab')">Railway Board<span class="tab-record-count"></span></button>
+            <button id="kmpTabButton" class="tab-button active" onclick="openTab(event, 'kmpTab')">CoE Kavach Advisories<span class="tab-record-count"></span></button>
         </div>
 
-        <!-- Tab Content Panes -->
-        <div id="kmpTab" class="tab-pane active">
-            <div class="status" id="statusKMP" style="display: none;"></div>
-            <div class="table-container">
-                <div class="table-header">
-                    <div class="table-title">KMP Document Archive</div>
-                    <div class="record-count" id="recordCountKMP">0 records</div>
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Letter Number</th>
-                                <th>Subject</th>
-                                <th>File</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBodyKMP">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div id="rdsoTab" class="tab-pane">
-            <div class="status" id="statusRDSO" style="display: none;"></div>
-            <div class="table-container">
-                <div class="table-header">
-                    <div class="table-title">RDSO Letters & Specifications</div>
-                    <div class="record-count" id="recordCountRDSO">0 records</div>
-                </div>
-                <div class="table-wrapper">
-                    <table id="rdsoDataTable">
-                        <thead>
-                            <tr>
-                                <th>Letter No.</th>
-                                <th>Date</th>
-                                <th>Subject</th>
-                            </tr>
-                        </thead>
-                        <tbody id="rdsoTableBody"></tbody>
-                    </table>
+        <!-- Tab Content Panes (Dynamically populated) -->
+        <div class="tab-content-container">
+            <div id="kmpTab" class="tab-pane active">
+                <div class="status" id="statusKMP" style="display: none;"></div>
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-title">KMP Document Archive</div>
+                        <div class="record-count" id="recordCountKMP">0 records</div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Letter Number</th>
+                                    <th>Subject</th>
+                                    <th>File</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBodyKMP">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div id="rbTab" class="tab-pane">
-            <div class="status" id="statusRB" style="display: none;"></div>
-            <div class="table-container">
-                 <div class="table-header">
-                    <div class="table-title">Railway Board Circulars</div>
-                    <div class="record-count" id="recordCountRB">0 records</div>
-                </div>
-                <div class="table-wrapper">
-                    <table id="rbDataTable">
-                        <thead>
-                            <tr>
-                                <th>Letter No.</th>
-                                <th>Date</th>
-                                <th>Subject</th>
-                            </tr>
-                        </thead>
-                        <tbody id="rbTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
+            <!-- Other tab panes will be inserted here by the script -->
         </div>
         
         <div class="footer-attribution">
@@ -410,17 +372,145 @@
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxMvd_NrMa2Kk1jglfwGKTfHUFrUbMWeu35Q3qkvFAIn_ko5E8QRNL8UjyKpdu2deZtPA/exec';
         const KMP_API_URL = 'https://coekms.in/Api/UploadData';
         
-        // Define the exact column headers from your Google Sheets here.
-        // The `Link` column is handled separately and does not need to be listed.
-        const RDSO_DATA_KEYS = ['Letter No.', 'Date', 'Subject'];
-        const RB_DATA_KEYS = ['Letter No.', 'Date', 'Subject'];
-
         let globalSearchTerm = '';
         let allKMPData = [];
-        let allRDSOData = { data: [] };
-        let allRBData = { data: [] };
+        let allGoogleSheetData = {}; // Object to hold data for all dynamic tabs, keyed by sheet name
+
+        // --- DYNAMIC TAB & PANE CREATION ---
         
-        // --- START KMP SCRIPT ---
+        /**
+         * Creates a slug from a string for use in element IDs.
+         * @param {string} text The text to slugify.
+         * @returns {string} The slugified text.
+         */
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')       // Replace spaces with -
+                .replace(/[^\w\-]+/g, '')   // Remove all non-word chars
+                .replace(/\-\-+/g, '-')     // Replace multiple - with single -
+                .replace(/^-+/, '')         // Trim - from start of text
+                .replace(/-+$/, '');        // Trim - from end of text
+        }
+        
+        /**
+         * Creates and appends a tab button and its corresponding content pane to the DOM.
+         * @param {string} sheetName The name of the sheet to create a tab for.
+         */
+        function createTabAndPane(sheetName) {
+            const tabsNavigation = document.querySelector('.tabs-navigation');
+            const tabContentContainer = document.querySelector('.tab-content-container');
+            const sheetSlug = slugify(sheetName);
+
+            // 1. Create Tab Button
+            const button = document.createElement('button');
+            button.id = `tab-button-${sheetSlug}`;
+            button.className = 'tab-button';
+            button.innerHTML = `${sheetName}<span class="tab-record-count"></span>`;
+            button.onclick = (event) => openTab(event, `tab-pane-${sheetSlug}`);
+            tabsNavigation.appendChild(button);
+
+            // 2. Create Tab Pane
+            const pane = document.createElement('div');
+            pane.id = `tab-pane-${sheetSlug}`;
+            pane.className = 'tab-pane';
+            pane.innerHTML = `
+                <div class="status" id="status-${sheetSlug}" style="display: none;"></div>
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-title">${sheetName} Documents</div>
+                        <div class="record-count" id="record-count-${sheetSlug}">0 records</div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead id="table-head-${sheetSlug}"></thead>
+                            <tbody id="table-body-${sheetSlug}"></tbody>
+                        </table>
+                    </div>
+                </div>`;
+            tabContentContainer.appendChild(pane);
+        }
+
+        /**
+         * Fetches the names of all sheets from the Google Sheet and builds the UI.
+         */
+        async function fetchAndBuildGoogleSheetTabs() {
+            try {
+                // IMPORTANT: This assumes your Apps Script can handle "?action=getSheets"
+                const response = await fetch(`${SCRIPT_URL}?action=getSheets`);
+                if (!response.ok) throw new Error(`Network response was not ok. The Apps Script may not support the 'getSheets' action.`);
+                const result = await response.json();
+
+                if (result.success && Array.isArray(result.sheets)) {
+                    for (const sheetName of result.sheets) {
+                        allGoogleSheetData[sheetName] = { data: [], headers: [] }; // Initialize storage
+                        createTabAndPane(sheetName);
+                        fetchSheetData(sheetName); // Fetch data for the newly created tab
+                    }
+                } else {
+                    throw new Error(result.message || 'Failed to get sheet names from Google Script.');
+                }
+            } catch (error) {
+                console.error('Error building dynamic tabs:', error);
+                const firstDynamicPane = document.querySelector('.tab-content-container .tab-pane:not(#kmpTab)');
+                if (firstDynamicPane) {
+                    const statusDiv = firstDynamicPane.querySelector('.status');
+                    statusDiv.innerHTML = `Could not load tabs from Google Sheets: ${error.message}. <div class="error-solutions"><h4>Note:</h4><ol><li>This feature requires your Google Apps Script to be updated to handle a <code>?action=getSheets</code> request and return a JSON object like <code>{"success": true, "sheets": ["Sheet1", "Sheet2"]}</code>.</li></ol></div>`;
+                    statusDiv.className = 'status error';
+                    statusDiv.style.display = 'block';
+                }
+            }
+        }
+        
+        // --- DATA FETCHING ---
+
+        /**
+         * Fetches data for a specific sheet from the Google Apps Script.
+         * @param {string} sheetName The name of the sheet to fetch data for.
+         */
+        async function fetchSheetData(sheetName) {
+            const sheetSlug = slugify(sheetName);
+            const statusDiv = document.getElementById(`status-${sheetSlug}`);
+            
+            const updateStatus = (message, type) => {
+                if (statusDiv) {
+                    statusDiv.innerHTML = message;
+                    statusDiv.className = `status ${type}`;
+                    statusDiv.style.display = 'block';
+                    if (type === 'success') setTimeout(() => { statusDiv.style.display = 'none'; }, 3000);
+                }
+            };
+            
+            updateStatus(`Fetching ${sheetName} records...`, 'loading');
+
+            try {
+                const response = await fetch(`${SCRIPT_URL}?sheet=${encodeURIComponent(sheetName)}`);
+                if (!response.ok) throw new Error(`Network error (status: ${response.status})`);
+                const result = await response.json();
+
+                if (result.success && Array.isArray(result.data)) {
+                    allGoogleSheetData[sheetName].data = result.data;
+                    
+                    // Dynamically determine headers from the first data object if available
+                    if (result.data.length > 0) {
+                        allGoogleSheetData[sheetName].headers = Object.keys(result.data[0]).filter(h => h !== 'Link');
+                    }
+                    
+                    updateStatus(`Successfully retrieved ${result.data.length} ${sheetName} records.`, 'success');
+                } else {
+                    throw new Error(result.message || 'Invalid data format received.');
+                }
+            } catch (error) {
+                console.error(`Error fetching ${sheetName} data:`, error);
+                const errorMessage = `Failed to load ${sheetName} records: ${error.message}`;
+                updateStatus(errorMessage, 'error');
+            } finally {
+                applySimpleTableSearch(sheetName);
+                updateAllTabCounts();
+            }
+        }
+
+
+        // --- START KMP SCRIPT (Largely Unchanged) ---
         function formatDateKMP(dateString) {
             if (!dateString) return 'N/A';
             const date = new Date(dateString);
@@ -465,24 +555,15 @@
             const tableBodyKMP = document.getElementById('tableBodyKMP');
             try {
                 updateKMPStatus('Fetching CoE Kavach records...', 'loading');
-                let response, result;
-                try {
-                    response = await fetch(KMP_API_URL);
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    result = await response.json();
-                } catch (corsError) {
-                    console.info('Direct fetch failed, attempting proxy...');
-                    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(KMP_API_URL)}`;
-                    response = await fetch(proxyUrl);
-                    if (!response.ok) throw new Error(`Proxy error! status: ${response.status}`);
-                    result = await response.json();
-                }
+                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(KMP_API_URL)}`;
+                const response = await fetch(proxyUrl);
+                if (!response.ok) throw new Error(`Proxy error! status: ${response.status}`);
+                const result = await response.json();
+                
                 if (result.success && result.data) {
                     allKMPData = result.data;
                     applyKMPFilters(); 
-                    if (allKMPData.length === 0 && !globalSearchTerm) {
-                         updateKMPStatus('Archive is currently empty.', 'success');
-                    } else if (allKMPData.length > 0) {
+                    if (allKMPData.length > 0) {
                          updateKMPStatus(`Successfully retrieved ${allKMPData.length} records.`, 'success');
                     }
                 } else {
@@ -491,7 +572,7 @@
             } catch (error) {
                 console.error('Error fetching KMP data:', error);
                 let errorMessage = `Failed to load CoE Kavach records: ${error.message}`;
-                let solutions = `<div class="error-solutions"><h4>Troubleshooting:</h4><ol><li>Check your internet connection.</li><li>The API might be temporarily unavailable or blocking requests.</li></ol><button onclick="fetchKMPData()" class="sample-btn">Reload</button></div>`;
+                let solutions = `<div class="error-solutions"><h4>Troubleshooting:</h4><ol><li>Check your internet connection.</li><li>The API might be temporarily unavailable.</li></ol><button onclick="fetchKMPData()" class="sample-btn">Reload</button></div>`;
                 updateKMPStatus(errorMessage + solutions, 'error');
                 tableBodyKMP.innerHTML = `<tr><td colspan="4" class="no-data">${errorMessage}${solutions}</td></tr>`;
                 updateKMPRecordCount(0);
@@ -499,23 +580,11 @@
                 updateAllTabCounts();
             }
         }
-
-        function loadKMPSampleData() {
-            allKMPData = [
-                {"id": 1, "letter_date": "2025-05-07", "letter_number": "MEDHA1", "subject_of_letter": "MEDHA TEST LETTER TO COE - Sample for demonstration purposes.", "upload_file": "uploads/1748610721_Declaration.pdf"},
-                {"id": 2, "letter_date": "2025-05-17", "letter_number": "TO COE", "subject_of_letter": "TO COE IRISET - Urgent review required for new LTE guidelines.", "upload_file": "uploads/1748602408_KavachTroubleshooting.pdf"}
-            ];
-            applyKMPFilters();
-            updateKMPStatus('CoE Kavach Sample data loaded. This is not live data.', 'success');
-        }
         
         function applyKMPFilters() {
-            let filteredData = allKMPData;
-            if (globalSearchTerm) {
-                filteredData = allKMPData.filter(item =>
-                    Object.values(item).some(value => value && value.toString().toLowerCase().includes(globalSearchTerm))
-                );
-            }
+            let filteredData = allKMPData.filter(item =>
+                Object.values(item).some(value => value && value.toString().toLowerCase().includes(globalSearchTerm))
+            );
             renderKMPTable(filteredData);
         }
 
@@ -523,148 +592,45 @@
             const tableBodyKMP = document.getElementById('tableBodyKMP');
             updateKMPRecordCount(data.length);
             if (data.length === 0) {
-                tableBodyKMP.innerHTML = '<tr><td colspan="4" class="no-data">No records match your current filter criteria.</td></tr>';
+                const message = globalSearchTerm ? 'No records match your current filter criteria.' : 'No documents found.';
+                tableBodyKMP.innerHTML = `<tr><td colspan="4" class="no-data">${message}</td></tr>`;
             } else {
                 tableBodyKMP.innerHTML = data.map(createKMPTableRow).join('');
             }
         }
         // --- END KMP SCRIPT ---
 
-        // --- START RDSO SCRIPT ---
-        function updateRDSOStatus(message, type) {
-            const statusDiv = document.getElementById('statusRDSO');
-            statusDiv.innerHTML = message;
-            statusDiv.className = `status ${type}`;
-            statusDiv.style.display = 'block';
-            if (type === 'success' && !message.includes('Sample data')) {
-                setTimeout(() => { statusDiv.style.display = 'none'; }, 3000);
-            }
-        }
-
-        async function fetchRDSOData() {
-            updateRDSOStatus('Fetching RDSO records...', 'loading');
+        // --- GENERAL TABLE & SEARCH SCRIPT (Refactored) ---
+        function renderSimpleTable(sheetName, dataToRender) {
+            const sheetInfo = allGoogleSheetData[sheetName];
+            if (!sheetInfo) return;
             
-            if (!SCRIPT_URL || SCRIPT_URL.includes('YOUR_GOOGLE')) {
-                const errorMessage = 'Google Apps Script URL is not configured.';
-                const solutions = `<div class="error-solutions"><button onclick="loadRDSOSampleData()" class="sample-btn">Load Sample RDSO Data</button></div>`;
-                updateRDSOStatus(errorMessage + solutions, 'error');
-                renderSimpleTable([], 'rdsoTableBody', 'recordCountRDSO', RDSO_DATA_KEYS);
-                return;
-            }
+            const dataKeys = sheetInfo.headers;
+            const sheetSlug = slugify(sheetName);
+            const tableHead = document.getElementById(`table-head-${sheetSlug}`);
+            const tableBody = document.getElementById(`table-body-${sheetSlug}`);
+            const recordCountEl = document.getElementById(`record-count-${sheetSlug}`);
 
-            try {
-                const response = await fetch(`${SCRIPT_URL}?sheet=RDSO`);
-                if (!response.ok) throw new Error(`Network response was not ok (status: ${response.status})`);
-                const result = await response.json();
-
-                if (result.success && Array.isArray(result.data)) {
-                    allRDSOData.data = result.data;
-                    updateRDSOStatus(`Successfully retrieved ${result.data.length} RDSO records.`, 'success');
-                } else {
-                    throw new Error(result.message || 'Invalid data format from Google Script.');
-                }
-            } catch (error) {
-                console.error('Error fetching RDSO data:', error);
-                const errorMessage = `Failed to load RDSO records: ${error.message}`;
-                const solutions = `<div class="error-solutions"><h4>Troubleshooting:</h4><ol><li>Verify the Google Apps Script URL.</li><li>Ensure the sheet is named "RDSO" and has a "Link" column.</li><li>Ensure RDSO sheet headers are exactly: ${RDSO_DATA_KEYS.join(', ')}.</li></ol><button onclick="loadRDSOSampleData()" class="sample-btn">Load Sample RDSO Data</button></div>`;
-                updateRDSOStatus(errorMessage + solutions, 'error');
-            } finally {
-                applySimpleTableSearch(allRDSOData.data, 'rdsoTableBody', 'recordCountRDSO', RDSO_DATA_KEYS);
-                updateAllTabCounts();
-            }
-        }
-        
-        function loadRDSOSampleData() {
-             allRDSOData.data = [
-                {"Letter No.": "RDSO/SPN/TC/FRS/4", "Date": "11.04.2022", "Subject": "Functional Requirement Specifications for Kavach - FRS v4.0", "Link": "https://indianrailways.gov.in/railwayboard/uploads/codes/frs_kavach.pdf"},
-                {"Letter No.": "RDSO/SPN/TC/SRS/4.3", "Date": "07.06.2024", "Subject": "System Requirement Specification for Kavach - SRS v4.0 Amdt-3", "Link": "https://indianrailways.gov.in/railwayboard/uploads/codes/srs_kavach.pdf"}
-             ];
-             applySimpleTableSearch(allRDSOData.data, 'rdsoTableBody', 'recordCountRDSO', RDSO_DATA_KEYS);
-             updateRDSOStatus('RDSO Sample data loaded. This is not live data.', 'success');
-             updateAllTabCounts();
-        }
-        // --- END RDSO SCRIPT ---
-
-        // --- START RAILWAY BOARD SCRIPT ---
-         function updateRBStatus(message, type) {
-            const statusDiv = document.getElementById('statusRB');
-            statusDiv.innerHTML = message;
-            statusDiv.className = `status ${type}`;
-            statusDiv.style.display = 'block';
-            if (type === 'success' && !message.includes('Sample data')) {
-                setTimeout(() => { statusDiv.style.display = 'none'; }, 3000);
-            }
-        }
-
-        async function fetchRBData() {
-            updateRBStatus('Fetching Railway Board records...', 'loading');
+            // Render headers
+            tableHead.innerHTML = `<tr>${dataKeys.map(h => `<th>${h}</th>`).join('')}</tr>`;
             
-            if (!SCRIPT_URL || SCRIPT_URL.includes('YOUR_GOOGLE')) {
-                const errorMessage = 'Google Apps Script URL is not configured.';
-                const solutions = `<div class="error-solutions"><button onclick="loadRBSampleData()" class="sample-btn">Load Sample RB Data</button></div>`;
-                updateRBStatus(errorMessage + solutions, 'error');
-                renderSimpleTable([], 'rbTableBody', 'recordCountRB', RB_DATA_KEYS);
-                return;
-            }
-
-            try {
-                const response = await fetch(`${SCRIPT_URL}?sheet=Railway Board`);
-                if (!response.ok) throw new Error(`Network response was not ok (status: ${response.status})`);
-                const result = await response.json();
-
-                if (result.success && Array.isArray(result.data)) {
-                    allRBData.data = result.data;
-                    updateRBStatus(`Successfully retrieved ${result.data.length} Railway Board records.`, 'success');
-                } else {
-                    throw new Error(result.message || 'Invalid data format from Google Script.');
-                }
-            } catch (error) {
-                console.error('Error fetching Railway Board data:', error);
-                const errorMessage = `Failed to load Railway Board records: ${error.message}`;
-                const solutions = `<div class="error-solutions"><h4>Troubleshooting:</h4><ol><li>Verify the Google Apps Script URL.</li><li>Ensure the sheet is named "Railway Board" and has a "Link" column.</li><li>Ensure RB sheet headers are exactly: ${RB_DATA_KEYS.join(', ')}.</li></ol><button onclick="loadRBSampleData()" class="sample-btn">Load Sample RB Data</button></div>`;
-                updateRBStatus(errorMessage + solutions, 'error');
-            } finally {
-                applySimpleTableSearch(allRBData.data, 'rbTableBody', 'recordCountRB', RB_DATA_KEYS);
-                updateAllTabCounts();
-            }
-        }
-        
-        function loadRBSampleData() {
-             allRBData.data = [
-                {"Letter No.": "2023/S&T/Dev/Kavach", "Date": "11.04.2025", "Subject": "Implementation of Measures Related to Kavach System.", "Link": "https://indianrailways.gov.in/railwayboard/uploads/directorate/signal_telecom/downloads/2023/Kavach_Implementation.pdf"},
-                {"Letter No.": "2024/S&T/Dev/Maint", "Date": "17.01.2025", "Subject": "Streamlining of Maintenance activity for assets.", "Link": "https://indianrailways.gov.in/railwayboard/uploads/directorate/signal_telecom/downloads/2024/Maintenance_Streamlining.pdf"}
-             ];
-             applySimpleTableSearch(allRBData.data, 'rbTableBody', 'recordCountRB', RB_DATA_KEYS);
-             updateRBStatus('Railway Board Sample data loaded. This is not live data.', 'success');
-             updateAllTabCounts();
-        }
-        // --- END RAILWAY BOARD SCRIPT ---
-
-        // --- GENERAL TABLE & SEARCH SCRIPT ---
-        function renderSimpleTable(dataToRender, tableBodyId, recordCountId, dataKeys) {
-            const tableBody = document.getElementById(tableBodyId);
-            const recordCountEl = document.getElementById(recordCountId);
-            
+            // Render body
             recordCountEl.textContent = `${dataToRender.length} record${dataToRender.length !== 1 ? 's' : ''}`;
-            
             if (dataToRender.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="${dataKeys.length}" class="no-data">No documents found.</td></tr>`;
+                const message = globalSearchTerm ? 'No records match your current filter criteria.' : 'No documents found.';
+                tableBody.innerHTML = `<tr><td colspan="${dataKeys.length}" class="no-data">${message}</td></tr>`;
                 return;
             }
 
             let tableHTML = dataToRender.map(row => {
                 let rowHTML = '<tr>';
-                dataKeys.forEach((key, index) => {
+                dataKeys.forEach(key => {
                     let cellValue = row[key] || '';
                     const cellClass = (key.toLowerCase().includes('subject')) ? 'class="simple-table-subject-cell"' : '';
                     
-                    // If this is the last column in the defined keys AND a 'Link' property exists,
-                    // wrap the cell content in a hyperlink.
-                    const isLastColumn = index === dataKeys.length - 1;
-                    if (isLastColumn && row.Link) {
+                    if (row.Link && key === dataKeys[dataKeys.length - 1]) {
                         cellValue = `<a href="${row.Link}" target="_blank" class="file-link">${cellValue || 'View File'}</a>`;
                     }
-                    
                     rowHTML += `<td ${cellClass}>${cellValue}</td>`;
                 });
                 rowHTML += '</tr>';
@@ -674,57 +640,66 @@
             tableBody.innerHTML = tableHTML;
         }
 
-        function applySimpleTableSearch(fullDataset, tableBodyId, recordCountId, dataKeys) {
-            let filteredData = fullDataset;
-            if (globalSearchTerm) {
-                filteredData = fullDataset.filter(row =>
-                    Object.values(row).some(value =>
-                        value && value.toString().toLowerCase().includes(globalSearchTerm)
-                    )
-                );
-            }
-            renderSimpleTable(filteredData, tableBodyId, recordCountId, dataKeys);
+        function applySimpleTableSearch(sheetName) {
+            const sheetInfo = allGoogleSheetData[sheetName];
+            if (!sheetInfo || !sheetInfo.data) return;
+
+            const filteredData = sheetInfo.data.filter(row =>
+                Object.values(row).some(value =>
+                    value && value.toString().toLowerCase().includes(globalSearchTerm)
+                )
+            );
+            renderSimpleTable(sheetName, filteredData);
         }
 
-        // --- GLOBAL UTILITIES & TAB SCRIPT ---
-        function openTab(event, tabName) {
-            Array.from(document.getElementsByClassName('tab-pane')).forEach(pane => {
+        // --- GLOBAL UTILITIES & TAB SCRIPT (Refactored) ---
+        function openTab(event, tabPaneId) {
+            document.querySelectorAll('.tab-pane').forEach(pane => {
                 pane.style.display = 'none';
                 pane.classList.remove('active');
             });
-            Array.from(document.getElementsByClassName('tab-button')).forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
             
-            const activePane = document.getElementById(tabName);
+            const activePane = document.getElementById(tabPaneId);
             activePane.style.display = 'block';
             activePane.classList.add('active');
             event.currentTarget.classList.add('active');
+
             applyGlobalSearch(); 
         }
 
         function updateAllTabCounts() {
-            function getFilteredCount(dataset) {
-                if (!globalSearchTerm) return dataset.length;
-                return dataset.filter(item => Object.values(item).some(v => v && v.toString().toLowerCase().includes(globalSearchTerm))).length;
+            // KMP Tab
+            const kmpFilteredCount = allKMPData.filter(item => Object.values(item).some(v => v && v.toString().toLowerCase().includes(globalSearchTerm))).length;
+            document.querySelector('#kmpTabButton .tab-record-count').textContent = `(${kmpFilteredCount})`;
+
+            // Dynamic Google Sheet Tabs
+            for (const sheetName in allGoogleSheetData) {
+                const sheetInfo = allGoogleSheetData[sheetName];
+                const sheetSlug = slugify(sheetName);
+                const button = document.getElementById(`tab-button-${sheetSlug}`);
+                if (button) {
+                    const filteredCount = sheetInfo.data.filter(row => Object.values(row).some(v => v && v.toString().toLowerCase().includes(globalSearchTerm))).length;
+                    button.querySelector('.tab-record-count').textContent = `(${filteredCount})`;
+                }
             }
-            document.querySelector('#kmpTabButton .tab-record-count').textContent = `(${getFilteredCount(allKMPData)})`;
-            document.querySelector('#rdsoTabButton .tab-record-count').textContent = `(${getFilteredCount(allRDSOData.data)})`;
-            document.querySelector('#rbTabButton .tab-record-count').textContent = `(${getFilteredCount(allRBData.data)})`;
         }
 
         function applyGlobalSearch() {
             const activeTabPane = document.querySelector('.tab-pane.active');
             if (!activeTabPane) return;
             
-            switch (activeTabPane.id) {
-                case 'kmpTab':
-                    applyKMPFilters();
-                    break;
-                case 'rdsoTab':
-                    applySimpleTableSearch(allRDSOData.data, 'rdsoTableBody', 'recordCountRDSO', RDSO_DATA_KEYS);
-                    break;
-                case 'rbTab':
-                    applySimpleTableSearch(allRBData.data, 'rbTableBody', 'recordCountRB', RB_DATA_KEYS);
-                    break;
+            if (activeTabPane.id === 'kmpTab') {
+                applyKMPFilters();
+            } else {
+                // Find sheet name from the active pane's ID
+                const activeSlug = activeTabPane.id.replace('tab-pane-', '');
+                for (const sheetName in allGoogleSheetData) {
+                    if (slugify(sheetName) === activeSlug) {
+                        applySimpleTableSearch(sheetName);
+                        break;
+                    }
+                }
             }
         }
 
@@ -738,10 +713,9 @@
                 updateAllTabCounts();
             });
 
-            // Fetch data for all tabs
+            // Fetch data for the static tab and then discover and fetch for dynamic tabs
             fetchKMPData();
-            fetchRDSOData();
-            fetchRBData();
+            fetchAndBuildGoogleSheetTabs();
         });
     </script>
 </body>
